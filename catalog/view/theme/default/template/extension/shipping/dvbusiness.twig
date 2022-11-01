@@ -1,0 +1,43 @@
+<div class="shipping_dvbusiness_description form-horizontal">
+    <div class="row">
+        <div class="col-md-6">
+            <div class="colored-wrapper">
+                <div class="form-group row">
+                    <div class="col-sm-7 col-sm-offset-5">
+                        <strong>{{ delivery_date_description }}</strong>
+                    </div>
+                </div>
+                <div class="form-group row">
+                    <label class="col-sm-5 control-label">{{ text_shipping_datetime }}:</label>
+                    <div class="col-sm-7">
+                        <select name="shipping_dvbusiness_required_date" class="form-control">
+                            {% for key, value in date_enum %}
+                                <option value="{{ key }}" {% if key == date %} selected {% endif %}>{{ value }}</option>
+                            {% endfor %}
+                        </select>
+                    </div>
+                </div>
+                <div class="form-group row">
+                    <label class="col-sm-5 control-label">{{ text_time_from }}:</label>
+                    <div class="col-sm-7">
+                        <select name="shipping_dvbusiness_required_start_time" class="form-control">
+                            {% for key, value in time_enum %}
+                                <option value="{{ key }}" {% if key == required_start_time %} selected {% endif %}>{{ value }}</option>
+                            {% endfor %}
+                        </select>
+                    </div>
+                </div>
+                <div class="form-group row">
+                    <label class="col-sm-5 control-label">{{ text_time_to }}:</label>
+                    <div class="col-sm-7">
+                        <select name="shipping_dvbusiness_required_finish_time" class="form-control">
+                            {% for key, value in time_enum %}
+                                <option value="{{ key }}" {% if key == required_finish_time %} selected {% endif %}>{{ value }}</option>
+                            {% endfor %}
+                        </select>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+</div>

@@ -1,0 +1,81 @@
+<div class="tariff-option-container">
+    <div class="row">
+        <div class="col-sm-12">
+            <label>
+                <input type="radio" name="tariff" value="default" checked="checked">
+                <span>{{ text_tariff_default }}</span>
+            </label>
+        </div>
+    </div>
+</div>
+
+{% for tariff in tariffs %}
+    <div class="tariff-option-container">
+        <div class="row">
+            <div class="col-sm-12">
+                <label>
+                    <input type="radio" name="tariff" value="{{ tariff.name }}">
+                    <span>{{ tariff.title }}</span>
+                </label>
+                <p>{{ tariff.text }}</p>
+
+                {% for requirement in tariff.requirements %}
+                    <div class="tariff-requirement row" style="display: none">
+                        <p class="tariff-requirement-label">{{ requirement.title }}</p>
+                        {% set i = 0 %}
+                        {% if requirement.isSelect %}
+                            {% if not requirement.isRequired %}
+                                <div class="col-sm-4">
+                                    <label class="tariff-option">
+                                        <input class="tariff-requirement-option"
+                                               type="radio"
+                                               name="tariff_requirements[{{ tariff.name }}][{{ requirement.name }}]"
+                                               checked="checked"
+                                               value="false">
+                                        <span>{{ not_needed }}</span>
+                                    </label>
+                                </div>
+                                {% set i = 1 %}
+                            {% endif %}
+                            {% for option in requirement.options %}
+                                <div class="col-sm-4">
+                                    <label class="tariff-option">
+                                        <input class="tariff-requirement-option"
+                                                type="radio"
+                                                name="tariff_requirements[{{ tariff.name }}][{{ requirement.name }}]"
+                                                {% if i == 0 %} checked="checked" {% endif %}
+                                                value="{{ option.value }}">
+                                        <span>{{ option.title }}</span>
+                                    </label>
+                                    <p>
+                                        {% if not option.title == option.title %}
+                                            {{ option.text }}
+                                        {% endif %}
+                                    </p>
+                                </div>
+                                {% set i = i + 1 %}
+                            {% endfor %}
+                        {% endif %}
+
+                        {% if requirement.isMultiSelect %}
+                            {% for option in requirement.options %}
+                                <div class="col-sm-6">
+                                    <input type="checkbox"
+                                           class="tariff-requirement-option"
+                                           id="tariff_requirements_{{ requirement.name }}_{{ option.value }}"
+                                           value="{{ option.value }}"
+                                           name="tariff_requirements[{{ tariff.name }}][{{ requirement.name }}][]">
+                                    <label for="tariff_requirements_{{ requirement.name }}_{{ option.value }}">
+                                        {{ option.title }}
+                                    </label>
+                                </div>
+                            {% endfor %}
+                        {% endif %}
+                    </div>
+                {% endfor %}
+            </div>
+        </div>
+    </div>
+{% endfor %}
+
+

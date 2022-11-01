@@ -1,0 +1,595 @@
+{{ header }}{{ column_left }}
+<div id="content">
+    <div class="page-header">
+        <div class="container-fluid">
+            <h1>{% if heading %} {{ heading }} {% else %} {{ heading_title }} {% endif %}</h1>
+
+            <ul class="breadcrumb">
+                {% for breadcrumb in breadcrumbs %}
+                    <li><a href="{{ breadcrumb.href }}">{{ breadcrumb.text }}</a></li>
+                {% endfor %}
+            </ul>
+        </div>
+    </div>
+
+    <div class="container-fluid">
+        <div class="panel panel-default">
+            <div class="panel-heading">
+                <h3 class="panel-title"><i class="fa fa-list"></i> {{ dvbusiness_wizard_head }}</h3>
+            </div>
+            <div class="panel-body" id="dvbusiness-wizard" data-start-step="{{ start_step }}">
+                <div class="row">
+                    <div class="col-xs-12 col-xs-offset-0 col-md-8 col-md-offset-2">
+
+                        <div
+                                class="step"
+                                data-step-index="1"
+                                data-is-api-test="{{ shipping_dvbusiness_is_api_test_server }}"
+                                data-test-api-token="{{ shipping_dvbusiness_cms_module_api_prod_auth_token }}"
+                                data-prod-api-token="{{ shipping_dvbusiness_cms_module_api_test_auth_token }}"
+                        >
+                            <div class="row">
+                                <div class="col-xs-12">
+                                    <h4 style="margin-bottom: 25px;"><strong>{{ dvbusiness_wizard_step_1_title }}</strong></h4>
+
+                                    <div class="alert alert-warning" role="alert" {% if step_1_success %} style="display:none" {% endif %}>
+                                        {{ dvbusiness_wizard_step_1_warning }}
+                                    </div>
+
+                                    <div class="alert alert-success" role="alert" {% if step_1_success == false %} style="display:none" {% endif %}>
+                                        {{ dvbusiness_wizard_step_1_success }}
+                                    </div>
+                                </div>
+                            </div>
+
+                            <div class="login-form" {% if step_1_success %} style="display:none" {% endif %}>
+                                <div class="form-group row">
+                                    <label class="col-xs-4 col-form-label text-right">{{ dvbusiness_wizard_step_1_login }}</label>
+                                    <div class="col-xs-8">
+                                        <input type="text" name="client_login" class="form-control" value="">
+                                        <small class="form-text text-muted">{{ dvbusiness_wizard_step_1_login_text }}</small>
+                                    </div>
+                                </div>
+                                <div class="form-group row">
+                                    <label class="col-xs-4 col-form-label text-right">{{ dvbusiness_wizard_step_1_password }}</label>
+                                    <div class="col-xs-8">
+                                        <input type="password" name="client_password" class="form-control" value="">
+                                    </div>
+                                </div>
+                                <div class="form-group row" style="display: none;">
+                                    <div class="col-xs-8 col-xs-offset-4">
+                                        <div class="custom-control custom-checkbox">
+                                            <input autocomplete="off" type="checkbox" name="is_apitest" class="custom-control-input" id="is_aptest">
+                                            <label class="custom-control-label" for="is_aptest">{{ dvbusiness_wizard_step_1_use_apitest_server }}</label>
+                                        </div>
+                                    </div>
+                                </div>
+                            </div>
+
+                            <div class="row">
+                                <div class="col-xs-12 text-center">
+                                    <button class="btn btn-success nav-next-1-reset" {% if step_1_success == false %} style="display:none" {% endif %}>{{ dvbusiness_wizard_step_1_new_token }}</button>
+                                    <button class="btn btn-success nav-next-1-install" {% if step_1_success %} style="display:none" {% endif %}>{{ dvbusiness_wizard_step_1_new_token_next_step }}</button>
+                                    <button class="btn btn-success nav-next-1" {% if step_1_success == false %} style="display:none" {% endif %}>{{ dvbusiness_wizard_next_step }}</button>
+                                </div>
+                            </div>
+                        </div>
+
+                        <div class="step" data-step-index="2" style="display:none;">
+                            <div class="row">
+                                <div class="col-xs-12">
+                                    <h4 style="margin-bottom: 25px;"><strong>{{ dvbusiness_wizard_step_2_title }}</strong></h4>
+                                </div>
+                            </div>
+
+                            <div class="row">
+                                <div class="col-xs-12" style="background: #f9f9f9; margin-bottom: 20px;">
+                                    <div class="form-horizontal">
+                                        <input type="hidden" name="warehouse_id" value="{{ warehouse.id }}">
+                                        <div class="form-group row">
+                                            <label class="col-sm-4 control-label">{{ dvbusiness_warehouse_form_name }}</label>
+                                            <div class="col-sm-8">
+                                                <input type="text" name="name" class="form-control" value="{{ warehouse.name }}">
+                                            </div>
+                                        </div>
+                                        <div class="form-group row">
+                                            <label class="col-sm-4 control-label">
+                                                {{ dvbusiness_warehouse_form_city }}
+                                                <div class="required">*</div>
+                                            </label>
+                                            <div class="col-sm-8">
+                                                <input type="text" name="city" class="form-control" value="{{ warehouse.city }}">
+                                            </div>
+                                        </div>
+                                        <div class="form-group row">
+                                            <label class="col-sm-4 control-label">
+                                                <span data-toggle="tooltip" title="" data-original-title="{{ dvbusiness_warehouse_form_address_tooltip }}">
+                                                    {{ dvbusiness_warehouse_form_address }}
+                                                </span>
+                                                <div class="required">*</div>
+                                            </label>
+                                            <div class="col-sm-8">
+                                                <input type="text" name="address" class="form-control" value="{{ warehouse.address }}">
+                                            </div>
+                                        </div>
+                                        <div class="form-group row">
+                                            <label class="col-sm-4 control-label">{{ dvbusiness_warehouse_form_schedule }}</label>
+                                            <div class="col-sm-8">
+                                                <div class="row">
+                                                    <div class="col-sm-6">
+                                                        <div class="media">
+                                                            <div class="media-body">
+                                                                <select name="work_start_time" class="form-control">
+                                                                    {% for value, title in required_time_enum %}
+                                                                        <option value="{{ value }}" {% if value == warehouse.work_start_time %} selected {% endif %}>{{ title }}</option>
+                                                                    {% endfor %}
+                                                                </select>
+                                                            </div>
+                                                        </div>
+                                                    </div>
+                                                    <div class="col-sm-6">
+                                                        <div class="media">
+                                                            <label class="control-label pull-left">{{ dvbusiness_warehouse_form_schedule_time_to }}</label>
+                                                            <div class="media-body">
+                                                                <select name="work_finish_time" class="form-control">
+                                                                    {% for value, title in required_time_enum %}
+                                                                        <option value="{{ value }}" {% if value == warehouse.work_finish_time %} selected {% endif %}>{{ title }}</option>
+                                                                    {% endfor %}
+                                                                </select>
+                                                            </div>
+                                                        </div>
+                                                    </div>
+                                                </div>
+                                            </div>
+                                        </div>
+                                        <div class="form-group row">
+                                            <div class="col-sm-8 col-sm-offset-4">
+                                                <label>
+                                                    <input type="checkbox" name="workdays" value="1" {% if 1 in warehouse.workdays %} checked {% endif %}>
+                                                    {{ dvbusiness_warehouse_workday_1 }}
+                                                </label>
+                                            </div>
+                                        </div>
+                                        <div class="form-group row">
+                                            <div class="col-sm-8 col-sm-offset-4">
+                                                <label>
+                                                    <input type="checkbox" name="workdays" value="2" {% if 2 in warehouse.workdays %} checked {% endif %}>
+                                                    {{ dvbusiness_warehouse_workday_2 }}
+                                                </label>
+                                            </div>
+                                        </div>
+                                        <div class="form-group row">
+                                            <div class="col-sm-8 col-sm-offset-4">
+                                                <label>
+                                                    <input type="checkbox" name="workdays" value="3" {% if 3 in warehouse.workdays %} checked {% endif %}>
+                                                    {{ dvbusiness_warehouse_workday_3 }}
+                                                </label>
+                                            </div>
+                                        </div>
+                                        <div class="form-group row">
+                                            <div class="col-sm-8 col-sm-offset-4">
+                                                <label>
+                                                    <input type="checkbox" name="workdays" value="4" {% if 4 in warehouse.workdays %} checked {% endif %}>
+                                                    {{ dvbusiness_warehouse_workday_4 }}
+                                                </label>
+                                            </div>
+                                        </div>
+                                        <div class="form-group row">
+                                            <div class="col-sm-8 col-sm-offset-4">
+                                                <label>
+                                                    <input type="checkbox" name="workdays" value="5" {% if 5 in warehouse.workdays %} checked {% endif %}>
+                                                    {{ dvbusiness_warehouse_workday_5 }}
+                                                </label>
+                                            </div>
+                                        </div>
+                                        <div class="form-group row">
+                                            <div class="col-sm-8 col-sm-offset-4">
+                                                <label>
+                                                    <input type="checkbox" name="workdays" value="6" {% if 6 in warehouse.workdays %} checked {% endif %}>
+                                                    {{ dvbusiness_warehouse_workday_6 }}
+                                                </label>
+                                            </div>
+                                        </div>
+                                        <div class="form-group row">
+                                            <div class="col-sm-8 col-sm-offset-4">
+                                                <label>
+                                                    <input type="checkbox" name="workdays" value="7" {% if 7 in warehouse.workdays %} checked {% endif %}>
+                                                    {{ dvbusiness_warehouse_workday_7 }}
+                                                </label>
+                                            </div>
+                                        </div>
+                                        <div class="form-group row">
+                                            <label class="col-sm-4 control-label">
+                                                {{ dvbusiness_warehouse_form_contact }}
+                                                <div class="required">*</div>
+                                            </label>
+                                            <div class="col-sm-8">
+                                                <div class="row">
+                                                    <div class="col-sm-7" style="padding-right: 0">
+                                                        <input type="text" name="contact_name" class="form-control" value="{{ warehouse.contact_name }}" placeholder="{{ dvbusiness_warehouse_form_contact_name_placeholder }}">
+                                                    </div>
+                                                    <div class="col-sm-5">
+                                                        <input type="text" name="contact_phone" class="form-control" value="{{ warehouse.contact_phone }}" placeholder="{{ dvbusiness_warehouse_form_contact_phone_placeholder }}">
+                                                    </div>
+                                                </div>
+                                            </div>
+                                        </div>
+                                        <div class="form-group row">
+                                            <label class="col-sm-4 control-label">
+                                            <span data-toggle="tooltip" title="" data-original-title="{{ dvbusiness_warehouse_form_note_tooltip }}">
+                                                {{ dvbusiness_warehouse_form_note }}
+                                            </span>
+                                            </label>
+                                            <div class="col-sm-8">
+                                                <textarea name="note" class="form-control" rows="4">{{ warehouse.note }}</textarea>
+                                            </div>
+                                        </div>
+                                    </div>
+                                </div>
+                            </div>
+
+                            <div class="row">
+                                <div class="col-xs-12 text-center">
+                                    <button class="btn btn-success nav-back-2">{{ dvbusiness_wizard_back_step }}</button>
+                                    <button class="btn btn-success nav-next-2">{{ dvbusiness_wizard_next_step }}</button>
+                                </div>
+                            </div>
+                        </div>
+
+                        <div class="step" data-step-index="3" style="display:none;">
+                            <div class="row">
+                                <div class="col-xs-12">
+                                    <h4 style="margin-bottom: 25px;"><strong>{{ dvbusiness_wizard_step_3_title }}</strong></h4>
+                                </div>
+                            </div>
+
+                            <div class="row">
+                                <div class="col-xs-12" style="background: #f9f9f9; margin-bottom: 20px;">
+                                    <div class="form-horizontal">
+                                        <div class="form-group">
+                                            <label class="col-sm-4 control-label">
+                                                {{ dvbusiness_tab_order_default_vehicle_type }}
+                                                <div class="required">*</div>
+                                            </label>
+                                            <div class="col-sm-8">
+                                                <select class="form-control" name="shipping_dvbusiness_default_vehicle_type_id">
+                                                    {% for id, title in vehicle_types_enum %}
+                                                        <option value="{{ id }}" {% if id == shipping_dvbusiness_default_vehicle_type_id %} selected {% endif %}>{{ title }}</option>
+                                                    {% endfor %}
+                                                </select>
+                                            </div>
+                                        </div>
+                                        <div class="form-group">
+                                            <label class="col-sm-4 control-label">{{ dvbusiness_tab_order_default_payment_card_id }}</label>
+                                            <div class="col-sm-8">
+                                                <select autocomplete="off" class="form-control" name="shipping_dvbusiness_default_payment_type">
+                                                    {% for id, title in payment_types %}
+                                                        <option
+                                                                data-is-card="{{ id in bank_card_payment_types }}"
+                                                                value="{{ id }}"
+                                                                {% if id == shipping_dvbusiness_default_payment_type %} selected {% endif %}
+                                                        >
+                                                            {{ title }}
+                                                        </option>
+                                                    {% endfor %}
+                                                </select>
+                                            </div>
+                                        </div>
+                                        <div class="form-group" id="payment-card-id">
+                                            <label class="col-sm-4 control-label">{{ dvbusiness_payment_type_card }}</label>
+                                            <div class="col-sm-8">
+                                                <select autocomplete="off" class="form-control" name="shipping_dvbusiness_default_payment_card_id">
+                                                    {% for id, title in bank_cards %}
+                                                        <option value="{{ id }}" {% if id == shipping_dvbusiness_default_payment_card_id %} selected {% endif %}>{{ title }}</option>
+                                                    {% endfor %}
+                                                </select>
+                                            </div>
+                                        </div>
+                                        <div class="form-group">
+                                            <label class="col-sm-4 control-label">
+                                                <span data-toggle="tooltip" title="" data-original-title="{{ dvbusiness_tab_order_default_order_weight_tooltip }}">
+                                                    {{ dvbusiness_tab_order_default_order_weight }}
+                                                    <div class="required">*</div>
+                                                </span>
+                                            </label>
+                                            <div class="col-sm-8">
+                                                <input type="text" class="form-control" name="shipping_dvbusiness_default_order_weight_kg" value="{{ shipping_dvbusiness_default_order_weight_kg }}">
+                                            </div>
+                                        </div>
+                                        <div class="form-group">
+                                            <label class="col-sm-4 control-label">{{ dvbusiness_tab_order_payment_markup }}</label>
+                                            <div class="col-sm-8">
+                                                <input type="text" class="form-control" name="shipping_dvbusiness_dostavista_payment_markup_amount" value="{{ shipping_dvbusiness_dostavista_payment_markup_amount }}">
+                                            </div>
+                                        </div>
+                                        <div class="form-group">
+                                            <label class="col-sm-4 control-label">{{ dvbusiness_tab_order_payment_discount }}</label>
+                                            <div class="col-sm-8">
+                                                <input type="text" class="form-control" name="shipping_dvbusiness_dostavista_payment_discount_amount" value="{{ shipping_dvbusiness_dostavista_payment_discount_amount }}">
+                                            </div>
+                                        </div>
+                                        <div class="form-group">
+                                            <label class="col-sm-4 control-label">
+                                                <span data-toggle="tooltip" title="" data-original-title="{{ dvbusiness_tab_order_fix_order_payment_tooltip }}">
+                                                    {{ dvbusiness_tab_order_fix_order_payment }}
+                                                </span>
+                                            </label>
+                                            <div class="col-sm-8">
+                                                <input type="text" class="form-control" name="shipping_dvbusiness_fix_order_payment_amount" value="{{ shipping_dvbusiness_fix_order_payment_amount }}">
+                                            </div>
+                                        </div>
+                                        <div class="form-group">
+                                            <label class="col-sm-4 control-label">{{ dvbusiness_tab_order_free_delivery_opencart_order_sum }}</label>
+                                            <div class="col-sm-8">
+                                                <input type="text" class="form-control" name="shipping_dvbusiness_free_delivery_opencart_order_sum" value="{{ shipping_dvbusiness_free_delivery_opencart_order_sum }}">
+                                            </div>
+                                        </div>
+                                        <div class="form-group">
+                                            <label class="col-sm-4 control-label">{{ dvbusiness_tab_order_delivery_point_note_prefix }}</label>
+                                            <div class="col-sm-8">
+                                                <textarea class="form-control" name="shipping_dvbusiness_delivery_point_note_prefix" rows="5">{{ shipping_dvbusiness_delivery_point_note_prefix }}</textarea>
+                                            </div>
+                                        </div>
+                                        <div class="form-group">
+                                            <label class="col-sm-4 control-label">
+                                                <span data-toggle="tooltip" title="" data-original-title="{{ dvbusiness_tab_opencart_integration_opencart_cash_payment_code_tooltip }}">
+                                                    {{ dvbusiness_tab_opencart_integration_opencart_cash_payment_code }}
+                                                </span>
+                                            </label>
+                                            <div class="col-sm-8">
+                                                <select class="form-control" name="shipping_dvbusiness_opencart_cash_payment_code">
+                                                    <option value="">{{ select_option_not_selected }}</option>
+                                                    {% for code, name in payment_methods_enum %}
+                                                        <option value="{{ code }}" {% if code == shipping_dvbusiness_opencart_cash_payment_code %} selected {% endif %}>{{ name }}</option>
+                                                    {% endfor %}
+                                                </select>
+                                            </div>
+                                        </div>
+                                        <div class="form-group">
+                                            <div class="col-sm-8 col-sm-offset-4">
+                                                <label>
+                                                    <input type="checkbox" name="shipping_dvbusiness_insurance_enabled" value="1" {% if shipping_dvbusiness_insurance_enabled %} checked {% endif %}>
+                                                    {{ dvbusiness_tab_order_insurance }}
+                                                </label>
+                                            </div>
+                                        </div>
+                                        <div class="form-group">
+                                            <div class="col-sm-8 col-sm-offset-4">
+                                                <label>
+                                                    <input type="checkbox" name="shipping_dvbusiness_buyout_enabled" value="1" {% if shipping_dvbusiness_buyout_enabled %} checked {% endif %}>
+                                                    {{ dvbusiness_tab_order_buyout }}
+                                                </label>
+                                            </div>
+                                        </div>
+                                        <div class="form-group">
+                                            <div class="col-sm-8 col-sm-offset-4">
+                                                <label>
+                                                    <input type="checkbox" name="shipping_dvbusiness_matter_weight_prefix_enabled" value="1" {% if shipping_dvbusiness_matter_weight_prefix_enabled %} checked {% endif %}>
+                                                    {{ dvbusiness_tab_order_matter_weight_prefix }}
+                                                </label>
+                                            </div>
+                                        </div>
+                                        <div class="form-group">
+                                            <div class="col-sm-8 col-sm-offset-4">
+                                                <label>
+                                                    <input type="checkbox" name="shipping_dvbusiness_contact_person_notification_enabled" value="1" {% if shipping_dvbusiness_contact_person_notification_enabled %} checked {% endif %}>
+                                                    {{ dvbusiness_tab_order_contact_person_notification }}
+                                                </label>
+                                            </div>
+                                        </div>
+                                    </div>
+                                </div>
+                            </div>
+
+                            <div class="row">
+                                <div class="col-xs-12 text-center">
+                                    <button class="btn btn-success nav-back-3">{{ dvbusiness_wizard_back_step }}</button>
+                                    <button class="btn btn-success nav-next-3">{{ dvbusiness_wizard_next_step }}</button>
+                                </div>
+                            </div>
+                        </div>
+
+                        <div class="step" data-step-index="4" style="display:none;">
+                            <div class="row">
+                                <div class="col-xs-12">
+                                    <h4 style="margin-bottom: 25px;"><strong>{{ dvbusiness_wizard_step_4_title }}</strong></h4>
+                                </div>
+                            </div>
+
+                            <div class="row">
+                                <div class="col-xs-12" style="background: #f9f9f9; margin-bottom: 20px;">
+                                    <div class="form-horizontal">
+                                        <div class="form-group hidden">
+                                            <label class="col-sm-4 control-label">{{ dvbusiness_tab_dostavista_integration_api_callback_secret_key }}</label>
+                                            <div class="col-sm-8">
+                                                <input type="text" class="form-control" name="shipping_dvbusiness_api_callback_secret_key" value="{{ shipping_dvbusiness_api_callback_secret_key }}">
+                                            </div>
+                                        </div>
+                                        <div class="form-group hidden">
+                                            <label class="col-sm-4 control-label">
+                                                <span data-toggle="tooltip" title="" data-original-title="{{ dvbusiness_tab_dostavista_integration_api_callback_url_tooltip }}">
+                                                    {{ dvbusiness_tab_dostavista_integration_api_callback_url }}
+                                                </span>
+                                            </label>
+                                            <div class="col-sm-8">
+                                                <input type="text" class="form-control" value="{{ api_callback_url }}" readonly>
+                                            </div>
+                                        </div>
+                                        <div class="form-group">
+                                            <label class="col-sm-4 control-label">{{ dvbusiness_tab_dostavista_integration_order_status_draft }}</label>
+                                            <div class="col-sm-8">
+                                                <select class="form-control" name="shipping_dvbusiness_integration_order_status_draft">
+                                                    <option value="">{{ select_option_not_selected }}</option>
+                                                    {% for order_status in order_statuses %}
+                                                        <option value="{{ order_status.order_status_id }}" {% if order_status.order_status_id == shipping_dvbusiness_integration_order_status_draft %} selected {% endif %}>{{ order_status.name }}</option>
+                                                    {% endfor %}
+                                                </select>
+                                            </div>
+                                        </div>
+                                        <div class="form-group">
+                                            <label class="col-sm-4 control-label">{{ dvbusiness_tab_dostavista_integration_order_status_available }}</label>
+                                            <div class="col-sm-8">
+                                                <select class="form-control" name="shipping_dvbusiness_integration_order_status_available">
+                                                    <option value="">{{ select_option_not_selected }}</option>
+                                                    {% for order_status in order_statuses %}
+                                                        <option value="{{ order_status.order_status_id }}" {% if order_status.order_status_id == shipping_dvbusiness_integration_order_status_available %} selected {% endif %}>{{ order_status.name }}</option>
+                                                    {% endfor %}
+                                                </select>
+                                            </div>
+                                        </div>
+                                        <div class="form-group">
+                                            <label class="col-sm-4 control-label">{{ dvbusiness_tab_dostavista_integration_order_status_courier_assigned }}</label>
+                                            <div class="col-sm-8">
+                                                <select class="form-control" name="shipping_dvbusiness_integration_order_status_courier_assigned">
+                                                    <option value="">{{ select_option_not_selected }}</option>
+                                                    {% for order_status in order_statuses %}
+                                                        <option value="{{ order_status.order_status_id }}" {% if order_status.order_status_id == shipping_dvbusiness_integration_order_status_courier_assigned %} selected {% endif %}>{{ order_status.name }}</option>
+                                                    {% endfor %}
+                                                </select>
+                                            </div>
+                                        </div>
+                                        <div class="form-group">
+                                            <label class="col-sm-4 control-label">{{ dvbusiness_tab_dostavista_integration_order_status_active }}</label>
+                                            <div class="col-sm-8">
+                                                <select class="form-control" name="shipping_dvbusiness_integration_order_status_active">
+                                                    <option value="">{{ select_option_not_selected }}</option>
+                                                    {% for order_status in order_statuses %}
+                                                        <option value="{{ order_status.order_status_id }}" {% if order_status.order_status_id == shipping_dvbusiness_integration_order_status_active %} selected {% endif %}>{{ order_status.name }}</option>
+                                                    {% endfor %}
+                                                </select>
+                                            </div>
+                                        </div>
+                                        <div class="form-group">
+                                            <label class="col-sm-4 control-label">{{ dvbusiness_tab_dostavista_integration_order_status_parcel_picked_up }}</label>
+                                            <div class="col-sm-8">
+                                                <select class="form-control" name="shipping_dvbusiness_integration_order_status_parcel_picked_up">
+                                                    <option value="">{{ select_option_not_selected }}</option>
+                                                    {% for order_status in order_statuses %}
+                                                        <option value="{{ order_status.order_status_id }}" {% if order_status.order_status_id == shipping_dvbusiness_integration_order_status_parcel_picked_up %} selected {% endif %}>{{ order_status.name }}</option>
+                                                    {% endfor %}
+                                                </select>
+                                            </div>
+                                        </div>
+                                        <div class="form-group">
+                                            <label class="col-sm-4 control-label">{{ dvbusiness_tab_dostavista_integration_order_status_courier_departed }}</label>
+                                            <div class="col-sm-8">
+                                                <select class="form-control" name="shipping_dvbusiness_integration_order_status_courier_departed">
+                                                    <option value="">{{ select_option_not_selected }}</option>
+                                                    {% for order_status in order_statuses %}
+                                                        <option value="{{ order_status.order_status_id }}" {% if order_status.order_status_id == shipping_dvbusiness_integration_order_status_courier_departed %} selected {% endif %}>{{ order_status.name }}</option>
+                                                    {% endfor %}
+                                                </select>
+                                            </div>
+                                        </div>
+                                        <div class="form-group">
+                                            <label class="col-sm-4 control-label">{{ dvbusiness_tab_dostavista_integration_order_status_courier_arrived }}</label>
+                                            <div class="col-sm-8">
+                                                <select class="form-control" name="shipping_dvbusiness_integration_order_status_courier_arrived">
+                                                    <option value="">{{ select_option_not_selected }}</option>
+                                                    {% for order_status in order_statuses %}
+                                                        <option value="{{ order_status.order_status_id }}" {% if order_status.order_status_id == shipping_dvbusiness_integration_order_status_courier_arrived %} selected {% endif %}>{{ order_status.name }}</option>
+                                                    {% endfor %}
+                                                </select>
+                                            </div>
+                                        </div>
+                                        <div class="form-group">
+                                            <label class="col-sm-4 control-label">{{ dvbusiness_tab_dostavista_integration_order_status_completed }}</label>
+                                            <div class="col-sm-8">
+                                                <select class="form-control" name="shipping_dvbusiness_integration_order_status_completed">
+                                                    <option value="">{{ select_option_not_selected }}</option>
+                                                    {% for order_status in order_statuses %}
+                                                        <option value="{{ order_status.order_status_id }}" {% if order_status.order_status_id == shipping_dvbusiness_integration_order_status_completed %} selected {% endif %}>{{ order_status.name }}</option>
+                                                    {% endfor %}
+                                                </select>
+                                            </div>
+                                        </div>
+                                        <div class="form-group">
+                                            <label class="col-sm-4 control-label">{{ dvbusiness_tab_dostavista_integration_order_status_failed }}</label>
+                                            <div class="col-sm-8">
+                                                <select class="form-control" name="shipping_dvbusiness_integration_order_status_failed">
+                                                    <option value="">{{ select_option_not_selected }}</option>
+                                                    {% for order_status in order_statuses %}
+                                                        <option value="{{ order_status.order_status_id }}" {% if order_status.order_status_id == shipping_dvbusiness_integration_order_status_failed %} selected {% endif %}>{{ order_status.name }}</option>
+                                                    {% endfor %}
+                                                </select>
+                                            </div>
+                                        </div>
+                                        <div class="form-group">
+                                            <label class="col-sm-4 control-label">{{ dvbusiness_tab_dostavista_integration_order_status_canceled }}</label>
+                                            <div class="col-sm-8">
+                                                <select class="form-control" name="shipping_dvbusiness_integration_order_status_canceled">
+                                                    <option value="">{{ select_option_not_selected }}</option>
+                                                    {% for order_status in order_statuses %}
+                                                        <option value="{{ order_status.order_status_id }}" {% if order_status.order_status_id == shipping_dvbusiness_integration_order_status_canceled %} selected {% endif %}>{{ order_status.name }}</option>
+                                                    {% endfor %}
+                                                </select>
+                                            </div>
+                                        </div>
+                                        <div class="form-group">
+                                            <label class="col-sm-4 control-label">{{ dvbusiness_tab_dostavista_integration_order_status_delayed }}</label>
+                                            <div class="col-sm-8">
+                                                <select class="form-control" name="shipping_dvbusiness_integration_order_status_delayed">
+                                                    <option value="">{{ select_option_not_selected }}</option>
+                                                    {% for order_status in order_statuses %}
+                                                        <option value="{{ order_status.order_status_id }}" {% if order_status.order_status_id == shipping_dvbusiness_integration_order_status_delayed %} selected {% endif %}>{{ order_status.name }}</option>
+                                                    {% endfor %}
+                                                </select>
+                                            </div>
+                                        </div>
+                                    </div>
+                                </div>
+                            </div>
+
+                            <div class="row">
+                                <div class="col-xs-12 text-center">
+                                    <button class="btn btn-success nav-back-4">{{ dvbusiness_wizard_back_step }}</button>
+                                    <button class="btn btn-success nav-next-4">{{ dvbusiness_wizard_next_step }}</button>
+                                </div>
+                            </div>
+                        </div>
+
+                        <div class="step" data-step-index="5" style="display:none;">
+                            <div class="row">
+                                <div class="col-xs-12" style="margin-bottom: 20px;">
+                                    <div style="padding: 30px 0">
+                                        <div class="alert alert-success text-center" role="alert">
+                                            {{ dvbusiness_wizard_success }}
+                                        </div>
+
+                                        <div class="text-center">
+                                            <a id="btn-orders-page" href="{{ orders_url }}" class="btn" style="background-color: #ff3e80; border-color: #ff3e80; color: #fff; font-size: 16px;">{{ dvbusiness_wizard_orders }}</a>
+                                        </div>
+                                    </div>
+                                </div>
+                            </div>
+
+                            <div class="row">
+                                <div class="col-xs-12 text-center">
+                                    <button class="btn btn-success nav-back-5">{{ dvbusiness_wizard_back_step }}</button>
+                                </div>
+                            </div>
+                        </div>
+
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+</div>
+<style>
+    #dvbusiness-wizard div.required {
+        display: inline-block;
+        padding: 0 3px;
+        color: red;
+        line-height: 1;
+    }
+</style>
+<script>
+    dvbusiness.wizard.translations.wizard_step_1_client_not_found = "{{ dvbusiness_wizard_step_1_client_not_found }}";
+    dvbusiness.wizard.translations.wizard_step_2_fail             = "{{ dvbusiness_wizard_step_2_fail }}";
+    dvbusiness.wizard.translations.wizard_validation_error        = "{{ dvbusiness_wizard_validation_error }}";
+    dvbusiness.wizard.translations.wizard_fail                    = "{{ dvbusiness_wizard_fail }}";
+    dvbusiness.wizard.translations.dvbusiness_payment_type_card   = "{{ dvbusiness_payment_type_card }}";
+    dvbusiness.wizard.translations.dvbusiness_payment_type_cash   = "{{ dvbusiness_payment_type_cash }}";
+</script>
+{{ footer }}

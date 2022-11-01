@@ -1,0 +1,20 @@
+.pagination {
+  li.active {
+    span {
+      z-index: 2!important;
+      color: #fff!important;
+      cursor: pointer!important;
+      background-color: $accent!important;
+      border-color: $accent!important;
+      &:hover {
+        background-color: $red!important;
+        border-color: $red!important;
+      }
+    }
+  }
+  li {
+    a {
+      color: $accent;
+    }
+  }
+}

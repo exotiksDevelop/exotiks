@@ -1,0 +1,12 @@
+.vbox {overflow: hidden;}
+.vblock img {border: 1px solid #E7E7E7;}
+.vblock img:hover {border: 1px solid #BBBBBB;}
+.vblock  div {float: left; display: block; margin-right: 10px; margin-bottom: 10px;}
+.vp_title {margin-bottom:0px;}
+.none {color:red;}
+.show {color:blue;}
+
+
+
+
+

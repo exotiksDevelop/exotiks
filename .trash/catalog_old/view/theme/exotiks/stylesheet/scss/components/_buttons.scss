@@ -1,0 +1,53 @@
+.button {
+  display: inline-flex;
+  align-items: center;
+  justify-content: center;
+  width: 14.5em;
+  height: 4.5em;
+  font-size: 15px;
+  font-weight: 600;
+  border-radius: 5px;
+  border-color: transparent;
+  z-index: 3;
+  position: relative;
+  color: #fff;
+
+  &:hover,
+  &:focus,
+  &:active {
+    outline-color: transparent;
+    text-decoration: none;
+    color: white
+  }
+
+
+
+  &.red {
+    background-color: $red;
+
+    &:hover,
+    &:focus,
+    &:active {
+      background-color: $accent;
+    }
+  }
+
+
+
+  &.green {
+    background-color: $accent;
+
+    &:hover,
+    &:focus,
+    &:active {
+      background-color: $red;
+    }
+  }
+
+
+
+  &.mt-1 {
+    margin-top: 1em;
+  }
+
+}

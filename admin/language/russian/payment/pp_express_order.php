@@ -1,0 +1,32 @@
+<?php
+$_ = array_merge(
+  (isset($_)?$_:array()),
+  array (
+  'text_payment_info' => 'Payment information',
+  'text_capture_status' => 'Capture status',
+  'text_amount_auth' => 'Amount authorised',
+  'text_amount_captured' => 'Amount captured',
+  'text_amount_refunded' => 'Amount refunded',
+  'text_capture_amount' => 'Capture amount',
+  'text_complete_capture' => 'Complete capture',
+  'text_transactions' => 'Transactions',
+  'text_complete' => 'Complete',
+  'text_confirm_void' => 'If you void you cannot capture any further funds',
+  'text_view' => 'View',
+  'text_refund' => 'Refund',
+  'text_resend' => 'Resend',
+  'success_transaction_resent' => 'Transaction was successfully resent',
+  'column_trans_id' => 'Transaction ID',
+  'column_amount' => 'Amount',
+  'column_type' => 'Payment type',
+  'column_status' => 'Status',
+  'column_pend_reason' => 'Pending reason',
+  'column_date_added' => 'Created',
+  'column_action' => 'Action',
+  'button_void' => 'Void',
+  'button_capture' => 'Capture',
+  'error_capture_amt' => 'Enter an amount to capture',
+  'error_timeout' => 'Request timed out',
+  'error_transaction_missing' => 'Transaction could not be found',
+));
+

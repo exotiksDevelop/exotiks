@@ -1,0 +1,244 @@
+{{ header }} {{ column_left }}
+<div id="content">
+  <div class="page-header">
+	  <div class="container-fluid">
+		  <div class="pull-right">
+			  <button type="submit" form="form-cod" data-toggle="tooltip" title="{{ button_save }}" class="btn btn-primary"><i class="fa fa-save"></i></button>
+			  <a href="{{ cancel }}" data-toggle="tooltip" title="{{ button_cancel }}" class="btn btn-default"><i class="fa fa-reply"></i></a></div>
+		  <h1>{{ heading_title }}</h1>
+		  <ul class="breadcrumb">
+              {% for breadcrumb in breadcrumbs %}
+				  <li><a href="{{ breadcrumb.href }}">{{ breadcrumb.text }}</a></li>
+              {% endfor %}
+		  </ul>
+	  </div>
+  </div>
+  <div class="container-fluid">
+    {% if error_warning %}
+    <div class="alert alert-danger"><i class="fa fa-exclamation-circle"></i> {{ error_warning }}
+      <button type="button" class="close" data-dismiss="alert">&times;</button>
+    </div>
+    {% endif %}
+    <div class="panel panel-default">
+		<div class="panel-heading">
+			<h3 class="panel-title"><i class="fa fa-pencil"></i> {{ heading_title }}</h3>
+		</div>
+      <div class="panel-body">
+        <form action="{{ action }}" method="post" enctype="multipart/form-data" id="form-cod" class="form-horizontal">
+        	<ul class="nav nav-tabs">
+	            <li class="active"><a href="#tab-general" data-toggle="tab">{{ tab_general }}</a></li>
+	            <li><a href="#tab-additional" data-toggle="tab">{{ tab_additional }}</a></li>
+	        </ul>
+            <div class="tab-content">
+	          	<div class="tab-pane active" id="tab-general">
+	          		<div class="form-group">
+	          			<label class="col-sm-2 control-label" for="">{{ entry_title }}</label>
+	          			<div class="col-sm-10">
+                            {% for language in languages %}
+								<div class="input-group">
+									<span class="input-group-addon"><img src="language/{{ language['code'] }}/{{ language['code'] }}.png" title="{{ language['name'] }}" /></span>
+									<input class="form-control" type="text" name="payment_cod_cdek_title[{{ language['language_id'] }}]" value="{{ payment_cod_cdek_title[language['language_id']] is defined ? payment_cod_cdek_title[language['language_id']] : '' }}" />
+								</div>
+                            {% endfor %}
+	          			</div>
+	          		</div>
+
+					<div class="form-group">
+						<label class="col-sm-2 control-label" for=""><span data-toggle="tooltip" title="{{ entry_cache_on_delivery_help }}">{{ entry_cache_on_delivery }}</span></label>
+						<div class="col-sm-10">
+							<select class="form-control" id="cdek-cache-on-delivery" name="payment_cod_cdek_cache_on_delivery">
+                                {% for key,variable in boolean_variables %}
+									<option {% if (payment_cod_cdek_cache_on_delivery == key) %} {{ 'selected="selected"' }}{% endif %} value="{{ key }}">{{ variable }}</option>
+                                {% endfor %}
+							</select>
+						</div>
+					</div>
+
+					<div class="form-group">
+						<label class="col-sm-2 control-label" for="">{{ entry_view_mode }}</label>
+						<div class="col-sm-10">
+							<select class="form-control" id="cod-cdek-view-mode" name="payment_cod_cdek_mode">
+                                {% for key,value in view_mode %}
+									<option value="{{ key }}" {% if (payment_cod_cdek_mode == key) %} {{ 'selected="selected"' }}{% endif %}>{{ value }}</option>
+                                {% endfor %}
+							</select>
+						</div>
+					</div>
+
+
+                    {% set style = {'cod-cdek-view-mode_parameters' : ''} %} {# Show or hide  #}
+                    {% if (payment_cod_cdek_mode == 'all') %}
+                        {% set style = style|merge({'cod-cdek-view-mode_parameters':'style="display:none"'})%}{% endif %}
+
+
+					<div class="form-group" id="cod-cdek-view-mode_parameters" {{ style['cod-cdek-view-mode_parameters'] }}>
+						<label class="col-sm-2 control-label" for="">{{ entry_view_mode_cdek }}</label>
+						<div class="col-sm-10">
+							<select class="form-control" id="cod-cdek-view-mode-cdek" name="payment_cod_cdek_mode_cdek">
+                                {% for key,value in view_mode_cdek %}
+									<option value="{{ key }}" {% if (payment_cod_cdek_mode_cdek == key) %} {{ 'selected="selected"' }}{% endif %}>{{ value }}</option>
+                                {% endfor %}
+							</select>
+						</div>
+					</div>
+
+					<div class="form-group">
+						<label class="col-sm-2 control-label" for="">{{ entry_order_status }}</label>
+						<div class="col-sm-10">
+							<select class="form-control" id="order-status-id" name="payment_cod_cdek_order_status_id">
+                                {% for order_status in order_statuses %}
+									<option value="{{ order_status['order_status_id'] }}" {% if (order_status['order_status_id'] == payment_cod_cdek_order_status_id) %} {{ 'selected="selected"' }}{% endif %}>{{ order_status['name'] }}</option>
+                                {% endfor %}
+							</select>
+						</div>
+					</div>
+
+					<div class="form-group">
+						<label class="col-sm-2 control-label" for="">{{ entry_status }}</label>
+						<div class="col-sm-10">
+							<select class="form-control" id="status" name="payment_cod_cdek_status">
+                                {% for key,text in status_variables %}
+									<option value="{{ key }}" {% if (payment_cod_cdek_status == key) %} {{ 'selected="selected"' }}{% endif %}>{{ text }}</option>
+                                {% endfor %}
+							</select>
+						</div>
+					</div>
+
+					<div class="form-group">
+						<label class="col-sm-2 control-label" for="">{{ entry_sort_order }}</label>
+						<div class="col-sm-10">
+							<input class="form-control" id="sort-order" type="text" name="payment_cod_cdek_sort_order" value="{{ payment_cod_cdek_sort_order }}" size="1" />
+                            {% if (error['payment_cod_cdek_sort_order'] is defined) %}
+								<span class="text-danger">{{ error['payment_cod_cdek_sort_order'] }}</span>
+                            {% endif %}
+						</div>
+					</div>
+
+	          	</div>
+	          	<div class="tab-pane" id="tab-additional">
+
+					<div class="form-group">
+						<label class="col-sm-2 control-label" for="">{{ entry_active }}</label>
+						<div class="col-sm-10">
+							<select class="form-control" id="active" name="payment_cod_cdek_active">
+                                {% for key,text in boolean_variables %}
+									<option value="{{ key }}" {% if (payment_cod_cdek_active == key) %} {{ 'selected="selected"' }}{% endif %}>{{ text }}</option>
+                                {% endfor %}
+							</select>
+						</div>
+					</div>
+
+					<div class="form-group">
+						<label class="col-sm-2 control-label" for=""><span data-toggle="tooltip" title="{{ entry_min_total_help }}">{{ entry_min_total }}</span></label>
+						<div class="col-sm-10">
+							<input class="form-control" id="cod-cdek-min-total" type="text" name="payment_cod_cdek_min_total" value="{{ payment_cod_cdek_min_total }}" />
+                            {% if (error['payment_cod_cdek_min_total'] is defined) %}
+								<span class="text-danger">{{ error['payment_cod_cdek_min_total'] }}</span>
+                            {% endif %}
+						</div>
+					</div>
+
+					<div class="form-group">
+						<label class="col-sm-2 control-label" for=""><span data-toggle="tooltip" title="{{ entry_max_total_help }}">{{ entry_max_total }}</span></label>
+						<div class="col-sm-10">
+							<input class="form-control" id="cod-cdek-max-total" type="text" name="payment_cod_cdek_max_total" value="{{ payment_cod_cdek_max_total }}" />
+                            {% if (error['payment_cod_cdek_max_total'] is defined) %}
+								<span class="text-danger">{{ error['payment_cod_cdek_max_total'] }}</span>
+                            {% endif %}
+						</div>
+					</div>
+
+		            <div class="form-group">
+						<label class="col-sm-2 control-label" for="">{{ entry_price }}</label>
+		                <div class="col-sm-10 form-inline">
+							<select class="form-control" name="payment_cod_cdek_price[prefix]">
+                                {% for prefix in ['+','-'] %}
+									<option {% if (payment_cod_cdek_price is not empty and payment_cod_cdek_price['prefix'] == prefix) %} {{ 'selected="selected"' }}{% endif %} value="{{ prefix }}">{{ prefix }}</option>
+                                {% endfor %}
+							</select>
+							<input class="form-control" id="cod-cdek-price-value" type="text" name="payment_cod_cdek_price[value]" value="{% if (payment_cod_cdek_price is not empty) %}{{payment_cod_cdek_price['value'] }}{% endif %}" size="3" />
+							<select class="form-control" name="payment_cod_cdek_price[mode]">
+                                {% for type,name in discount_type %}
+									<option {% if (payment_cod_cdek_price is not empty and payment_cod_cdek_price['mode'] == type) %} {{ 'selected="selected"' }}{% endif %} value="{{ type }}">{{ name }}</option>
+                                {% endfor %}
+							</select>
+                            {% if (error['payment_cod_cdek_price']['value'] is defined) %}
+								<span class="text-danger">{{ error['payment_cod_cdek_price']['value'] }}</span>
+                            {% endif %}
+		                </div>
+		            </div>
+
+					<div class="form-group">
+						<label class="col-sm-2 control-label" for="">{{ entry_geo_zone }}</label>
+						<div class="col-sm-10">
+							<div class="well well-sm" style="height: 150px; overflow: auto;">
+                                {% for geo_zone in geo_zones %}
+									<div class="checkbox">
+										<label>
+											<input type="checkbox" name="payment_cod_cdek_geo_zone_id[]" value="{{ geo_zone['geo_zone_id'] }}"  {% if (payment_cod_cdek_geo_zone_id is not empty and geo_zone['geo_zone_id'] in payment_cod_cdek_geo_zone_id) %} {{ 'checked="checked"' }}{% endif %} />
+                                            {{ geo_zone['name'] }}
+										</label>
+									</div>
+                                {% endfor %}
+							</div>
+						</div>
+					</div>
+
+					<div class="form-group">
+						<label class="col-sm-2 control-label" for="">{{ entry_store }}</label>
+						<div class="col-sm-10">
+							<div class="well well-sm" style="height: 150px; overflow: auto;">
+                                {% for store in stores %}
+									<div class="checkbox">
+										<label>
+											<input type="checkbox" name="payment_cod_cdek_store[]" value="{{ store['store_id'] }}"  {% if (payment_cod_cdek_store is defined and store['store_id'] in payment_cod_cdek_store) %} {{ 'checked="checked"' }}{% endif %} />
+                                            {{ store['name'] }}
+										</label>
+									</div>
+                                {% endfor %}
+							</div>
+						</div>
+					</div>
+
+					<div class="form-group">
+						<label class="col-sm-2 control-label" for="">{{ entry_customer_group }}</label>
+						<div class="col-sm-10">
+							<div class="well well-sm" style="height: 150px; overflow: auto;">
+                                {% for customer_group in customer_groups %}
+									<label>
+										<input type="checkbox" name="payment_cod_cdek_customer_group_id[]" value="{{ customer_group['customer_group_id'] }}"  {% if (payment_cod_cdek_customer_group_id is not empty and customer_group['customer_group_id'] in payment_cod_cdek_customer_group_id) %} {{ 'checked="checked"' }}{% endif %} />
+                                        {{ customer_group['name'] }}
+									</label>
+                                {% endfor %}
+							</div>
+						</div>
+					</div>
+
+					<div class="form-group">
+						<label class="col-sm-2 control-label" for=""><span data-toggle="tooltip" title="{{ entry_city_ignore_help }}">{{ entry_city_ignore }}</span></label>
+						<div class="col-sm-10">
+							<textarea class="form-control" id="cod-cdek-city-ignore" name="payment_cod_cdek_city_ignore" rows="4" cols="50">{{ payment_cod_cdek_city_ignore }}</textarea>
+						</div>
+					</div>
+	          	</div>
+	        </div>
+        </form>
+      </div>
+    </div>
+  </div>
+</div>
+
+<script type="text/javascript">
+	console.log('{{ payment_cod_cdek_city_ignore }}');
+	$('#cod-cdek-view-mode').change(function(event) {
+		var val = $(this).val();
+		if (val == 'cdek') {
+			$('#cod-cdek-view-mode_parameters').show();
+		} else {
+			$('#cod-cdek-view-mode_parameters').hide();
+		}
+	});
+
+</script>
+
+{{ footer }}

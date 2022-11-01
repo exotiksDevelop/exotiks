@@ -1,0 +1,38 @@
+
+h1 {text-align: center;}
+
+#catalog > div {
+width:220px; 
+display:inline-block; 
+vertical-align: top; 
+margin:0 0 30px 20px; 
+text-align:center; 
+position: relative;}
+
+#catalog > div:hover .children {display:block; opacity: 0.7;}
+
+#catalog .catalog-name a {
+ font-size:16px;
+ font-weight:800;
+ display:block;
+ padding:0 5px 0 5px;
+ } 
+
+#catalog .children {
+ width:100%;
+ height:100%;
+ background:#000; 
+ opacity: 0;
+ transition: all 0.5s; 
+ border-radius: 12px;
+ padding-top: 10px;
+ text-align: left; 
+ position: absolute; 
+ top:0;
+ left:0;
+ text-align: center;
+ } 
+
+#catalog .children .name a {font-size:12px;} 
+
+#catalog .children a {color: #38B0E3;} 

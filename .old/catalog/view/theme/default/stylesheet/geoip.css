@@ -1,0 +1,287 @@
+/* geoip */
+.geoip-module
+{
+    padding: 7.5px 12px;
+	font-size: 12px;
+}
+
+.geoip-module .zone
+{
+    border-bottom: 1px dotted;
+    cursor: pointer;
+    color: #38B0E3;
+}
+
+.geoip-block
+{
+    margin: 5px 0 -5px;
+    height: 24px;
+    line-height: 24px;
+    position: relative;
+}
+
+.geoip-block input
+{
+    background-color: #fff;
+    border: 1px solid #ccc;
+    -webkit-border-radius: 3px;
+    -moz-border-radius: 3px;
+    border-radius: 3px;
+    -webkit-box-shadow: 0 2px 0 #F0F0F0;
+    -moz-box-shadow: 0 2px 0 #F0F0F0;
+    box-shadow: 0 2px 0 #F0F0F0;
+}
+
+.geoip-block .ui-autocomplete
+{
+    max-height: 300px;
+    overflow-y: auto;
+    overflow-x: hidden;
+}
+
+* html .geoip-block .ui-autocomplete
+{
+    height: 300px;
+}
+
+.geoip-choose-region .i
+{
+    display: inline-block;
+    width: 30%;
+    margin-bottom: 15px;
+}
+
+.geoip-choose-region .i a
+{
+    font-weight: bold;
+    cursor: pointer;
+}
+
+.geoip-choose-region h2
+{
+    margin: 10px 0 0;
+    color: #767676;
+}
+
+.geoip-choose-region .geoip-block
+{
+    margin: 10px 12px 15px 0;
+}
+
+.geoip-choose-region .geoip-block .geoip-popup-input
+{
+    width: 50%;
+    min-width: 150px;
+    padding: 3px 7px;
+}
+
+.geoip-choose-region .border
+{
+    margin: 15px 0;
+    border-bottom: 1px solid #ededed;
+}
+
+.geoip-confirm-region
+{
+    text-align: center;
+    font-size: 16px;
+    line-height: 20px;
+}
+
+.geoip-confirm-region.geoip-custom-popup
+{
+    position: absolute;
+    top: 22px;
+    right: 0;
+    background: #FFF;
+    padding: 15px 25px;
+    min-width: 200px;
+    max-width: 400px;
+    z-index: 9999;
+    border: 1px solid #dadada;
+    -webkit-box-shadow: 0 2px 5px #5B5A5A;
+    -moz-box-shadow: 0 2px 5px #5B5A5A;
+    box-shadow: 0 2px 5px #5B5A5A;
+}
+
+.geoip-custom-popup .geoip-confirm-buttons
+{
+    margin-top: 15px;
+}
+
+.geoip-custom-popup .geoip-confirm-buttons input[type=button]
+{
+    -webkit-border-radius: 4px;
+    -moz-border-radius: 4px;
+    border-radius: 4px;
+    text-shadow: 1px 1px 3px #666666;
+    font-family: Arial, sans-serif;
+    color: #ffffff;
+    font-size: 16px;
+    padding: 4px 14px;
+    cursor: pointer;
+}
+
+.geoip-custom-popup .geoip-confirm-buttons input[type=button].geoip-confirm-yes
+{
+    background: #3498db;
+    background-image: -webkit-linear-gradient(top, #3498db, #2980b9);
+    background-image: -moz-linear-gradient(top, #3498db, #2980b9);
+    background-image: -ms-linear-gradient(top, #3498db, #2980b9);
+    background-image: -o-linear-gradient(top, #3498db, #2980b9);
+    background-image: linear-gradient(to bottom, #3498db, #2980b9);
+    border: 1px solid #2980b9;
+}
+
+.geoip-custom-popup .geoip-confirm-buttons input[type=button].geoip-confirm-yes:hover
+{
+    background: #3cb0fd;
+    background-image: -webkit-linear-gradient(top, #3cb0fd, #3498db);
+    background-image: -moz-linear-gradient(top, #3cb0fd, #3498db);
+    background-image: -ms-linear-gradient(top, #3cb0fd, #3498db);
+    background-image: -o-linear-gradient(top, #3cb0fd, #3498db);
+    background-image: linear-gradient(to bottom, #3cb0fd, #3498db);
+}
+
+.geoip-custom-popup .geoip-confirm-buttons input[type=button].geoip-confirm-no
+{
+    background: #d9d9d9;
+    background-image: -webkit-linear-gradient(top, #d9d9d9, #ababab);
+    background-image: -moz-linear-gradient(top, #d9d9d9, #ababab);
+    background-image: -ms-linear-gradient(top, #d9d9d9, #ababab);
+    background-image: -o-linear-gradient(top, #d9d9d9, #ababab);
+    background-image: linear-gradient(to bottom, #d9d9d9, #ababab);
+    border: 1px solid #ababab;
+}
+
+.geoip-custom-popup .geoip-confirm-buttons input[type=button].geoip-confirm-no:hover
+{
+    background: #ededed;
+    background-image: -webkit-linear-gradient(top, #ededed, #cccccc);
+    background-image: -moz-linear-gradient(top, #ededed, #cccccc);
+    background-image: -ms-linear-gradient(top, #ededed, #cccccc);
+    background-image: -o-linear-gradient(top, #ededed, #cccccc);
+    background-image: linear-gradient(to bottom, #ededed, #cccccc);
+    border: 1px solid #cccccc;
+}
+
+.geoip-choose-region.geoip-custom-popup
+{
+    padding: 6px 15px;
+    z-index: 9999;
+}
+
+.geoip-modal-open
+{
+    overflow: hidden;
+}
+
+.geoip-modal
+{
+    display: none;
+    position: fixed;
+    bottom: 0;
+    left: 0;
+    outline: 0 none;
+    overflow: hidden;
+    right: 0;
+    top: 0;
+    z-index: 9999;
+}
+
+.geoip-modal-open .geoip-modal
+{
+    overflow-x: hidden;
+    overflow-y: auto;
+}
+
+.geoip-backdrop
+{
+    background-color: #000;
+    position: absolute;
+    left: 0;
+    right: 0;
+    top: 0;
+}
+
+.geoip-backdrop.geoip-fade
+{
+    opacity: 0;
+}
+
+.geoip-fade.geoip-in
+{
+    opacity: 1;
+}
+
+.geoip-backdrop.geoip-in
+{
+    opacity: .5;
+}
+
+.geoip-modal-dialog
+{
+    margin: 10px;
+    position: relative;
+    width: auto;
+}
+
+.geoip-modal-dialog
+{
+    margin: 10px;
+    width: auto;
+}
+
+.geoip-modal-content
+{
+    box-shadow: 0 5px 15px rgba(0, 0, 0, 0.5);
+}
+
+.geoip-modal-content
+{
+    background-clip: padding-box;
+    background-color: #fff;
+    border: 1px solid rgba(0, 0, 0, 0.2);
+    border-radius: 6px;
+    box-shadow: 0 3px 9px rgba(0, 0, 0, 0.5);
+    outline: 0 none;
+    position: relative;
+    min-height: 240px;
+}
+
+.geoip-modal-dialog .geoip-close
+{
+    position: absolute;
+    right: 10px;
+    font-size: 26px;
+    opacity: .2;
+    cursor: pointer;
+    color: #000;
+}
+
+.geoip-modal-dialog .geoip-close:hover
+{
+    opacity: .5;
+}
+
+@media (min-width: 768px)
+{
+    .geoip-modal-dialog
+    {
+        margin: 30px auto;
+        width: 602px;
+    }
+
+    .geoip-choose-region .i
+    {
+        width: 187px;
+    }
+}
+
+@media (max-width: 500px)
+{
+    .geoip-choose-region .i
+    {
+        width: 45%;
+    }
+}

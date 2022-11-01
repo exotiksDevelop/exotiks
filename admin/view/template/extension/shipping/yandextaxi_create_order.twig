@@ -1,0 +1,610 @@
+{{ header }}{{ column_left }}
+<div id="content">
+    <input type="hidden" name="setting_url" value="{{ settings_url }}" data-message="{{ bad_geotoken_message }}">
+    <div class="page-header">
+        <div class="container-fluid">
+            <h1>{{ title }}</h1>
+            <ul class="breadcrumb">
+                {% for breadcrumb in breadcrumbs %}
+                    <li><a href="{{ breadcrumb.href }}">{{ breadcrumb.text }}</a></li>
+                {% endfor %}
+            </ul>
+        </div>
+    </div>
+    <div class="container-fluid">
+        {% if error %}
+            <div class="alert alert-danger alert-dismissible"><i class="fa fa-exclamation-circle"></i>
+                {{ error }}
+                <button type="button" class="close" data-dismiss="alert">&times;</button>
+            </div>
+        {% endif %}
+        {% if success %}
+            <div class="alert alert-success alert-dismissible"><i class="fa fa-exclamation-circle"></i>
+                {{ success }}
+                <button type="button" class="close" data-dismiss="alert">&times;</button>
+            </div>
+        {% endif %}
+        <div class="panel panel-default">
+            <div class="panel-heading">
+                <h3 class="panel-title"><i class="fa fa-pencil"></i> {{ text_create_order }}</h3>
+            </div>
+            <div class="panel-body">
+                <form id="order-form" action="{{ action }}" method="post" enctype="multipart/form-data" class="form-horizontal">
+                    {# Claim link key #}
+                    <input type="hidden" name="claim_link_key" value="{{ claim_link_key }}"/>
+
+                    <!-- Source point -->
+                    {{ source }}
+
+                    <template id="destination-template">{{ destinationTemplate }}</template>
+
+                    <!-- Destination points -->
+                    <div class="destinations">
+                        {% for destination in destinations %}
+                            {{ destination }}
+                        {% endfor %}
+                    </div>
+
+                    <div class="form-group">
+                        <label class="col-sm-3 control-label">
+                            {{ entry_destination_order_id }}
+                        </label>
+                        <div class="col-sm-9 control-text">
+                            <div class="inline-from-group">
+                                <input
+                                    type="number"
+                                    id="input-order-id"
+                                    type="text"
+                                    class="form-control"
+                                />
+                                <button
+                                    id="button-add-destination-for-order"
+                                    type="button"
+                                    class="btn btn-primary"
+                                    data-loading-text="{{ text_loading }}"
+                                    disabled
+                                />
+                                    {{ button_add_destination_for_order }}
+                                </button>
+                            </div>
+                        </div>
+                    </div>
+                    <div class="form-group">
+                        <div class="col-sm-offset-3 col-sm-9">
+                            <button
+                                id="button-add-fake-destination"
+                                type="button"
+                                class="btn btn-default"
+                            />{{ button_add_fake_destination }}</button>
+                        </div>
+                    </div>
+                    <div class="form-group">
+                        <label class="col-sm-3 control-label">
+                            {{ entry_tariff }}
+                        </label>
+                        <div class="col-sm-9" id="tariffs-container"></div>
+                    </div>
+                    <div class="form-group">
+                        <label class="col-sm-3 control-label estimation-price-label">
+                            {{ text_price }}
+                        </label>
+                        <div class="col-sm-9 control-text">
+                            <div class="estimation-price-value">
+                                –
+                            </div>
+                        </div>
+                    </div>
+                    <div class="form-group estimation-tariff">
+                        <label class="col-sm-3 control-label">
+                            {{ text_tariff }}
+                        </label>
+                        <div class="col-sm-9 control-text">
+                            <div class="estimation-tariff-name">
+                                –
+                            </div>
+                        </div>
+                    </div>
+                    <div class="form-group">
+                        <div class="col-sm-offset-3 col-sm-9">
+                            <button
+                                id="button-calculate-price"
+                                type="button"
+                                class="btn btn-primary"
+                                data-loading-text="{{ text_loading }}"
+                            />{{ button_calculate }}</button>
+                            <button
+                                id="button-confirm-order"
+                                type="button"
+                                class="btn btn-success"
+                                data-loading-text="{{ text_loading }}"
+                                style="display: none"
+                            />{{ button_confirm }}</button>
+                        </div>
+                    </div>
+                </form>
+            </div>
+        </div>
+
+        {{ support_contact }}
+    </div>
+    <script type="text/javascript"
+            src="https://api-maps.yandex.ru/2.1/?lang=ru_RU&amp;apikey={{ geo_coder_token }}"></script>
+
+    {{ translations_map }}
+    {{ translations_validation }}
+    <script type="text/javascript">
+        let hasChanges = false;
+
+        $('.datetime').datetimepicker({
+            language: '{{ datepicker }}',
+            allowInputToggle: true,
+            focusOnShow: true,
+            minDate: moment().startOf('day'),
+            icons: {
+                time: "fa fa-clock-o",
+                date: "fa fa-calendar",
+                up: "fa fa-arrow-up",
+                down: "fa fa-arrow-down"
+            }
+        });
+
+        $('input[type="tel"]').intlTelInput({
+            initialCountry: 'ru',
+            formatOnDisplay: false,
+            utilsScript: '{{ base_url }}/admin/view/javascript/yandextaxi/lib/intlTelInput/js/utils.js'
+        });
+
+        $(document).on('yandex-taxi-delivery:initPhone', function (event, phone) {
+            phone.intlTelInput({
+                initialCountry: 'ru',
+                formatOnDisplay: false,
+                utilsScript: '{{ base_url }}/admin/view/javascript/yandextaxi/lib/intlTelInput/js/utils.js'
+            });
+        });
+
+        $(document).ready(function () {
+
+            window.onbeforeunload = function (event) {
+                if (hasChanges) {
+                    return '';
+                }
+            };
+
+            $(document).on('change', '.js-yandex-taxi-form-param', function () {
+                hasChanges = true;
+            });
+
+            $(document).on('input', '.js-yandex-taxi-form-param', function () {
+                hasChanges = true;
+            });
+
+            if ($('#flag-need-due').prop('checked') === false) {
+                $('#due').prop('disabled', true);
+            }
+
+            $('#flag-need-due').change(function () {
+                const inputDue = $('#due');
+                if (this.checked) {
+                    inputDue.prop('disabled', false);
+                } else {
+                    inputDue.prop('disabled', true).val('');
+                }
+            });
+
+            $('input[type="tel"]').change(function () {
+                resetEstimation();
+
+                const formatted = intlTelInputUtils.formatNumber($(this).val(), null, intlTelInputUtils.numberFormat.E164);
+                $(this).val(formatted);
+
+                yandexTaxiDeliveryFormValidator.validateField($(this));
+            });
+
+            $('input[required], select[required]').on('change', function () {
+                resetEstimation();
+
+                yandexTaxiDeliveryFormValidator.validateField($(this));
+            });
+
+            $('input[name="source[lon]"]').change(function () {
+                setTariffs(function (response) {
+                    if (response.hasOwnProperty('error')) {
+                        alert(response.error);
+                        return;
+                    }
+
+                    const tariffs = $(response.html);
+                    $('#tariffs-container').html(tariffs);
+
+                    if (tariffs.hasClass('error')) {
+                        $('#button-calculate-price').prop('disabled', true);
+                    } else {
+                        $('#button-calculate-price').prop('disabled', false);
+                        tariffLabels = response.labels;
+                    }
+                });
+            });
+
+            $(document).on('click', '.destination-actions-remove', function () {
+                if (!confirm('{{ text_remove_destination }}')) {
+                    return;
+                }
+
+                if ($('.destination').length <= 1) {
+                    alert('{{ error_no_one_destination }}');
+                    return;
+                }
+
+                $(this).closest('.destination').remove();
+                reassignDestinationTitles();
+                resetEstimation();
+                hasChanges = true;
+            });
+
+            $(document).on('click', '.destination-actions-up', function () {
+                const current = $(this).closest('.destination');
+                const prev = current.prev('.destination');
+                if (!prev.length) {
+                    return;
+                }
+
+                current.insertBefore(prev);
+                swapDestinationTitles(current, prev);
+                resetEstimation();
+                hasChanges = true;
+            });
+
+            $(document).on('click', '.destination-actions-down', function () {
+                const current = $(this).closest('.destination');
+                const next = current.next('.destination');
+                if (!next.length) {
+                    return;
+                }
+
+                current.insertAfter(next);
+                swapDestinationTitles(current, next);
+                resetEstimation();
+                hasChanges = true;
+            });
+
+            $('#button-calculate-price').click(function () {
+                calculatePrice();
+            });
+
+            $('#button-confirm-order').click(function () {
+                confirmOrder();
+            });
+
+            $('#button-add-fake-destination').click(function () {
+                addDestination();
+            });
+
+            $('#input-order-id').keyup(function () {
+                const btn = $('#button-add-destination-for-order');
+                if ($(this).val().length === 0) {
+                    btn.attr('disabled', true);
+                } else {
+                    btn.attr('disabled', false);
+                }
+            });
+
+            $('#button-add-destination-for-order').click(function () {
+                const order_input = $('#input-order-id');
+                const order_id = order_input.val();
+
+                if (checkOrderInForm(order_id)) {
+                    alert('{{ text_order_already_in_form }}'.replace('%d', order_id));
+                    return;
+                }
+
+                const btn = $(this).button('loading');
+
+                $.get('index.php?route=extension/shipping/yandextaxi/getDestinationForOrder', {
+                    user_token: '{{ user_token }}',
+                    order_id,
+                })
+                    .done(function (response) {
+                        if (response.error) {
+                            alert(response.error);
+                            return;
+                        }
+
+                        if (response.order_already_in_shipment) {
+                            if (!confirm('{{ text_confirm_reship }}'.replace('%d', order_id))) {
+                                return;
+                            }
+                        }
+                        addDestination(response.destination);
+                        order_input.val('');
+                    })
+                    .always(function () {
+                        btn.button('reset');
+                    });
+            });
+
+            $(document).on('change', '#warehouse', function (event) {
+                var json = $(this).find(':selected').data('json');
+
+                $('[name="source[address]"]').val(json.address).trigger('change');
+                $('[name="source[comment]"]').val(json.comment);
+                $('[name="source[flat]"]').val(json.flat);
+                $('[name="source[floor]"]').val(json.floor);
+                $('[name="source[porch]"]').val(json.porch);
+                $('[name="source[name]"]').val(json.contactName);
+                $('[name="source[email]"]').val(json.contactEmail);
+                $('[name="source[phone]"]').val(json.contactPhone);
+
+                hasChanges = true;
+            });
+
+            $(document).on('change', "[name='tariff']", function (event) {
+                hasChanges = true;
+                resetEstimation();
+                $('.tariff-option-container').each((function () {
+                    const requirementToHide = $(this).find('.tariff-requirement');
+                    if (requirementToHide.length) {
+                        requirementToHide.css('display', 'none');
+                    }
+                }));
+
+                const requirementToShow = $(this).parent().parent().find('.tariff-requirement');
+
+                if (requirementToShow.length) {
+                    requirementToShow.css('display', 'block');
+                }
+            });
+        });
+
+        $(document).on('change', '.tariff-requirement-option', function (event) {
+            hasChanges = true;
+            resetEstimation();
+        });
+
+        let tariffLabels;
+
+        function checkOrderInForm(order_id) {
+            const order_ids = [];
+            $('input[name*="order_id"]').each(function () {
+                order_ids.push($(this).val());
+            });
+
+            return order_ids.includes(order_id);
+        }
+
+        function addDestination(destination_data = null) {
+            resetEstimation();
+
+            const template = document.importNode($('#destination-template').get(0).content, true);
+            $('.destination').last().after(template);
+
+            const destination = $('.destination').last();
+            const next_index = $('.destination').length + 1;
+
+            destination.find('input, textarea').each(function () {
+                $(this).attr('name', $(this).attr('name').replace('index', next_index))
+            });
+
+            const title = destination.find($('.destination-title'));
+            title.text('{{ text_destination }}'.replace('%d', next_index));
+
+            $(document).trigger('yandex-taxi-delivery:initMapSuggestion', [
+                destination.find('input[name*="address"]'),
+            ]);
+
+            $(document).trigger('yandex-taxi-delivery:initPhone', [
+                destination.find('input[type="tel"]'),
+            ]);
+
+            if (!destination_data) {
+                title.after(' {{ text_fake_route_point }}');
+                destination.find('input[name*="order_id"]').remove();
+            } else {
+                const link = $('<a></a>');
+                link.attr('href', `index.php?route=sale/order/info&user_token={{ user_token }}&order_id="${next_index}`);
+                link.text(' {{ text_order_id }}'.replace('%d', destination_data.order_id));
+                title.after(link);
+
+                // fill destination fields
+                destination.find('input[name*="order_id"]').val(destination_data.order_id);
+                destination.find('input[name*="address"]').val(destination_data.address).trigger('change');
+                destination.find('input[name*="name"]').val(destination_data.name);
+                destination.find('input[name*="phone"]').val(destination_data.phone);
+                destination.find('textarea[name*="comment"]').val(destination_data.comment);
+            }
+            hasChanges = true;
+        }
+
+        function reassignDestinationTitles() {
+            let index = 2;
+            $('.destination .destination-title').each(function () {
+                $(this).text('{{ text_destination }}'.replace('%d', index));
+                index++;
+            });
+        }
+
+        function swapDestinationTitles(destination1, destination2) {
+            const destination1_title = destination1.find('.destination-title').text();
+
+            destination1.find('.destination-title').text(destination2.find('.destination-title').text());
+            destination2.find('.destination-title').text(destination1_title);
+        }
+
+        function setTariffs(resolve) {
+            const lat = $('input[name="source[lat]"]').val();
+            const lon = $('input[name="source[lon]"]').val();
+
+            $.ajax({
+                url: 'index.php?route=extension/shipping/yandextaxi/getTariffs&user_token={{ user_token }}',
+                type: 'POST',
+                dataType: 'json',
+                data: {lat, lon}
+            }).done(function (response) {
+                resolve(response);
+            });
+        }
+
+        function calculatePrice() {
+            prepareForm();
+            $('#button-confirm-order').hide();
+
+            if (!yandexTaxiDeliveryFormValidator.validateForm($('#order-form'))) {
+                resetEstimation();
+                return;
+            }
+            setOnUpdatingEstimation();
+            const btn = $('#button-calculate-price').button('loading');
+            const data = $('#order-form').serialize();
+
+            createClaim(data).then(function (response) {
+                if (response.error) {
+                    resetEstimation();
+                    alert(response.error);
+                    return;
+                }
+
+                let requestCount = 0;
+                let timerId = setInterval(function () {
+                    requestCount++;
+
+                    if (requestCount > 10) {
+                        clearInterval(timerId);
+                        resetEstimation();
+                        alert('Не удалось рассчитать стоимость доставки. Попробуйте позже.');
+                        btn.button('reset');
+                        return;
+                    }
+
+                    requestPrice(data).then(function (response) {
+                        if (response.error) {
+                            clearInterval(timerId);
+                            resetEstimation();
+                            alert(response.error);
+                            btn.button('reset');
+                            return;
+                        }
+
+                        if (response.calculated === false) {
+                            return;
+                        }
+
+                        clearInterval(timerId);
+
+                        if (response.warnings) {
+                            let message = response.warnings.join('\n') + '\n';
+                            message += '{{ entry_continue_anyway }}';
+
+                            if (!confirm(message)) {
+                                btn.button('reset');
+                                resetEstimation();
+                                return;
+                            }
+                        }
+
+                        setEstimation(response.price, response.tariff);
+                        btn.button('reset');
+                    })
+                        .catch(function () {
+                            clearInterval(timerId);
+                            btn.button('reset');
+                            resetEstimation();
+                            alert('Ошибка во время запроса на сервер.');
+                        });
+                }, 3000); // 3 seconds wait
+            });
+        }
+
+        function confirmOrder() {
+            const oldPrice = getPrice();
+            const form = $('#order-form');
+            $('#button-confirm-order').button('loading');
+            $('#button-calculate-price').button('loading');
+
+            requestPrice(form.serialize())
+                .then(function (response) {
+                    if (response.error) {
+                        resetEstimation();
+                        alert(response.error);
+                        return;
+                    }
+                    setEstimation(response.price, response.tariff);
+
+                    if (oldPrice && response.price === oldPrice) {
+                        hasChanges = false;
+                        form.submit();
+                        return;
+                    }
+
+                    const priceUpdateText = '{{ text_price_updated }}'.replace('%s', response.price);
+
+                    if (confirm(priceUpdateText)) {
+                        hasChanges = false;
+                        form.submit();
+                    } else {
+                        $('#button-confirm-order').button('reset');
+                        resetEstimation();
+                    }
+                })
+        }
+
+        function prepareForm() {
+            $('#order-form').find('input, textarea').each(function () {
+                $(this).val($(this).val().trim());
+            });
+        }
+
+        function requestPrice(data) {
+            return new Promise(function (resolve, reject) {
+                return $.ajax({
+                    url: 'index.php?route=extension/shipping/yandextaxi/getPrice&user_token={{ user_token }}',
+                    type: 'POST',
+                    dataType: 'json',
+                    data: data
+                }).done(function (response) {
+                    resolve(response);
+                }).fail(function (response) {
+                    reject(response);
+                });
+            });
+        }
+
+        function createClaim(data) {
+            return new Promise(function (resolve, reject) {
+                return $.ajax({
+                    url: 'index.php?route=extension/shipping/yandextaxi/createClaim&user_token={{ user_token }}',
+                    type: 'POST',
+                    dataType: 'json',
+                    data: data
+                }).done(function (response) {
+                    resolve(response);
+                }).fail(function (response) {
+                    reject(response);
+                });
+            });
+        }
+
+        function resetEstimation() {
+            $('#button-calculate-price').button('reset');
+            $('.estimation-price-value').data('price', null).text('–');
+            $('.estimation-tariff').hide();
+            $('#button-confirm-order').hide();
+        }
+
+        function setEstimation(price, tariff) {
+            $('.estimation-price-value').data('price', price).text(price + ' {{ text_currency }}');
+            let label = tariffLabels.hasOwnProperty(tariff) ? tariffLabels[tariff] : tariff;
+            $('.estimation-tariff-name').text(label);
+            $('.estimation-tariff').show();
+            $('#button-confirm-order').show();
+        }
+
+        function setOnUpdatingEstimation() {
+            $('.estimation-price-value').data('price', null).text('{{ text_updating }}');
+        }
+
+        function getPrice() {
+            return $('.estimation-price-value').data('price');
+        }
+
+        </script>
+</div>
+{{ footer }}

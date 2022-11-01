@@ -1,0 +1,24 @@
+<?php
+$_['heading_title']    = '<b>SORTS+</b>';
+$_['title']    = 'Sorts+';
+$_['header_1']    = 'Default';
+$_['header_2']    = 'Show';
+$_['text_module']      = 'Modules';
+$_['text_edit']        = 'Settings';
+$_['entry_sortslimits_default'] = 'Default sort';
+$_['entry_sortslimits_default2'] = 'Order';
+$_['sort_order'] = 'Data sort';
+$_['date_added'] = 'Date Added';
+$_['quantity'] = 'Quantity';
+$_['model'] = 'Model';
+$_['rating'] = 'Rating';
+$_['price'] = 'Price';
+$_['viewed'] = 'Sales/Viewed';
+$_['name'] = 'Name';
+$_['button_cancel'] = 'Cancel';
+$_['asc'] = 'ASC  ▲';
+$_['desc'] = 'DESC  ▼';
+$_[ 'limits'] = 'Numbers (comma separated)';
+$_[ 'in_stock'] = 'First "in stock"';
+$_[ 'entry_sortslimits_stock_status'] = 'Sign "out of stock"';
+$_[ 'hide'] = 'Hide "out of stock"';

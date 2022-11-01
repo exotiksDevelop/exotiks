@@ -1,0 +1,75 @@
+{{ header }}{{ column_left }}
+<div id="content">
+    <div class="page-header">
+        <div class="container-fluid">
+            <h1>{% if heading %} {{ heading }} {% else %} {{ heading_title }} {% endif %}</h1>
+
+            <ul class="breadcrumb">
+                {% for breadcrumb in breadcrumbs %}
+                    <li><a href="{{ breadcrumb.href }}">{{ breadcrumb.text }}</a></li>
+                {% endfor %}
+            </ul>
+        </div>
+    </div>
+
+    <div class="container-fluid">
+        <div class="panel panel-default">
+            <div class="panel-heading">
+                <h3 class="panel-title"><i class="fa fa-list"></i> {{ dvbusiness_warehouses_head }}</h3>
+            </div>
+            <div class="panel-body" id="dvbusiness-warehouses">
+                <div class="panel panel-primary filter">
+                    <div class="panel-body">
+                        <div class="row">
+                            <div class="col-xs-2">
+                                <div><label class="font-weight-bold">{{ dvbusiness_warehouses_actions }}</label></div>
+                                <a href="{{ warehouse_form_action }}" class="btn btn-primary">{{ dvbusiness_warehouses_add_button }}</a>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+
+                <table class="table table-bordered table-hover orders">
+                    <thead>
+                        <tr>
+                            <th class="text-right">{{ dvbusiness_warehouses_column_id }}</th>
+                            <th>{{ dvbusiness_warehouses_column_name }}</th>
+                            <th>{{ dvbusiness_warehouses_column_city }}</th>
+                            <th>{{ dvbusiness_warehouses_column_address }}</th>
+                            <th>{{ dvbusiness_warehouses_column_schedule_start_time }}</th>
+                            <th>{{ dvbusiness_warehouses_column_schedule_finish_time }}</th>
+                            <th>{{ dvbusiness_warehouses_column_contact_name }}</th>
+                            <th>{{ dvbusiness_warehouses_column_contact_phone }}</th>
+                            <th>{{ dvbusiness_warehouses_column_note }}</th>
+                            <th>{{ dvbusiness_warehouses_actions }}</th>
+                        </tr>
+                    </thead>
+                    <tbody>
+                    {% for warehouse in warehouses %}
+                        <tr data-warehouse-id="{{ warehouse.id   }}">
+                            <td class="text-right">{{ warehouse.id }}</td>
+                            <td>{{ warehouse.name }}</td>
+                            <td>{{ warehouse.city }}</td>
+                            <td>{{ warehouse.address }}</td>
+                            <td>{{ warehouse.work_start_time }}</td>
+                            <td>{{ warehouse.work_finish_time }}</td>
+                            <td>{{ warehouse.contact_name }}</td>
+                            <td>{{ warehouse.contact_phone }}</td>
+                            <td>{{ warehouse.note }}</td>
+                            <td>
+                                <a href="{{ warehouse_form_action }}&id={{ warehouse.id }}">{{ dvbusiness_warehouses_edit_button }}</a>
+                                <a href="#" class="button-warehouse-delete">{{ dvbusiness_warehouses_delete_button }}</a>
+                            </td>
+                        </tr>
+                    {% endfor %}
+                    </tbody>
+                </table>
+            </div>
+        </div>
+    </div>
+</div>
+<script>
+    dvbusiness.warehouses.translations.deletion_confirm = "{{ dvbusiness_warehouses_deletion_confirm }}";
+    dvbusiness.warehouses.translations.deletion_error   = "{{ dvbusiness_warehouses_deletion_error }}";
+</script>
+{{ footer }}

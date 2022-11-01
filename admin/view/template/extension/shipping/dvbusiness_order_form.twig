@@ -1,0 +1,478 @@
+{{ header }}{{ column_left }}
+
+<div id="content">
+    <div class="page-header">
+        <div class="container-fluid">
+            <h1>{% if heading %} {{ heading }} {% else %} {{ heading_title }} {% endif %}</h1>
+
+            <ul class="breadcrumb">
+                {% for breadcrumb in breadcrumbs %}
+                    <li><a href="{{ breadcrumb.href }}">{{ breadcrumb.text }}</a></li>
+                {% endfor %}
+            </ul>
+        </div>
+    </div>
+
+    <div class="container-fluid">
+        <div class="panel panel-default">
+            <div class="panel-heading">
+                <h3 class="panel-title"><i class="fa fa-file-o"></i> {{ dvbusiness_order_form_head }}</h3>
+            </div>
+            <div class="panel-body" id="dvbusiness-order-form">
+                <div class="row">
+                    <div class="col-xs-3">
+                        <div class="summary-block" style="border: 1px solid #dcdcdc; padding: 10px;">
+                            <div class="row">
+                                <div class="col-xs-7">{{ dvbusiness_order_form_summary_delivery_fee }}</div>
+                                <div class="col-xs-5 text-right"><strong data-calculation="delivery_fee_amount">0</strong>&nbsp;<strong>{{ dvbusiness_rub_currency }}</strong></div>
+                            </div>
+                            <div class="row">
+                                <div class="col-xs-7">{{ dvbusiness_order_form_summary_weight_fee }}</div>
+                                <div class="col-xs-5 text-right"><strong data-calculation="weight_fee_amount">0</strong>&nbsp;<strong>{{ dvbusiness_rub_currency }}</strong></div>
+                            </div>
+                            <div class="row">
+                                <div class="col-xs-7">{{ dvbusiness_order_form_summary_insurance_fee }}</div>
+                                <div class="col-xs-5 text-right"><strong data-calculation="insurance_fee_amount">0</strong>&nbsp;<strong>{{ dvbusiness_rub_currency }}</strong></div>
+                            </div>
+                            <div class="row">
+                                <div class="col-xs-7">{{ dvbusiness_order_form_summary_money_transfer_fee }}</div>
+                                <div class="col-xs-5 text-right"><strong data-calculation="money_transfer_fee_amount">0</strong>&nbsp;<strong>{{ dvbusiness_rub_currency }}</strong></div>
+                            </div>
+                            <div class="row">
+                                <div class="col-xs-7">{{ dvbusiness_order_form_summary_loading_fee }}</div>
+                                <div class="col-xs-5 text-right"><strong data-calculation="loading_fee_amount">0</strong>&nbsp;<strong>{{ dvbusiness_rub_currency }}</strong></div>
+                            </div>
+                            <div class="row" style="margin-top: 10px;">
+                                <div class="col-xs-7">
+                                    <div>{{ dvbusiness_order_form_summary_payment_amount }}</div>
+                                </div>
+                                <div class="col-xs-5 text-right">
+                                    <div class="total-price" style="background-color: #fffa65; padding: 3px 0;">
+                                        <strong data-calculation="payment_amount">0</strong>&nbsp;<strong>{{ dvbusiness_rub_currency }}</strong>
+                                    </div>
+                                </div>
+                            </div>
+                            <div class="errors text-white text-center hidden">
+
+                            </div>
+                        </div>
+                    </div>
+                    <div class="col-xs-9">
+                        {% if dostavista_orders %}
+                        <div class="alert alert-danger" role="alert">
+                            <p>{{ dvbusiness_order_form_already_created_order_notice }}:</p>
+                            {% for dostavista_order in dostavista_orders %}
+                            <div>&mdash; Заказ <strong>{{ dostavista_order.dostavista_order_id }}</strong>&nbsp;{{ dostavista_order.created_datetime }}</div>
+                            {% endfor %}
+                        </div>
+                        {% endif %}
+
+                        <div class="panel">
+                            <div class="panel-heading">
+                                {{ dvbusiness_order_form_general_title }}
+                            </div>
+                            <div class="panel-body" style="background: #f9f9f9">
+                                <div class="form-horizontal">
+                                    <div class="form-group row">
+                                        <label class="col-sm-4 control-label">{{ dvbusiness_order_form_vehicle_type }}:</label>
+                                        <div class="col-sm-8">
+                                            <select class="form-control" name="vehicle_type_id">
+                                                {% for id, title in vehicle_types_enum %}
+                                                    <option value="{{ id }}" {% if id == general_order.default_vehicle_type_id %} selected {% endif %}>{{ title }}</option>
+                                                {% endfor %}
+                                            </select>
+                                        </div>
+                                    </div>
+
+                                    <div class="form-group">
+                                        <label class="col-sm-4 control-label">{{ dvbusiness_order_form_bank_card_id }}</label>
+                                        <div class="col-sm-8">
+                                            <select autocomplete="off" class="form-control" name="payment_type">
+                                                {% for id, title in payment_types %}
+                                                    <option
+                                                            data-is-card="{{ id in bank_card_payment_types }}"
+                                                            value="{{ id }}"
+                                                            {% if id == general_order.payment_type %} selected {% endif %}
+                                                    >
+                                                        {{ title }}
+                                                    </option>
+                                                {% endfor %}
+                                            </select>
+                                        </div>
+                                    </div>
+
+                                    <div class="form-group">
+                                        <label class="col-sm-4 control-label">{{ dvbusiness_payment_type_card }}</label>
+                                        <div class="col-sm-8">
+                                            <select autocomplete="off" class="form-control" name="bank_card_id">
+                                                {% for id, title in bank_cards %}
+                                                    <option value="{{ id }}" {% if id == general_order.bank_card_id %} selected {% endif %}>{{ title }}</option>
+                                                {% endfor %}
+                                            </select>
+                                        </div>
+                                    </div>
+                                    <div class="form-group row">
+                                        <label class="col-sm-4 control-label">{{ dvbusiness_order_form_matter }}</label>
+                                        <div class="col-sm-8">
+                                            <input type="text" name="matter" class="form-control" value="{{ general_order.matter }}">
+                                        </div>
+                                    </div>
+                                    <div class="form-group row">
+                                        <label class="col-sm-4 control-label">{{ dvbusiness_order_form_total_weight_kg }}</label>
+                                        <div class="col-sm-8">
+                                            <input type="text" name="total_weight_kg" class="form-control" value="{{ general_order.total_weight_kg }}">
+                                        </div>
+                                    </div>
+                                    <div class="form-group row">
+                                        <label class="col-sm-4 control-label">{{ dvbusiness_order_form_loaders_count }}</label>
+                                        <div class="col-sm-8">
+                                            <input type="text" name="loaders_count" class="form-control" value="{{ general_order.loaders_count }}">
+                                        </div>
+                                    </div>
+                                    <div class="form-group row">
+                                        <label class="col-sm-4 control-label">{{ dvbusiness_order_form_insurance }}</label>
+                                        <div class="col-sm-8">
+                                            <input type="text" name="insurance_amount" class="form-control" value="{{ general_order.insurance_amount }}">
+                                        </div>
+                                    </div>
+                                    <div class="form-group row">
+                                        <div class="col-sm-8 col-sm-offset-4">
+                                            <label>
+                                                <input type="checkbox" name="contact_person_notification_enabled" value="1" {% if general_order.contact_person_notification_enabled %} checked {% endif %}>
+                                                {{ dvbusiness_order_form_contact_person_notification }}
+                                            </label>
+                                        </div>
+                                    </div>
+                                </div>
+                            </div>
+                        </div>
+                        <div class="panel">
+                            <div class="panel-heading">
+                                {{ dvbusiness_order_form_pickup_title }}
+                            </div>
+                            <div class="panel-body" style="background: #f9f9f9">
+                                <div class="form-horizontal">
+                                    <div class="form-group row">
+                                        <label class="col-sm-4 control-label">{{ dvbusiness_order_form_pickup_warehouse_select }}</label>
+                                        <div class="col-sm-8">
+                                            <select name="selected_pickup_warehouse_id" class="form-control">
+                                                <option value=""></option>
+                                                {% for warehouse in warehouses %}
+                                                    <option
+                                                        value="{{ warehouse.id }}"
+                                                        data-address="{{ warehouse.address }}"
+                                                        data-work-start-time="{{ warehouse.work_start_time }}"
+                                                        data-work-finish-time="{{ warehouse.work_finish_time }}"
+                                                        data-contact-name="{{ warehouse.contact_name }}"
+                                                        data-contact-phone="{{ warehouse.contact_phone }}"
+                                                        data-note="{{ warehouse.note }}"
+                                                    >{{ warehouse.name }}</option>
+                                                {% endfor %}
+                                            </select>
+                                        </div>
+                                    </div>
+                                    <div class="form-group row">
+                                        <label class="col-sm-4 control-label">{{ dvbusiness_order_form_pickup_address }}</label>
+                                        <div class="col-sm-8">
+                                            <input type="text" name="pickup_address" class="form-control" value="{{ general_order.pickup_address }}">
+                                        </div>
+                                    </div>
+                                    <div class="form-group row">
+                                        <label class="col-sm-4 control-label">{{ dvbusiness_order_form_pickup_required_date_time }}</label>
+                                        <div class="col-sm-8">
+                                            <div class="row">
+                                                <div class="col-sm-4">
+                                                    <select name="pickup_required_date" class="form-control">
+                                                        {% for value, title in required_date_enum %}
+                                                            <option value="{{ value }}" {% if value == today_date %} data-today="1" {% endif %} {% if general_order.pickup_date == value %} selected {% endif %}>{{ title }}</option>
+                                                        {% endfor %}
+                                                    </select>
+                                                </div>
+                                                <div class="col-sm-4">
+                                                    <div class="media">
+                                                        <label class="control-label pull-left">{{ dvbusiness_order_form_pickup_required_start_time }}</label>
+                                                        <div class="media-body">
+                                                            <select name="pickup_required_start_time" class="form-control" data-min-today-time="{{ general_order.pickup_work_start_time }}">
+                                                                {% for value, title in required_time_enum %}
+                                                                    <option value="{{ value }}" {% if value == general_order.pickup_work_start_time %} selected {% endif %}>{{ title }}</option>
+                                                                {% endfor %}
+                                                            </select>
+                                                        </div>
+                                                    </div>
+                                                </div>
+                                                <div class="col-sm-4">
+                                                    <div class="media">
+                                                        <label class="control-label pull-left">{{ dvbusiness_order_form_pickup_required_finish_time }}</label>
+                                                        <div class="media-body">
+                                                            <select name="pickup_required_finish_time" class="form-control">
+                                                                {% for value, title in required_time_enum %}
+                                                                    <option value="{{ value }}" {% if value == general_order.pickup_work_finish_time %} selected {% endif %}>{{ title }}</option>
+                                                                {% endfor %}
+                                                            </select>
+                                                        </div>
+                                                    </div>
+                                                </div>
+                                            </div>
+                                        </div>
+                                    </div>
+                                    <div class="form-group row">
+                                        <label class="col-sm-4 control-label">{{ dvbusiness_order_form_pickup_contact }}</label>
+                                        <div class="col-sm-8">
+                                            <div class="row">
+                                                <div class="col-sm-7" style="padding-right: 0">
+                                                    <input type="text" name="pickup_contact_name" class="form-control" value="{{ general_order.pickup_contact_name }}" placeholder="{{ dvbusiness_order_form_pickup_contact_name_placeholder }}">
+                                                </div>
+                                                <div class="col-sm-5">
+                                                    <input type="text" name="pickup_contact_phone" class="form-control" value="{{ general_order.pickup_contact_phone }}" placeholder="{{ dvbusiness_order_form_pickup_contact_phone_placeholder }}">
+                                                </div>
+                                            </div>
+
+                                        </div>
+                                    </div>
+                                    <div class="form-group row">
+                                        <label class="col-sm-4 control-label">{{ dvbusiness_order_form_pickup_buyout }}</label>
+                                        <div class="col-sm-8">
+                                            <input type="text" name="pickup_buyout_amount" class="form-control" value="{{ general_order.pickup_buyout_amount }}">
+                                        </div>
+                                    </div>
+                                    <div class="form-group row">
+                                        <label class="col-sm-4 control-label">{{ dvbusiness_order_form_pickup_note }}</label>
+                                        <div class="col-sm-8">
+                                            <textarea name="pickup_note" class="form-control" rows="4">{{ general_order.pickup_note }}</textarea>
+                                        </div>
+                                    </div>
+                                </div>
+                            </div>
+                        </div>
+                        <div class="add-delivery-point"><i class="fa fa-plus"></i>&nbsp;{{ dvbusiness_order_form_dropoff_add_delivery_point }}</div>
+                        {% for point_index, order in dostavista_opencart_orders %}
+                        <div class="panel point-form" data-point-index="{{ point_index }}">
+                            <div class="panel-heading">
+                                {{ dvbusiness_order_form_dropoff_point }} <span>#{{ order.id }}</span>
+                                <div class="pull-right">
+                                    <span class="point-up"><img src="/admin/view/image/dvbusiness/icon-circle-arrow-top.png" alt=""></span>
+                                    <span class="point-down"><img src="/admin/view/image/dvbusiness/icon-circle-arrow-bottom.png" alt=""></span>
+                                    <span class="point-remove"><img src="/admin/view/image/dvbusiness/icon-circle-x.png" alt=""></span>
+                                </div>
+                            </div>
+                            <div class="panel-body" style="background: #f9f9f9">
+                                <div class="form-horizontal">
+                                    <div class="form-group row">
+                                        <label class="col-sm-4 control-label">{{ dvbusiness_order_form_dropoff_warehouse_select }}</label>
+                                        <div class="col-sm-8">
+                                            <select class="form-control delivery-warehouse-select">
+                                                <option value=""></option>
+                                                {% for warehouse in warehouses %}
+                                                    <option
+                                                            value="{{ warehouse.id }}"
+                                                            data-address="{{ warehouse.address }}"
+                                                            data-work-start-time="{{ warehouse.work_start_time }}"
+                                                            data-work-finish-time="{{ warehouse.work_finish_time }}"
+                                                            data-contact-name="{{ warehouse.contact_name }}"
+                                                            data-contact-phone="{{ warehouse.contact_phone }}"
+                                                            data-note="{{ warehouse.note }}"
+                                                    >{{ warehouse.name }}</option>
+                                                {% endfor %}
+                                            </select>
+                                        </div>
+                                    </div>
+                                    <div class="form-group row">
+                                        <label class="col-sm-4 control-label">{{ dvbusiness_order_form_dropoff_address }}</label>
+                                        <div class="col-sm-8">
+                                            <input type="text" name="delivery_address_{{ point_index }}" class="form-control" value="{{ order.shipping_address }}">
+                                        </div>
+                                    </div>
+                                    <div class="form-group row">
+                                        <label class="col-sm-4 control-label">{{ dvbusiness_order_form_dropoff_required_date_time }}</label>
+                                        <div class="col-sm-8">
+                                            <div class="row">
+                                                <div class="col-sm-4">
+                                                    <select name="delivery_required_date_{{ point_index }}" class="form-control">
+                                                        {% for value, title in required_date_enum %}
+                                                            <option value="{{ value }}" {% if value == order.shipping_date %} selected {% endif %}>{{ title }}</option>
+                                                        {% endfor %}
+                                                    </select>
+                                                </div>
+                                                <div class="col-sm-4">
+                                                    <div class="media">
+                                                        <label class="control-label pull-left">{{ dvbusiness_order_form_dropoff_required_date_time_from }}</label>
+                                                        <div class="media-body">
+                                                            <select name="delivery_required_start_time_{{ point_index }}" class="form-control">
+                                                                {% for value, title in required_time_enum %}
+                                                                    <option value="{{ value }}" {% if value == order.shipping_start_time %} selected {% endif %}>{{ title }}</option>
+                                                                {% endfor %}
+                                                            </select>
+                                                        </div>
+                                                    </div>
+                                                </div>
+                                                <div class="col-sm-4">
+                                                    <div class="media">
+                                                        <label class="control-label pull-left">{{ dvbusiness_order_form_dropoff_required_date_time_to }}</label>
+                                                        <div class="media-body">
+                                                            <select name="delivery_required_finish_time_{{ point_index }}" class="form-control">
+                                                                {% for value, title in required_time_enum %}
+                                                                    <option value="{{ value }}" {% if value == order.shipping_finish_time %} selected {% endif %}>{{ title }}</option>
+                                                                {% endfor %}
+                                                            </select>
+                                                        </div>
+                                                    </div>
+                                                </div>
+                                            </div>
+                                        </div>
+                                    </div>
+                                    <div class="form-group row">
+                                        <label class="col-sm-4 control-label">{{ dvbusiness_order_form_dropoff_recipient }}</label>
+                                        <div class="col-sm-8">
+                                            <div class="row">
+                                                <div class="col-sm-7" style="padding-right: 0">
+                                                    <input type="text" name="delivery_recipient_name_{{ point_index }}" class="form-control" value="{{ order.contact_name }}" placeholder="{{ dvbusiness_order_form_dropoff_recipient_name_placeholder }}">
+                                                </div>
+                                                <div class="col-sm-5">
+                                                    <input type="text" name="delivery_recipient_phone_{{ point_index }}" class="form-control" value="{{ order.contact_phone }}" placeholder="{{ dvbusiness_order_form_dropoff_recipient_phone_placeholder }}">
+                                                </div>
+                                            </div>
+                                        </div>
+                                    </div>
+                                    <div class="form-group row">
+                                        <label class="col-sm-4 control-label">{{ dvbusiness_order_form_dropoff_note }}</label>
+                                        <div class="col-sm-8">
+                                            <textarea name="delivery_note_{{ point_index }}" class="form-control" rows="4">{{ order.shipping_comment }}</textarea>
+                                        </div>
+                                    </div>
+                                    <div class="form-group row">
+                                        <label class="col-sm-4 control-label">{{ dvbusiness_order_form_dropoff_taking }}</label>
+                                        <div class="col-sm-8">
+                                            <input type="text" name="delivery_taking_amount_{{ point_index }}" class="form-control" value="{{ order.taking_amount }}">
+                                        </div>
+                                    </div>
+                                    <div class="form-group row">
+                                        <label class="col-sm-4 control-label">{{ dvbusiness_order_form_dropoff_cliend_order_id }}</label>
+                                        <div class="col-sm-8">
+                                            <input type="text" name="delivery_client_order_id_{{ point_index }}" class="form-control" value="{{ order.id }}">
+                                        </div>
+                                    </div>
+                                    <div class="form-group row">
+                                        <label class="col-sm-4 control-label">{{ dvbusiness_order_form_dropoff_last_shipping_price }}</label>
+                                        <div class="col-sm-8">
+                                            <input type="text" class="form-control" value="{{ order.shipping_price }}" readonly>
+                                        </div>
+                                    </div>
+                                </div>
+                            </div>
+                        </div>
+                        <div class="add-delivery-point"><i class="fa fa-plus"></i>&nbsp;{{ dvbusiness_order_form_dropoff_add_delivery_point }}</div>
+                        {% endfor %}
+
+                        <button class="btn btn-success button-create-order">{{ dvbusiness_order_form_create_button }}</button>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+</div>
+<style>
+    #dvbusiness-order-form .form-group {
+        padding-top: 5px;
+        padding-bottom: 5px;
+    }
+    #dvbusiness-order-form .form-group + .form-group {
+        border-top: 0;
+    }
+
+    #dvbusiness-order-form .form-control.is-invalid {
+        border-color: #dc3545;
+    }
+
+    #dvbusiness-order-form .invalid-feedback {
+        color: #fff;
+        background: #dc3545;
+        padding: 3px 5px;
+        line-height: 1.2;
+        font-size: 12px;
+        font-weight: 600;
+        margin-top: 0;
+    }
+
+    #dvbusiness-order-form .summary-block .errors {
+        margin-top: 10px;
+        font-size: 12px;
+        font-weight: 600;
+        color: #fff;
+        background: #dc3545;
+        padding: 10px;
+    }
+
+    #dvbusiness-order-form .point-form .point-up > img,
+    #dvbusiness-order-form .point-form .point-down > img,
+    #dvbusiness-order-form .point-form .point-remove > img {
+        height: 20px;
+    }
+
+    #dvbusiness-order-form .point-form .point-up,
+    #dvbusiness-order-form .point-form .point-down,
+    #dvbusiness-order-form .point-form .point-remove {
+        cursor: pointer;
+        display: inline-block;
+        opacity: 0.5;
+    }
+
+    #dvbusiness-order-form .point-form .point-up:hover,
+    #dvbusiness-order-form .point-form .point-down:hover,
+    #dvbusiness-order-form .point-form .point-remove:hover {
+        opacity: 1;
+    }
+
+    #dvbusiness-order-form .add-delivery-point {
+        border: 1px dashed #aaa;
+        color: #aaa;
+        text-align: center;
+        cursor: pointer;
+        padding: 5px;
+        margin: 0 0 18px;
+    }
+
+    #dvbusiness-order-form .add-delivery-point:hover {
+        border: 1px dashed #7eb0f3;
+        color: #7eb0f3;
+    }
+</style>
+<script>
+    if (typeof(dvbusiness) === 'undefined') {
+        dvbusiness = {};
+    }
+    dvbusiness.orderForm = {
+        errorTranslations: {
+            invalid_parameters: '{{ dvbusiness_order_form_error_invalid_parameters }}',
+            unapproved_contract: '{{ dvbusiness_order_form_error_unapproved_contract }}',
+            buyout_not_allowed: '{{ dvbusiness_order_form_error_buyout_not_allowed }}',
+            insufficient_balance: '{{ dvbusiness_order_form_error_insufficient_balance }}',
+            buyout_amount_limit_exceeded: '{{ dvbusiness_order_form_error_buyout_amount_limit_exceeded }}',
+            requests_limit_exceeded: '{{ dvbusiness_order_form_error_requests_limit_exceeded }}',
+        },
+        parameterErrorTranslations: {
+            required: '{{ dvbusiness_order_form_parameter_error_required }}',
+            min_length: '{{ dvbusiness_order_form_parameter_error_min_length }}',
+            max_length: '{{ dvbusiness_order_form_parameter_error_max_length }}',
+            min_value: '{{ dvbusiness_order_form_parameter_error_min_value }}',
+            max_value: '{{ dvbusiness_order_form_parameter_error_max_value }}',
+            invalid_integer: '{{ dvbusiness_order_form_parameter_error_invalid_integer }}',
+            invalid_phone: '{{ dvbusiness_order_form_parameter_error_invalid_phone }}',
+            invalid_value: '{{ dvbusiness_order_form_parameter_error_invalid_value }}',
+            different_regions: '{{ dvbusiness_order_form_parameter_error_different_regions }}',
+            invalid_region: '{{ dvbusiness_order_form_parameter_error_invalid_region }}',
+            address_not_found: '{{ dvbusiness_order_form_parameter_error_address_not_found }}',
+            min_date: '{{ dvbusiness_order_form_parameter_error_min_date }}',
+            max_date: '{{ dvbusiness_order_form_parameter_error_max_date }}',
+            cannot_be_past: '{{ dvbusiness_order_form_parameter_error_cannot_be_past }}',
+            start_after_end: '{{ dvbusiness_order_form_parameter_error_start_after_end }}',
+            earlier_than_previous_point: '{{ dvbusiness_order_form_parameter_error_earlier_than_previous_point }}',
+        },
+        translations: {
+            calculation_error: '{{ dvbusiness_order_form_calculation_error }}',
+            creation_error: '{{ dvbusiness_order_form_creation_error }}',
+            validation_error: '{{ dvbusiness_order_form_validation_error }}',
+            creation_success: '{{ dvbusiness_order_form_creation_success }}',
+        }
+    };
+</script>
+{{ footer }}

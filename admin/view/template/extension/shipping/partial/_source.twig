@@ -1,0 +1,179 @@
+<div class="panel panel-default">
+    <div class="panel-heading">
+        <h3 class="panel-title">
+            <i class="fa fa-map-marker" aria-hidden="true"></i>
+            {{ text_source }}
+        </h3>
+    </div>
+    <div class="panel-body">
+
+        <div class="form-group">
+            <label for="warehouse" class="col-sm-3 control-label">
+                {{ entry_use_warehouse }}:
+            </label>
+            <div class="col-sm-9">
+                <select id="warehouse" name="warehouse" class="form-control">
+                    {% for warehouse in warehouses %}
+                        <option value="{{ warehouse.id }}"
+                                data-json='{{ warehouse.toJson }}'
+                                {% if source.id == warehouse.id %}
+                        selected
+                                {% endif %}>№{{ warehouse.id }} {{ warehouse.address}}</option>
+                    {% endfor %}
+                </select>
+            </div>
+        </div>
+
+        {# Source address #}
+        <div class="form-group address required">
+            <label class="col-sm-3 control-label">
+                {{ entry_address }}
+            </label>
+            <div class="col-sm-9">
+                <input
+                    type="text"
+                    name="source[address]"
+                    value="{{ source.address }}"
+                    class="form-control address-input js-yandex-taxi-form-param"
+                    required
+                />
+                <span class="help-block"></span>
+                <div class="address-map"></div>
+                {# Source coordinate #}
+                <input type="hidden" name="source[lat]" class="address-lat" required/>
+                <input type="hidden" name="source[lon]" class="address-lon" required/>
+                <div class="address-detail"></div>
+            </div>
+        </div>
+        {# Source comment #}
+        <div class="form-group">
+            <label class="col-sm-3 control-label">
+                {{ entry_comment }}
+            </label>
+            <div class="col-sm-9">
+                <textarea
+                    name="source[comment]"
+                    rows="5"
+                    cols="10"
+                    class="form-control js-yandex-taxi-form-param"
+                >{{ text_intercom }}:</textarea>
+            </div>
+        </div>
+        {# Source address deatil #}
+        <div class="form-group">
+            <label class="col-sm-3 control-label">
+                {{ entry_address_detail }}
+            </label>
+            <div class="col-sm-9">
+                <div class="inline-from-group">
+                    <input
+                        placeholder="{{ text_placeholder_flat }}"
+                        type="text"
+                        name="source[flat]"
+                        class="form-control js-yandex-taxi-form-param"
+                        value="{{ source.flat }}"
+                    />
+                    <input
+                        placeholder="{{ text_placeholder_porch }}"
+                        type="text"
+                        name="source[porch]"
+                        class="form-control js-yandex-taxi-form-param"
+                        value="{{ source.porch }}"
+                    />
+                    <input
+                        placeholder="{{ text_placeholder_floor }}"
+                        type="text"
+                        name="source[floor]"
+                        class="form-control js-yandex-taxi-form-param"
+                        value="{{ source.floor }}"
+                    />
+                </div>
+            </div>
+        </div>
+        {# Source name #}
+        <div class="form-group required">
+            <label class="col-sm-3 control-label">
+                {{ entry_name }}
+            </label>
+            <div class="col-sm-9">
+                <input
+                    type="text"
+                    name="source[name]"
+                    value="{{ source.contactName }}"
+                    class="form-control js-yandex-taxi-form-param"
+                    required
+                />
+                <span class="help-block"></span>
+            </div>
+        </div>
+        {# Source phone #}
+        <div class="form-group required">
+            <label class="col-sm-3 control-label">
+                {{ entry_phone }}
+            </label>
+            <div class="col-sm-9">
+                <input
+                    type="tel"
+                    name="source[phone]"
+                    value="{{ source.contactPhone }}"
+                    class="form-control js-yandex-taxi-form-param"
+                    required
+                />
+                <span class="help-block"></span>
+            </div>
+        </div>
+        {# Source email #}
+        <div class="form-group required">
+            <label class="col-sm-3 control-label">
+                {{ entry_email }}
+            </label>
+            <div class="col-sm-9">
+                <input
+                    type="email"
+                    name="source[email]"
+                    value="{{ source.contactEmail }}"
+                    class="form-control js-yandex-taxi-form-param"
+                    required
+                />
+                <span class="help-block"></span>
+            </div>
+        </div>
+        {# Source sms on #}
+        <div class="form-group">
+            <label class="col-sm-3 control-label">
+                {{ entry_sms_on }}
+            </label>
+            <div class="col-sm-9">
+                <input
+                    name="source[sms_on]"
+                    type="checkbox"
+                    class="form-check-input js-yandex-taxi-form-param"
+                >
+            </div>
+        </div>
+        {# need due #}
+        <div class="form-group">
+            <label class="col-sm-3 control-label">
+                {{ entry_need_due }}
+            </label>
+            <div class="col-sm-9">
+                <input id="flag-need-due" type="checkbox" class="form-check-input js-yandex-taxi-form-param">
+            </div>
+        </div>
+        {# due #}
+        <div class="form-group">
+            <label class="col-sm-3 control-label">
+                {{ entry_due }}
+            </label>
+            <div class="col-sm-9">
+                <input
+                    id="due"
+                    type="text"
+                    name="due"
+                    class="form-control datetime js-yandex-taxi-form-param"
+                />
+                <span class="help-block">{{ help_time_zone }} UTC{{ time_zone_offset }}</span>
+            </div>
+        </div>
+    </div>
+</div>

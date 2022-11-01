@@ -1,0 +1,39 @@
+<div class="buttons">
+    <div class="pull-right">
+        <input type="button" value="{{ button_confirm }}" id="button-confirm" data-loading-text="{{ text_loading }}" class="btn btn-primary" />
+    </div>
+</div>
+<script type="text/javascript"><!--
+    $('#button-confirm').on('click', function() {
+        $.ajax({
+            url: '{{ confirm }}',
+            dataType: 'json',
+            beforeSend: function() {
+                $('#button-confirm').button('loading');
+            },
+            complete: function() {
+                $('#button-confirm').button('reset');
+            },
+            success: function(json) {
+                if (json['error']) {
+                    alert(json['error']);
+                }
+                if (json['payUrl']) {
+                    if (typeof QiwiCheckout !== 'undefined') {
+                        QiwiCheckout.openInvoice({
+                            payUrl: json['payUrl'],
+                            successUrl: json['successUrl']
+                        }).catch(() => {
+                            location.href = json['payUrl'];
+                        })
+                    } else {
+                        location.href = json['payUrl'];
+                    }
+                }
+            },
+            error: function(xhr, ajaxOptions, thrownError) {
+                alert(thrownError + "\r\n" + xhr.statusText + "\r\n" + xhr.responseText);
+            }
+        });
+    });
+//--></script>

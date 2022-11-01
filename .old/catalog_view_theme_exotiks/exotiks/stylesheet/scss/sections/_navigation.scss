@@ -1,0 +1,48 @@
+.navigation {
+  background-color: $accent;
+  height: 55px;
+  width: 100%;
+
+  &__list {
+    margin: 0;
+    padding: 0;
+    display: flex;
+    justify-content: space-between;
+    width: 100%;
+    height: inherit;
+    
+    &-item {
+      height: inherit;
+      list-style-type: none;
+      display: inline-flex;
+      align-items: center;
+      
+      a {
+        text-decoration: none;
+        display: inline-flex;
+        align-items: center;
+        height: inherit;
+        padding: 0 20px;
+        color: white;
+        font-weight: 600;
+      }
+
+      a:hover {
+        background-color: $red;
+        text-decoration: none;
+      }
+    }
+  }
+}
+
+@media screen and (max-width: 1199.98px) {
+  .navigation__list-item a {
+    padding: 0 10px;
+  }
+}
+
+@media screen and (max-width: 991.98px) {
+  .navigation {
+    display: none;
+  }
+}

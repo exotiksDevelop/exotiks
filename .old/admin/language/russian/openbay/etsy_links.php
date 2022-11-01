@@ -1,0 +1,30 @@
+<?php
+$_ = array_merge(
+  (isset($_)?$_:array()),
+  array (
+  'heading_title' => 'Etsy links',
+  'text_openbay' => 'OpenBay Pro',
+  'text_etsy' => 'Etsy',
+  'text_loading' => 'Loading items',
+  'text_new_link' => 'Create new link',
+  'text_current_links' => 'Current links',
+  'text_link_saved' => 'Item has been linked',
+  'text_no_links' => 'You have no products linked to Etsy items',
+  'column_product' => 'Product name',
+  'column_item_id' => 'Etsy ID',
+  'column_store_stock' => 'Stock',
+  'column_etsy_stock' => 'Etsy Stock',
+  'column_status' => 'Link Status',
+  'column_action' => 'Action',
+  'entry_name' => 'Product name',
+  'entry_etsy_id' => 'Etsy item ID',
+  'error_product' => 'Product does not exist in your store',
+  'error_stock' => 'You cannot link an item that has no stock',
+  'error_product_id' => 'Product ID required',
+  'error_etsy_id' => 'Etsy item ID required',
+  'error_link_id' => 'Link ID required',
+  'error_link_exists' => 'An active link already exists for this item',
+  'error_etsy' => 'Unable to link item, Etsy API response: ',
+  'error_status' => 'Status filter required',
+));
+

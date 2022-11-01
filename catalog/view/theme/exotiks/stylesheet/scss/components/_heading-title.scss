@@ -1,0 +1,71 @@
+.heading-title {
+  margin-left: 66px;
+  margin-bottom: 0;
+  display: inline-block;
+  // float: left;
+  color: #000;
+  font-size: 40px;
+  font-weight: 700;
+  line-height: 1em;
+
+  &.position {
+    margin-top: 65px;
+  }
+
+  &_2 {
+    display: block;
+    font-size: 32px;
+  }
+}
+
+@media screen and (max-width: 1199.98px) {
+  .heading-title {
+    margin-left: 4vw;
+    width: 70%;
+    font-size: 3.4vw;
+    font-weight: 700;
+    line-height: 40px;
+
+    &_2 {
+      font-size: 2.8vw;
+
+    }
+  }
+}
+
+@media screen and (max-width: 991.98px) {
+  .heading-title {
+    width: 50%;
+
+    &.position {
+      margin-top: 25px;
+      margin-left: 1.8em;
+    }
+  }
+}
+
+@media screen and (max-width: 767.98px) {
+  .heading-title {
+    margin: .5em 0 .5em 0;
+    display: block;
+    width: 100%;
+    font-size: calc(1em + 2vw);
+    text-align: center;
+    line-height: 1.2em;
+
+    &_2 {
+      font-size: calc(.9em + 1.5vw);
+    }
+  }
+}
+
+@media screen and (max-width: 575.98px) {
+  .heading-title {
+    display: block;
+    width: 100%;
+
+    &.position {
+      margin: 0.8em auto;
+    }
+  }
+}

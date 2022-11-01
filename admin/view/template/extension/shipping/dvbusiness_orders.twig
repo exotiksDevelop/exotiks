@@ -1,0 +1,103 @@
+{{ header }}{{ column_left }}
+<div id="content">
+    <div class="page-header">
+        <div class="container-fluid">
+            <h1>{% if heading %} {{ heading }} {% else %} {{ heading_title }} {% endif %}</h1>
+
+            <ul class="breadcrumb">
+                {% for breadcrumb in breadcrumbs %}
+                    <li><a href="{{ breadcrumb.href }}">{{ breadcrumb.text }}</a></li>
+                {% endfor %}
+            </ul>
+        </div>
+    </div>
+
+    <div class="container-fluid">
+        <div class="panel panel-default">
+            <div class="panel-heading">
+                <h3 class="panel-title"><i class="fa fa-list"></i> {{ dvbusiness_orders_head }}</h3>
+            </div>
+            <div class="panel-body" id="dvbusiness-orders">
+                <div class="panel panel-primary filter">
+                    <div class="panel-body">
+                        <div class="row">
+                            <form action="" method="get">
+                                <input type="hidden" name="route" value="{{ route }}">
+                                <input type="hidden" name="user_token" value="{{ user_token }}">
+                                <div class="col-xs-2">
+                                    <div><label class="font-weight-bold">{{ dvbusiness_orders_status }}</label></div>
+                                    <select name="order_status_id" class="form-control" autocomplete="off">
+                                        <option value="">{{ select_option_all }}</option>
+                                        {% for order_status in order_statuses %}
+                                            <option value="{{ order_status.order_status_id }}" {% if order_status.order_status_id == filter.order_status_id %} selected {% endif %}>{{ order_status.name }}</option>
+                                        {% endfor %}
+                                    </select>
+                                </div>
+                                <div class="col-xs-2">
+                                    <div><label class="font-weight-bold">{{ dvbusiness_orders_shipping_methods }}</label></div>
+                                    <label style="font-weight: normal; padding: 10px 10px 0 0;"><input type="checkbox" name="are_all_shipping_methods" value="1" {% if filter.are_all_shipping_methods %} checked {% endif %}>&nbsp;{{ dvbusiness_orders_shipping_methods_show_all }}</label>
+                                </div>
+                            </form>
+                            <div class="col-xs-2">
+                                <div><label class="font-weight-bold">{{ dvbusiness_orders_actions }}</label></div>
+                                <button data-action="{{ order_form_action }}" class="btn btn-primary send-to-dostavista">{{ dvbusiness_orders_send_to_dostavista }}</button>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+
+                <p>{{ dvbusiness_orders_last_50_orders_shown }}</p>
+
+                <table class="table table-bordered table-hover orders">
+                    <thead>
+                        <tr>
+                            <th class="text-right"><input type="checkbox" value="1"></th>
+                            <th class="text-right">{{ dvbusiness_orders_column_id }}</th>
+                            <th>{{ dvbusiness_orders_column_created }}</th>
+                            <th>{{ dvbusiness_orders_column_status }}</th>
+                            <th>{{ dvbusiness_orders_column_client }}</th>
+                            <th>{{ dvbusiness_orders_column_shipping_method }}</th>
+                            <th class="text-right">{{ dvbusiness_orders_column_total_price }}</th>
+                            <th class="text-right">{{ dvbusiness_orders_column_dostavista_order_id }}</th>
+                            <th>{{ dvbusiness_orders_column_dostavista_courier }}</th>
+                        </tr>
+                    </thead>
+                    <tbody>
+                    {% for order in orders %}
+                        <tr data-order-id="{{ order.order_id }}">
+                            <td class="text-right"><input type="checkbox" value="1"></td>
+                            <td class="text-right">{{ order.order_id }}</td>
+                            <td>{{ order.date_added }}</td>
+                            <td>{{ order.order_status }}</td>
+                            <td>{{ order.customer }}</td>
+                            <td>
+                                {% if order.shipping_code == 'dvbusiness.general' %}
+                                    <strong style="color: #ff3e80">{{ dvbusiness_orders_shipping_method_dostavista }}</strong>
+                                {% else %}
+                                    {{ order.shipping_code }}
+                                {% endif %}
+                            </td>
+                            <td class="text-right">{{ order.total }}</td>
+                            <td class="text-right">{{ order.dostavista_order_id }}</td>
+                            <td class="text-right">
+                                {% if order.dostavista_courier_name %}
+                                    {{ order.dostavista_courier_name }} ({{ order.dostavista_courier_phone }})
+                                {% endif %}
+                            </td>
+                        </tr>
+                    {% endfor %}
+                    </tbody>
+                </table>
+            </div>
+        </div>
+    </div>
+</div>
+<style>
+    #dvbusiness-orders table.orders tbody tr.row-selected td {
+        background: #ffc;
+    }
+</style>
+<script>
+    dvbusiness.orders.translations.not_selected_error = "{{ dvbusiness_orders_not_selected_error }}";
+</script>
+{{ footer }}

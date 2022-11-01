@@ -1,0 +1,40 @@
+.breadcrumb {
+  margin-top: 1em;
+  margin-bottom: 2em;
+  padding: 8px 15px;
+  list-style: none;
+  background-color: unset;
+  border-radius: 4px;
+  color: black;
+
+  li {
+    &:before {
+      color: black !important;
+    }
+
+    a {
+      font-weight: 500;
+      font-size: 1em;
+      text-decoration: none;
+      color: inherit;
+      transition-duration: .1s;
+
+      &:hover {
+        color: $accent;
+      }
+    }
+  }
+}
+
+@media screen and (max-width: 767.98px) {
+  .breadcrumb {
+    margin: 0;
+    line-height: 2em;
+  }
+}
+
+@media screen and (max-width: 575.98px) {
+  .breadcrumb {
+    text-align: center;
+  }
+}

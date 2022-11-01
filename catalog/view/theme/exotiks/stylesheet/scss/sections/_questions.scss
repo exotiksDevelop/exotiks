@@ -1,0 +1,124 @@
+.questions {
+  padding-bottom: 140px;
+  background-size: cover;
+  background-attachment: fixed;
+  background: url('./images/bg2.jpg');
+
+  &_white {
+    background: unset;
+    .questions__title,
+    .questions__quest {
+      color: black;
+    }
+  }
+
+  &__title {
+    padding-top: 67px;
+    margin-bottom: 48px;
+    display: block;
+    text-align: center;
+    font-size: 48px;
+    font-weight: 700;
+    line-height: 1em;
+    color: #fff;
+  }
+
+  &__line {
+    max-width: 1067px;
+    height: 1px;
+    background-color: #939393;
+    border: none;
+
+  }
+
+  &__item {
+    max-width: 1067px;
+    margin: auto;
+
+    &[open] .flag:after {
+      content: '-';
+    }
+
+  }
+
+  &__quest {
+    color: #fff;
+    font-size: 24px;
+    font-weight: 600;
+    line-height: 48px;
+    outline: none;
+    list-style: none;
+
+    .text {
+      width: calc(100% - 60px);
+      display: inline-block;
+      line-height: 1.5em;
+    }
+
+    &::-webkit-details-marker {
+      display: none;
+    }
+
+    &:hover {
+      cursor: pointer;
+    }
+
+    .flag:after {
+      content: '+';
+      font-weight: 600;
+      float: right;
+      padding: 15px;
+      font-size: 40px;
+      border-radius: 50%;
+      justify-content: center;
+      width: 50px;
+      height: 50px;
+      display: inline-flex;
+      align-items: center;
+      border: 2px solid #757575;
+    }
+  }
+
+  &__answer {
+    margin-top: 12px;
+    width: 93%;
+    font-size: 18px;
+    line-height: 1.5em;
+    font-weight: 700;
+    color: #71c500;
+  }
+}
+
+@media screen and (max-width: 767.98px) {
+  .questions {
+    padding-bottom: 16vw;
+    &__title {
+      padding-top: 1.1em;
+      font-size: calc(1.5em + 1.5vw);
+      line-height: 1.2em;
+    }
+
+    &__quest {
+      font-size: calc(0.7em + 1vw);
+    }
+
+    &__answer {
+      font-size: calc(0.5em + 1.1vw);
+    }
+  }
+
+}
+
+@media screen and (max-width: 575.98px) {
+  .questions {
+
+
+    &__quest {
+      font-size: calc(0.7em + 1.4vw);
+    }
+
+    &__answer {
+      font-size: calc(0.5em + 1.5vw);
+    }
+  }
+}

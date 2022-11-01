@@ -1,0 +1,279 @@
+.fundraiser {
+  position: relative;
+  overflow: hidden;
+  background-size: cover;
+  background-attachment: fixed;
+  background: url('./images/bg2.jpg');
+  
+  &__title {
+    width: 50%;
+    padding-top: 60px;
+    font-size: 48px;
+    font-weight: 600;
+    &-link {
+      color: #fff;
+      text-decoration: none;
+      &:hover,
+      &:focus {
+        color: #fff;
+        text-decoration: none;
+      }
+    }
+  }
+
+  &__block {
+    margin-top: 38px;
+    display: inline-block;
+    width: 428px;
+    height: 97px;
+    color: white;
+
+    &-sub {
+      height: inherit;
+      line-height: 1em;
+      float: left;
+      display: inline-flex;
+      justify-content: center;
+      align-items: center;
+    }
+
+    .sub-1 {
+      width: 27.5%;
+      font-size: 24px;
+      background-color: $accent;
+    }
+
+    .sub-2 {
+      width: 32.4%;
+      font-size: 48px;
+      font-weight: 700;
+      background-color: #E1133D;
+    }
+
+    .sub-3 {
+      width: 40.1%;
+      font-size: 14px;
+      background-color: #BC1436;
+      flex-direction: column;
+
+      span {
+        margin-top: 0.6em;
+        font-size: 30px;
+        font-weight: 700;
+        text-decoration: line-through;
+      }
+    }
+  }
+
+  &__block2 {
+    margin-top: 51px;
+    display: inline-block;
+    width: 428px;
+    height: 55px;
+    font-weight: 600;
+    color: white;
+
+    &-sub {
+      display: inline-flex;
+      height: inherit;
+      line-height: .8em;
+      float: left;
+      flex-direction: column;
+      justify-content: center;
+      align-items: center;
+      width: 20%;
+
+      span {
+        font-size: 13px;
+        line-height: 1.1em;
+      }
+    }
+
+    .sub-1 {
+      font-size: 14px;
+      line-height: 1.2em;
+    }
+
+    .sub-2,
+    .sub-3,
+    .sub-4,
+    .sub-5 {
+      font-size: 44px;
+      line-height: 1em;
+    }
+  }
+
+  &__btn {
+    margin-top: 64px;
+    margin-bottom: 100px;
+    display: inline-flex;
+    justify-content: center;
+    align-items: center;
+    width: 203px;
+    height: 65px;
+    border-radius: 5px;
+    background-color: $red;
+    color: white;
+    font-size: 18px;
+    font-weight: 600;
+    &:hover,
+    &:active {
+      background-color: $accent;
+    }
+    &-ico {
+      margin-right: 16px;
+      background: url(./images/cart-btn.svg);
+      width: 33px;
+      height: 31px;
+    }
+  }
+
+  &__right-img {
+    display: inline-block;
+    height: 100%;
+    top: 0;
+    bottom: 0;
+    right: 0;
+    position: absolute;
+    object-fit: cover;
+    object-position: center;
+    width: 50%;
+  }
+}
+
+@media screen and (max-width: 991.98px) {
+  .fundraiser {
+
+    &__block,
+    &__block2 {
+      width: 48%;
+    }
+
+    &__block {
+
+      .sub-2 {
+        font-size: calc(1.5vw + 1.5em);
+      }
+    }
+  }
+}
+
+@media screen and (max-width: 767.98px) {
+  .fundraiser {
+    &__title {
+      margin-top: 8vw;
+      font-size: calc(2em + 1vw);
+    }
+
+    &__block {
+      .sub-1 {
+        font-size: calc(0.7em + 1vw);
+      }
+
+      .sub-2 {
+        font-size: calc(1.4vw + 1.2em);
+      }
+
+      .sub-3 span {
+        font-size: calc(1em + 1.5vw);
+      }
+    }
+
+    &__block2 {
+
+      .sub-2,
+      .sub-3,
+      .sub-4,
+      .sub-5 {
+        font-size: calc(1.2em + 1.6vw);
+      }
+    }
+
+    &__btn {
+      margin-top: 8vw;
+      margin-bottom: 12vw;
+    }
+  }
+}
+
+@media screen and (max-width: 575.98px) {
+  .fundraiser {
+    &__title {
+      font-size: calc(1em + 2vw);
+    }
+
+    &__block {
+      margin-top: 8vw;
+      display: flex;
+      flex-direction: column;
+      height: 53vw;
+      width: 45%;
+
+      &-sub {
+        width: 100% !important;
+      }
+
+      .sub-1 {
+        font-size: calc(0.6em + 1.2vw);
+      }
+
+      .sub-2 {
+        font-size: calc(1.4vw + 1em);
+      }
+
+      .sub-3 {
+        font-size: calc(.5em + 0.5vw);
+      }
+    }
+
+    &__block2 {
+      margin-top: 4.5vw;
+      height: 33vw;
+
+      &-sub {
+        width: 45%;
+
+        span {
+          font-size: calc(0.7em + .5vw);
+
+        }
+      }
+
+      .sub-1 {
+        font-size: calc(0.5em + 1.2vw);
+      }
+
+      .sub-2,
+      .sub-3,
+      .sub-4,
+      .sub-5 {
+        width: 11vw;
+
+        font-size: calc(1.1em + 3vw);
+        float: right;
+        height: 16vw;
+
+      }
+
+
+      .sub-2 span,
+      .sub-3 span,
+      .sub-4 span,
+      .sub-5 span {
+        font-size: calc(0.3em + 0.3vw);
+      }
+    }
+
+    &__btn {
+      width: 45%;
+      font-size: 15px;
+
+      &-ico {
+        width: 27px;
+        height: 27px;
+        background-size: contain;
+        background-repeat: no-repeat;
+      }
+    }
+  }
+}

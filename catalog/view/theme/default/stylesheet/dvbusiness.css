@@ -1,0 +1,12 @@
+.shipping_dvbusiness_description {
+    margin: 10px;
+}
+
+.shipping_dvbusiness_description .colored-wrapper {
+    background: #f9f9f9;
+    padding: 10px 10px 1px;
+}
+
+.shipping_dvbusiness_description .form-group.row {
+    margin-bottom: 5px;
+}

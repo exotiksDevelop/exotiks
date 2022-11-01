@@ -1,0 +1,20 @@
+{{ header }}
+<div id="content">
+	<div class="breadcrumb">
+        {% for breadcrumb in breadcrumbs %}
+            {{ breadcrumb['separator'] }}<a href="{{ breadcrumb['href'] }}">{{ breadcrumb['text'] }}</a>
+        {% endfor %}
+	</div>
+    {% if (error_warning) %}
+		<div class="warning">{{ error_warning }}</div>
+    {% endif %}
+    {% if (success) %}
+		<div class="success">{{ success }}</div>
+    {% endif %}
+    {% if (attention is defined) %}
+		<div class="attention">{{ attention }}</div>
+    {% endif %}
+	<div class="box">
+        {{ content }}
+	</div>
+{{ footer }}

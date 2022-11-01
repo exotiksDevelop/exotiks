@@ -1,0 +1,210 @@
+body {
+  margin: 0;
+  padding: 0;
+  background-color: white;
+  background-image: none;
+  font-family: "Gilroy";
+  font-size: 16px;
+  position: relative;
+  overflow-x: hidden;
+}
+
+h1,
+h2,
+h3,
+h4,
+h5,
+h6 {
+  padding: 0;
+  margin: 0;
+  line-height: 1em;
+  margin-bottom: 1em;
+}
+
+.container {
+  margin: 0 auto;
+  max-width: 1315px;
+  width: 100%;
+  padding: 0 15px;
+  // overflow: hidden;
+  height: inherit;
+  background: unset;
+  position: relative;
+
+  &:before {
+    display: none;
+  }
+
+  &:after {
+    display: none;
+  }
+}
+
+a,
+a:focus {
+  outline: none !important;
+  border: none;
+}
+
+.row {
+  margin: 0;
+}
+
+button {
+  background: none;
+  border: medium none;
+  cursor: pointer;
+}
+
+.header {
+  background-color: white;
+  overflow: hidden;
+}
+
+.pull-left,
+.pull-right {
+  margin: 1.5em 1em 0;
+}
+
+#myModal {
+  font-family: "Gilroy";
+
+  .form-block {
+    min-height: 185px;
+
+    input {
+      margin: 13px 0;
+    }
+
+    input:focus {
+      border-color: $accent;
+      -webkit-box-shadow: 0 0 2px $accent;
+              box-shadow: 0 0 2px $accent;
+    }
+
+    .btn {
+      font-family: inherit;
+      background: $accent;
+      height: 46px;
+      font-weight: 600;
+      font-size: 18px;
+      color: #fff;
+      text-transform: uppercase;
+    }
+  }
+}
+
+input[type=number]::-webkit-inner-spin-button,
+input[type=number]::-webkit-outer-spin-button {
+  -webkit-appearance: none;
+  margin: 0;
+}
+
+.tab-pane.active {
+  border: none;
+}
+
+.alert-success {
+  background-color: white;
+  color: $accent;
+
+  a {
+    color: $accent;
+  }
+}
+
+.list-unstyled {
+  li {
+    a {
+      color: $accent !important;
+    }
+  }
+}
+.CDEK-widget__popup-mask {
+  z-index: 999;
+}
+.simplecheckout {
+  padding-top: 2em !important;
+}
+
+.simple-content .buttons {
+  // width: auto !important;
+  // height: auto;
+  // margin-left: 0 !important;
+}
+
+.list-group {
+  max-width: 75%;
+}
+.geoip-choose-region .i a {
+  color: $accent;
+}
+.btn-info,
+.btn-primary {
+  background-color: $accent;
+  border-color: $accent;
+
+  &:hover,
+  &:focus,
+  &:active,
+  &:active:focus {
+    -webkit-transform: scale(1.01);
+        -ms-transform: scale(1.01);
+            transform: scale(1.01);
+    background-color: $accent;
+    border-color: $accent;
+  }
+}
+
+.btn-danger {
+  background-color: $red;
+  border-color: $red;
+
+  &:hover,
+  &:focus,
+  &:active,
+  &:active:focus {
+    -webkit-transform: scale(1.01);
+        -ms-transform: scale(1.01);
+            transform: scale(1.01);
+    background-color: $red;
+    border-color: $red;
+  }
+
+}
+
+.modal-body {
+  height: 280px!important;
+}
+
+.well {
+  background-color: $pastel;
+
+  .form-group {
+    a {
+      color: $accent !important;
+    }
+  }
+}
+
+@media screen and (max-width: 991.98px) {
+  .simplecheckout {
+    padding-top: 1em !important;
+  }
+}
+
+@media screen and (max-width: 575.98px) {
+  .simplecheckout-step {
+    margin-bottom: 2em;
+  }
+
+  .pull-left,
+  .pull-right {
+    margin: 1.5em 0 0;
+    width: 100%;
+  }
+
+  .list-group {
+    max-width: 100%;
+  }
+}

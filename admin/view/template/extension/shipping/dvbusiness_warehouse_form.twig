@@ -1,0 +1,177 @@
+{{ header }}{{ column_left }}
+
+<div id="content">
+    <div class="page-header">
+        <div class="container-fluid">
+            <h1>{% if heading %} {{ heading }} {% else %} {{ heading_title }} {% endif %}</h1>
+
+            <ul class="breadcrumb">
+                {% for breadcrumb in breadcrumbs %}
+                    <li><a href="{{ breadcrumb.href }}">{{ breadcrumb.text }}</a></li>
+                {% endfor %}
+            </ul>
+        </div>
+    </div>
+
+    <div class="container-fluid">
+        <div class="panel panel-default">
+            <div class="panel-heading">
+                <h3 class="panel-title"><i class="fa fa-file-o"></i> {{ dvbusiness_warehouse_form_head }}</h3>
+            </div>
+            <div class="panel-body" id="dvbusiness-warehouse-form">
+                <div class="panel">
+                    <div class="panel-body" style="background: #f9f9f9">
+                        <div class="form-horizontal">
+                            <input type="hidden" name="warehouse_id" value="{{ warehouse.id }}">
+                            <div class="form-group row">
+                                <label class="col-sm-4 control-label">{{ dvbusiness_warehouse_form_name }}</label>
+                                <div class="col-sm-8">
+                                    <input type="text" name="name" class="form-control" value="{{ warehouse.name }}">
+                                </div>
+                            </div>
+                            <div class="form-group row">
+                                <label class="col-sm-4 control-label">{{ dvbusiness_warehouse_form_city }}</label>
+                                <div class="col-sm-8">
+                                    <input type="text" name="city" class="form-control" value="{{ warehouse.city }}">
+                                </div>
+                            </div>
+                            <div class="form-group row">
+                                <label class="col-sm-4 control-label">
+                                    <span data-toggle="tooltip" title="" data-original-title="{{ dvbusiness_warehouse_form_address_tooltip }}">
+                                        {{ dvbusiness_warehouse_form_address }}
+                                    </span>
+                                </label>
+                                <div class="col-sm-8">
+                                    <input type="text" name="address" class="form-control" value="{{ warehouse.address }}">
+                                </div>
+                            </div>
+                            <div class="form-group row">
+                                <label class="col-sm-4 control-label">{{ dvbusiness_warehouse_form_schedule }}</label>
+                                <div class="col-sm-8">
+                                    <div class="row">
+                                        <div class="col-sm-6">
+                                            <div class="media">
+                                                <div class="media-body">
+                                                    <select name="work_start_time" class="form-control">
+                                                        {% for value, title in required_time_enum %}
+                                                            <option value="{{ value }}" {% if value == warehouse.work_start_time %} selected {% endif %}>{{ title }}</option>
+                                                        {% endfor %}
+                                                    </select>
+                                                </div>
+                                            </div>
+                                        </div>
+                                        <div class="col-sm-6">
+                                            <div class="media">
+                                                <label class="control-label pull-left">{{ dvbusiness_warehouse_form_schedule_time_to }}</label>
+                                                <div class="media-body">
+                                                    <select name="work_finish_time" class="form-control">
+                                                        {% for value, title in required_time_enum %}
+                                                            <option value="{{ value }}" {% if value == warehouse.work_finish_time %} selected {% endif %}>{{ title }}</option>
+                                                        {% endfor %}
+                                                    </select>
+                                                </div>
+                                            </div>
+                                        </div>
+                                    </div>
+                                </div>
+                            </div>
+                            <div class="form-group row">
+                                <div class="col-sm-8 col-sm-offset-4">
+                                    <label>
+                                        <input type="checkbox" name="workdays" value="1" {% if 1 in warehouse.workdays %} checked {% endif %}>
+                                        {{ dvbusiness_warehouse_workday_1 }}
+                                    </label>
+                                </div>
+                            </div>
+                            <div class="form-group row">
+                                <div class="col-sm-8 col-sm-offset-4">
+                                    <label>
+                                        <input type="checkbox" name="workdays" value="2" {% if 2 in warehouse.workdays %} checked {% endif %}>
+                                        {{ dvbusiness_warehouse_workday_2 }}
+                                    </label>
+                                </div>
+                            </div>
+                            <div class="form-group row">
+                                <div class="col-sm-8 col-sm-offset-4">
+                                    <label>
+                                        <input type="checkbox" name="workdays" value="3" {% if 3 in warehouse.workdays %} checked {% endif %}>
+                                        {{ dvbusiness_warehouse_workday_3 }}
+                                    </label>
+                                </div>
+                            </div>
+                            <div class="form-group row">
+                                <div class="col-sm-8 col-sm-offset-4">
+                                    <label>
+                                        <input type="checkbox" name="workdays" value="4" {% if 4 in warehouse.workdays %} checked {% endif %}>
+                                        {{ dvbusiness_warehouse_workday_4 }}
+                                    </label>
+                                </div>
+                            </div>
+                            <div class="form-group row">
+                                <div class="col-sm-8 col-sm-offset-4">
+                                    <label>
+                                        <input type="checkbox" name="workdays" value="5" {% if 5 in warehouse.workdays %} checked {% endif %}>
+                                        {{ dvbusiness_warehouse_workday_5 }}
+                                    </label>
+                                </div>
+                            </div>
+                            <div class="form-group row">
+                                <div class="col-sm-8 col-sm-offset-4">
+                                    <label>
+                                        <input type="checkbox" name="workdays" value="6" {% if 6 in warehouse.workdays %} checked {% endif %}>
+                                        {{ dvbusiness_warehouse_workday_6 }}
+                                    </label>
+                                </div>
+                            </div>
+                            <div class="form-group row">
+                                <div class="col-sm-8 col-sm-offset-4">
+                                    <label>
+                                        <input type="checkbox" name="workdays" value="7" {% if 7 in warehouse.workdays %} checked {% endif %}>
+                                        {{ dvbusiness_warehouse_workday_7 }}
+                                    </label>
+                                </div>
+                            </div>
+                            <div class="form-group row">
+                                <label class="col-sm-4 control-label">{{ dvbusiness_warehouse_form_contact }}</label>
+                                <div class="col-sm-8">
+                                    <div class="row">
+                                        <div class="col-sm-7" style="padding-right: 0">
+                                            <input type="text" name="contact_name" class="form-control" value="{{ warehouse.contact_name }}" placeholder="{{ dvbusiness_warehouse_form_contact_name_placeholder }}">
+                                        </div>
+                                        <div class="col-sm-5">
+                                            <input type="text" name="contact_phone" class="form-control" value="{{ warehouse.contact_phone }}" placeholder="{{ dvbusiness_warehouse_form_contact_phone_placeholder }}">
+                                        </div>
+                                    </div>
+                                </div>
+                            </div>
+                            <div class="form-group row">
+                                <label class="col-sm-4 control-label">
+                                    <span data-toggle="tooltip" title="" data-original-title="{{ dvbusiness_warehouse_form_note_tooltip }}">
+                                        {{ dvbusiness_warehouse_form_note }}
+                                    </span>
+                                </label>
+                                <div class="col-sm-8">
+                                    <textarea name="note" class="form-control" rows="4">{{ warehouse.note }}</textarea>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+                <button class="btn btn-success button-save-warehouse">{{ dvbusiness_warehouse_form_save_button }}</button>
+            </div>
+        </div>
+    </div>
+</div>
+<style>
+    #dvbusiness-warehouse-form .form-group {
+        padding-top: 5px;
+        padding-bottom: 5px;
+    }
+    #dvbusiness-warehouse-form .form-group + .form-group {
+        border-top: 0;
+    }
+</style>
+<script>
+    dvbusiness.warehouseForm.translations.saving_error = "{{ dvbusiness_warehouse_form_saving_error }}";
+</script>
+{{ footer }}

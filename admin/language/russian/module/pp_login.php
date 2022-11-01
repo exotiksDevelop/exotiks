@@ -1,0 +1,31 @@
+<?php
+$_ = array_merge(
+  (isset($_)?$_:array()),
+  array (
+  'heading_title' => 'Log In with PayPal',
+  'text_module' => 'Modules',
+  'text_success' => 'Success: You have modified module Log In with PayPal!',
+  'text_edit' => 'Edit Log In with PayPal Module',
+  'text_button_grey' => 'Grey',
+  'text_button_blue' => 'Blue (Recommended)',
+  'entry_client_id' => 'Client ID',
+  'entry_secret' => 'Secret',
+  'entry_sandbox' => 'Sandbox Mode',
+  'entry_debug' => 'Debug Logging',
+  'entry_customer_group' => 'Customer Group',
+  'entry_button' => 'Button Colour',
+  'entry_seamless' => 'Allow "Seamless Checkout"',
+  'entry_locale' => 'Locale',
+  'entry_return_url' => 'Return URL',
+  'entry_status' => 'Status',
+  'help_sandbox' => 'Use sandbox (testing) environment?',
+  'help_customer_group' => 'For new customers, which Customer Group should they get created as?',
+  'help_debug_logging' => 'Enabling this will allow data to be added to your error log to help debug any problems.',
+  'help_seamless' => 'Allows auto-login when customers choose PayPal Express Checkout. To use this, the option must be enabled in your Log in With PayPal account. You must also use the same account as the one used in Express Checkout.',
+  'help_locale' => 'This is the PayPal locale setting for your store languages',
+  'help_return_url' => 'This needs to be added in the PayPal app configuration under app redirect URLs.',
+  'error_permission' => 'Warning: You do not have permission to modify module Log In with PayPal!',
+  'error_client_id' => 'Client ID required!',
+  'error_secret' => 'Secret required!',
+));
+

@@ -1,0 +1,6 @@
+rozetka,hotline,price,nadavi,google,facebook,prom,aliexpress,yandex,domby,zakupkimos,turbo,cdek,goods,youla,mobilluck,allo,fotos,privat,joom,olx,beru,kidstaff,bigl,froot,regmarkets,besplatka,skidochnik,metamarket,vcene,obyava,ekatalog,salidzini,tiu,priceru,tomasby,kaspi,autoru,drom,allbiz
+status,name,language,currency,quantity,stock,andor,option_multiplier_status,option_multiplier_id,categories,manufacturers,products_mode,genname,gendesc,gendesc_mode,attribute_status,secret,images,image,step,markup,log,fields,seopro,delivery_cost,delivery_time,delivery_jump,utm,custom_xml,field_price,field_id,clear_desc
+ru==youla,google,facebook,aliexpress,yandex,turbo,cdek,goods,mobilluck,joom,beru,regmarkets,tiu,priceru,autoru,drom,zakupkimos
+ua==rozetka,hotline,aliexpress,price,nadavi,google,facebook,prom,yandex,turbo,mobilluck,allo,fotos,privat,joom,olx,kidstaff,bigl,besplatka,skidochnik,metamarket,vcene,obyava,ekatalog,allbiz
+kz==google,aliexpress,facebook,froot,yandex,turbo,kaspi
+***Это файл который нужен для работы модуля UniXML, его удалять нельзя***

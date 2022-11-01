@@ -1,0 +1,125 @@
+<h2>{{ text_payment_info }}</h2>
+<table class="table table-striped table-bordered">
+    <thead>
+        <tr>
+            <th>{{ text_bill_title }}</th>
+            <th>{{ text_bill_amount }}</th>
+            <th>{{ text_bill_status }}</th>
+            <th>{{ text_bill_date }}</th>
+            <th>{{ text_bill_action }}</th>
+        </tr>
+    </thead>
+    <tbody>
+        {% for bill in bills %}
+            <tr>
+                <td>
+                    {% if bill.payUrl is not empty %}
+                        <a href="{{ bill.payUrl }}" target="_blank">{{ bill.billId }}</a>
+                    {% else %}
+                        {{ bill.billId }}
+                    {% endif %}
+                </td>
+                {% if bill.error is not empty %}
+                    <td colspan="4" class="text-danger">{{ bill.error }}</td>
+                {% else %}
+                    <td>{{ bill.amount.value }}&nbsp;{{ bill.amount.currency }}</td>
+                    <td>
+                        {{ bill.status.value }}<br>
+                        {{ bill.status.changedDateTime }}
+                    </td>
+                    <td>
+                        {{ text_from }}&nbsp;{{ bill.creationDateTime }}<br>
+                        {{ text_to }}&nbsp;{{ bill.expirationDateTime }}
+                    </td>
+                    <td>
+                        {% if bill.status.value == 'WAITING' %}
+                            <button id="button-qiwi-reject-{{ bill.billId }}" type="button" class="btn btn-primary" data-loading-text="{{ text_loading }}">{{ text_reject }}</button>
+                            <script type="text/javascript"><!--
+                                $('#button-qiwi-reject-{{ bill.billId }}').on('click', function () {
+                                    $.ajax({
+                                        type: 'POST',
+                                        url: 'index.php?route=extension/payment/qiwi/reject&user_token={{ user_token }}',
+                                        dataType: 'json',
+                                        data: {
+                                            order_id: {{ order_id }},
+                                            bill_id: '{{ bill.billId }}'
+                                        },
+                                        beforeSend: function() {
+                                            $('#button-qiwi-reject').button('loading');
+                                        },
+                                        complete: function() {
+                                            $('#button-qiwi-reject').button('reset');
+                                        },
+                                        success: function(json) {
+                                            if (json['error']) {
+                                                alert(json['error']);
+                                            }
+                                            if (json['redirect']) {
+                                                location.href = json['redirect'];
+                                            }
+                                        },
+                                        error: function(xhr, ajaxOptions, thrownError) {
+                                            alert(thrownError + "\r\n" + xhr.statusText + "\r\n" + xhr.responseText);
+                                        }
+                                    });
+                                });
+                            //--></script>
+                        {% elseif bill.status.value == 'PAID' %}
+                            <div class="form-group">
+                                <label class="sr-only" for="refund-amount-value-{{ bill.billId }}">{{ entry_refund_amount }}</label>
+                                <div class="input-group">
+                                    <input type="number" class="form-control" id="refund-amount-value-{{ bill.billId }}" placeholder="{{ entry_amount }}"/>
+                                    <div class="input-group-addon">{{ bill.amount.currency }}</div>
+                                </div>
+                            </div>
+                            <button id="button-qiwi-refund-{{ bill.billId }}" type="button" class="btn btn-primary" data-loading-text="{{ text_loading }}">{{ text_refund }}</button>
+                            <script type="text/javascript"><!--
+                                $('#button-qiwi-refund-{{ bill.billId }}').on('click', function () {
+                                    $.ajax({
+                                        type: 'POST',
+                                        url: 'index.php?route=extension/payment/qiwi/refund&user_token={{ user_token }}',
+                                        dataType: 'json',
+                                        data: {
+                                            order_id: {{ order_id }},
+                                            bill_id: '{{ bill.billId }}',
+                                            amount: parseFloat($('#refund-amount-value-{{ bill.billId }}').val())
+                                        },
+                                        beforeSend: function() {
+                                            $('#button-qiwi-refund-{{ bill.billId }}').button('loading');
+                                        },
+                                        complete: function() {
+                                            $('#button-qiwi-refund-{{ bill.billId }}').button('reset');
+                                        },
+                                        success: function(json) {
+                                            if (json['error']) {
+                                                alert(json['error']);
+                                            }
+                                            if (json['redirect']) {
+                                                location.href = json['redirect'];
+                                            }
+                                        },
+                                        error: function(xhr, ajaxOptions, thrownError) {
+                                            alert(thrownError + "\r\n" + xhr.statusText + "\r\n" + xhr.responseText);
+                                        }
+                                    });
+                                });
+                                //--></script>
+                        {% endif %}
+                    </td>
+                {% endif %}
+            </tr>
+            {% for refund in bill.refunds %}
+                <tr>
+                    <td>{{ text_refund }}&nbsp;{{ refund.refundId }}</td>
+                    {% if bill.error is not empty %}
+                        <td colspan="4" class="text-danger">{{ refund.error }}</td>
+                    {% else %}
+                        <td>{{ refund.amount.value }}&nbsp;{{ refund.amount.currency }}</td>
+                        <td>{{ refund.status }}</td>
+                        <td colspan="2">{{ text_from }}&nbsp;{{ refund.dateTime }}</td>
+                    {% endif %}
+                </tr>
+            {% endfor %}
+        {% endfor %}
+    </tbody>
+</table>

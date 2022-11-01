@@ -1,0 +1,85 @@
+{{ header }}{{ column_left }}
+<div id="content">
+    <div class="page-header">
+        <div class="container-fluid">
+            <h1>{{ heading_warehouses_edit }}</h1>
+            <ul class="breadcrumb">
+                {% for breadcrumb in breadcrumbs %}
+                    <li><a href="{{ breadcrumb.href }}">{{ breadcrumb.text }}</a></li>
+                {% endfor %}
+            </ul>
+        </div>
+    </div>
+    <div class="container-fluid">
+        <div class="panel panel-default">
+            <div class="panel-heading">
+                <h3 class="panel-title"><i class="fa fa-pencil"></i> {{ heading_warehouses_index }}</h3>
+            </div>
+            <div class="panel-body">
+                <table class="table table-bordered table-hover">
+                    <thead>
+                    <tr>
+                        <th scope="col">#</th>
+                        <th scope="col">{{ entry_address }}</th>
+                        <th scope="col">{{ entry_warehouse_email }}</th>
+                        <th scope="col">{{ entry_warehouse_contact_name }}</th>
+                        <th scope="col">{{ entry_warehouse_contact_phone }}</th>
+                        <th scope="col">{{ entry_warehouse_default }}</th>
+                        <th class="text-right"></th>
+                    </tr>
+                    </thead>
+                    <tbody>
+                    {% for warehouse in warehouses %}
+                        <tr>
+                            <td>{{ warehouse.id }}</td>
+                            <td><a href="{{ createUrl }}&id={{ warehouse.id }}">{{ warehouse.address }}</a></td>
+                            <td>{{ warehouse.contactEmail }}</td>
+                            <td>{{ warehouse.contactName }}</td>
+                            <td>{{ warehouse.contactPhone }}</td>
+                            <td>
+                                {% if default_id == warehouse.id %}
+                                    <i class="fa fa-check"></i>
+                                {% endif %}
+                            </td>
+                            <td class="text-right">
+                                <a href="{{ createUrl }}&id={{ warehouse.id }}" class="btn btn-primary"><i class="fa fa-pencil"></i></a>
+                                <button
+                                        class="btn btn-danger js-yandex-taxi-delivery-warehouse-delete"
+                                        data-id="{{ warehouse.id }}"
+                                        type="button"
+                                >
+                                    <i class="fa fa-minus-circle" aria-hidden="true"></i>
+                                </button>
+                            </td>
+                        </tr>
+                    {% endfor %}
+                    </tbody>
+                </table>
+                <a href="{{ createUrl }}" class="btn btn-success">{{ button_add_warehouse }}</a>
+            </div>
+        </div>
+
+        {{ support_contact }}
+    </div>
+</div>
+{{ footer }}
+
+<script type="text/javascript"><!--
+    $('.js-yandex-taxi-delivery-warehouse-delete').click(function () {
+
+        let id = $(this).data('id');
+
+        let message = '{{ message_delete_warehouse_confirm }}';
+
+        if (!confirm(message.replace(/%s/g, id))) {
+            return;
+        }
+        $.post('index.php?route=extension/shipping/yandextaxi/deleteWarehouse&user_token={{ user_token }}', {id: id})
+            .done(function (response) {
+                alert('{{ message_warehouse_was_deleted }}');
+                location.reload();
+            }).fail(function (response) {
+            alert('Error');
+        });
+    });
+    //--></script>

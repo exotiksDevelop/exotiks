@@ -1,0 +1,409 @@
+{{ header }}{{ column_left }}
+<div id="content">
+    <div class="page-header">
+        <div class="container-fluid">
+            <div class="pull-right">
+                <button type="submit" form="form-qiwi" data-toggle="tooltip" title="{{ button_save }}" class="btn btn-primary"><i class="fa fa-save"></i></button>
+                <a href="{{ cancel }}" data-toggle="tooltip" title="{{ button_cancel }}" class="btn btn-default"><i class="fa fa-reply"></i></a>
+            </div>
+            <h1>{{ heading_title }}</h1>
+            <ul class="breadcrumb">
+                {% for breadcrumb in breadcrumbs %}
+                    <li><a href="{{ breadcrumb.href }}">{{ breadcrumb.text }}</a></li>
+                {% endfor %}
+            </ul>
+        </div>
+    </div>
+    <div class="container-fluid">
+        {% if error.warning %}
+            <div class="alert alert-danger">
+                <i class="fa fa-exclamation-circle"></i> {{ error.warning }}
+                <button type="button" class="close" data-dismiss="alert">&times;</button>
+            </div>
+        {% endif %}
+        <div class="panel panel-default">
+            <div class="panel-heading">
+                <h3 class="panel-title"><i class="fa fa-pencil"></i> {{ text_edit }}</h3>
+            </div>
+            <div class="panel-body">
+                <div class="well">{{ text_description }}</div>
+                <form action="{{ action }}" method="post" enctype="multipart/form-data" id="form-qiwi" class="form-horizontal">
+                    <ul class="nav nav-tabs">
+                        <li class="active"><a href="#tab-general" data-toggle="tab">{{ tab_general }}</a></li>
+                        <li><a href="#tab-qiwi" data-toggle="tab">{{ tab_qiwi }}</a></li>
+                        <li><a href="#tab-order-status" data-toggle="tab">{{ tab_order_status }}</a></li>
+                    </ul>
+                    <div class="tab-content">
+                        <div class="tab-pane active" id="tab-general">
+                            <div class="form-group">
+                                <label class="col-sm-2 control-label" for="input-status">
+                                    {% if help_status is not empty %}
+                                        <span data-toggle="tooltip" title="{{ help_status }}">{{ entry_status }}</span>
+                                    {% else %}
+                                        {{ entry_status }}
+                                    {% endif %}
+                                </label>
+                                <div class="col-sm-10">
+                                    <select name="payment_qiwi_status" id="input-status" class="form-control">
+                                        {% if payment_qiwi_status %}
+                                            <option value="1" selected="selected">{{ text_enabled }}</option>
+                                            <option value="0">{{ text_disabled }}</option>
+                                        {% else %}
+                                            <option value="1">{{ text_enabled }}</option>
+                                            <option value="0" selected="selected">{{ text_disabled }}</option>
+                                        {% endif %}
+                                    </select>
+                                    {% if error.status %}
+                                        <div class="text-danger">{{ error.status }}</div>
+                                    {% endif %}
+                                </div>
+                            </div>
+                            <div class="form-group required">
+                                <label class="col-sm-2 control-label" for="input-title">
+                                    {% if help_title is not empty %}
+                                        <span data-toggle="tooltip" title="{{ help_title }}">{{ entry_title }}</span>
+                                    {% else %}
+                                        {{ entry_title }}
+                                    {% endif %}
+                                </label>
+                                <div class="col-sm-10">
+                                    <input type="text" name="payment_qiwi_title" value="{{ payment_qiwi_title }}" placeholder="{{ entry_title }}" id="input-title" class="form-control"/>
+                                </div>
+                                {% if error.title %}
+                                    <div class="text-danger">{{ error.title }}</div>
+                                {% endif %}
+                            </div>
+                            <div class="form-group">
+                                <label class="col-sm-2 control-label" for="input-description">
+                                    {% if help_description is not empty %}
+                                        <span data-toggle="tooltip" title="{{ help_description }}">{{ entry_description }}</span>
+                                    {% else %}
+                                        {{ entry_description }}
+                                    {% endif %}
+                                </label>
+                                <div class="col-sm-10">
+                                    <input type="text" name="payment_qiwi_description" value="{{ payment_qiwi_description }}" placeholder="{{ entry_description }}" id="input-description" class="form-control"/>
+                                </div>
+                                {% if error.description %}
+                                    <div class="text-danger">{{ error.description }}</div>
+                                {% endif %}
+                            </div>
+                            <div class="form-group">
+                                <label class="col-sm-2 control-label" for="input-sort-order">
+                                    {% if help_sort_order is not empty %}
+                                        <span data-toggle="tooltip" title="{{ help_sort_order }}">{{ entry_sort_order }}</span>
+                                    {% else %}
+                                        {{ entry_sort_order }}
+                                    {% endif %}
+                                </label>
+                                <div class="col-sm-10">
+                                    <input type="text" name="payment_qiwi_sort_order" value="{{ payment_qiwi_sort_order }}" placeholder="{{ entry_sort_order }}" id="input-sort-order" class="form-control"/>
+                                    {% if error.sort_order %}
+                                        <div class="text-danger">{{ error.sort_order }}</div>
+                                    {% endif %}
+                                </div>
+                            </div>
+                            <div class="form-group">
+                                <label class="col-sm-2 control-label" for="input-total">
+                                    {% if help_total is not empty %}
+                                        <span data-toggle="tooltip" title="{{ help_total }}">{{ entry_total }}</span>
+                                    {% else %}
+                                        {{ entry_total }}
+                                    {% endif %}
+                                </label>
+                                <div class="col-sm-10">
+                                    <input type="text" name="payment_qiwi_total" value="{{ payment_qiwi_total }}" placeholder="{{ entry_total }}" id="input-total" class="form-control"/>
+                                    {% if error.total %}
+                                        <div class="text-danger">{{ error.total }}</div>
+                                    {% endif %}
+                                </div>
+                            </div>
+                            <div class="form-group">
+                                <label class="col-sm-2 control-label" for="input-geo-zone">
+                                    {% if help_geo_zone is not empty %}
+                                        <span data-toggle="tooltip" title="{{ help_geo_zone }}">{{ entry_geo_zone }}</span>
+                                    {% else %}
+                                        {{ entry_geo_zone }}
+                                    {% endif %}
+                                </label>
+                                <div class="col-sm-10">
+                                    <select name="payment_qiwi_geo_zone_id" id="input-geo-zone" class="form-control">
+                                        <option value="0">{{ text_all_zones }}</option>
+                                        {% for geo_zone in geo_zones %}
+                                            {% if geo_zone.geo_zone_id == payment_qiwi_geo_zone_id %}
+                                                <option value="{{ geo_zone.geo_zone_id }}" selected="selected">{{ geo_zone.name }}</option>
+                                            {% else %}
+                                                <option value="{{ geo_zone.geo_zone_id }}">{{ geo_zone.name }}</option>
+                                            {% endif %}
+                                        {% endfor %}
+                                    </select>
+                                    {% if error.geo_zone_id %}
+                                        <div class="text-danger">{{ error.geo_zone_id }}</div>
+                                    {% endif %}
+                                </div>
+                            </div>
+                        </div>
+                        <div class="tab-pane" id="tab-qiwi">
+                            <div class="form-group">
+                                <label class="col-sm-2 control-label" for="input-notification">
+                                    {% if help_notification is not empty %}
+                                        <span data-toggle="tooltip" title="{{ help_notification }}">{{ entry_notification }}</span>
+                                    {% else %}
+                                        {{ entry_notification }}
+                                    {% endif %}
+                                </label>
+                                <div class="col-sm-10">
+                                    <input type="text" readonly value="{{ notification }}" id="input-notification" class="form-control"/>
+                                    {% if error.notification %}
+                                        <div class="text-danger">{{ error.notification }}</div>
+                                    {% endif %}
+                                </div>
+                            </div>
+                            <div class="form-group required">
+                                <label class="col-sm-2 control-label" for="input-key-secret">
+                                    {% if help_key_secret is not empty %}
+                                        <span data-toggle="tooltip" title="{{ help_key_secret }}">{{ entry_key_secret }}</span>
+                                    {% else %}
+                                        {{ entry_key_secret }}
+                                    {% endif %}
+                                </label>
+                                <div class="col-sm-10">
+                                    <input type="text" name="payment_qiwi_key_secret" value="{{ payment_qiwi_key_secret }}" placeholder="{{ entry_key_secret }}" id="input-key-secret" class="form-control"/>
+                                    {% if error.key_secret %}
+                                        <div class="text-danger">{{ error.key_secret }}</div>
+                                    {% endif %}
+                                </div>
+                            </div>
+                            <div class="form-group required">
+                                <label class="col-sm-2 control-label" for="input-key-public">
+                                    {% if help_key_public is not empty %}
+                                        <span data-toggle="tooltip" title="{{ help_key_public }}">{{ entry_key_public }}</span>
+                                    {% else %}
+                                        {{ entry_key_public }}
+                                    {% endif %}
+                                </label>
+                                <div class="col-sm-10">
+                                    <input type="text" name="payment_qiwi_key_public" value="{{ payment_qiwi_key_public }}" placeholder="{{ entry_key_public }}" id="input-key-public" class="form-control"/>
+                                    {% if error.key_public %}
+                                        <div class="text-danger">{{ error.key_public }}</div>
+                                    {% endif %}
+                                </div>
+                            </div>
+                            <div class="form-group">
+                                <label class="col-sm-2 control-label" for="input-theme-code">
+                                    {% if help_theme_code is not empty %}
+                                    <span data-toggle="tooltip" title="{{ help_theme_code }}">{{ entry_theme_code }}</span>
+                                    {% else %}
+                                        {{ entry_theme_code }}
+                                    {% endif %}
+                                </label>
+                                <div class="col-sm-10">
+                                    <input type="text" name="payment_qiwi_theme_code" value="{{ payment_qiwi_theme_code }}" placeholder="{{ entry_theme_code }}" id="input-theme-code" class="form-control"/>
+                                </div>
+                            </div>
+                            <div class="form-group">
+                                <label class="col-sm-2 control-label" for="input-live-time">
+                                    {% if help_live_time is not empty %}
+                                        <span data-toggle="tooltip" title="{{ help_live_time }}">{{ entry_live_time }}</span>
+                                    {% else %}
+                                        {{ entry_live_time }}
+                                    {% endif %}
+                                </label>
+                                <div class="col-sm-10">
+                                    <input type="number" step="1" pattern="\d+" name="payment_qiwi_live_time" value="{{ payment_qiwi_live_time }}" placeholder="{{ entry_live_time }}" id="input-live-time" class="form-control"/>
+                                </div>
+                            </div>
+                            <div class="form-group">
+                                <label class="col-sm-2 control-label" for="input-popup">
+                                    {% if help_popup is not empty %}
+                                        <span data-toggle="tooltip" title="{{ help_popup }}">{{ entry_popup }}</span>
+                                    {% else %}
+                                        {{ entry_popup }}
+                                    {% endif %}
+                                </label>
+                                <div class="col-sm-10">
+                                    <select name="payment_qiwi_popup" id="input-popup" class="form-control">
+                                        {% if payment_qiwi_popup %}
+                                            <option value="1" selected="selected">{{ text_popup_enabled }}</option>
+                                            <option value="0">{{ text_popup_disabled }}</option>
+                                        {% else %}
+                                            <option value="1">{{ text_popup_enabled }}</option>
+                                            <option value="0" selected="selected">{{ text_popup_disabled }}</option>
+                                        {% endif %}
+                                    </select>
+                                    {% if error.popup %}
+                                        <div class="text-danger">{{ error.popup }}</div>
+                                    {% endif %}
+                                </div>
+                            </div>
+                            <div class="form-group">
+                                <label class="col-sm-2 control-label" for="input-debug">
+                                    {% if help_debug is not empty %}
+                                        <span data-toggle="tooltip" title="{{ help_debug }}">{{ entry_debug }}</span>
+                                    {% else %}
+                                        {{ entry_debug }}
+                                    {% endif %}
+                                </label>
+                                <div class="col-sm-10">
+                                    <select name="payment_qiwi_debug" id="input-debug" class="form-control">
+                                        {% if payment_qiwi_debug %}
+                                            <option value="1" selected="selected">{{ text_enabled }}</option>
+                                            <option value="0">{{ text_disabled }}</option>
+                                        {% else %}
+                                            <option value="1">{{ text_enabled }}</option>
+                                            <option value="0" selected="selected">{{ text_disabled }}</option>
+                                        {% endif %}
+                                    </select>
+                                    {% if error.debug %}
+                                        <div class="text-danger">{{ error.debug }}</div>
+                                    {% endif %}
+                                </div>
+                            </div>
+                        </div>
+                        <div class="tab-pane" id="tab-order-status">
+                            <div class="form-group">
+                                <label class="col-sm-2 control-label" for="input-waiting-status">
+                                    {% if help_waiting_status is not empty %}
+                                        <span data-toggle="tooltip" title="{{ help_waiting_status }}">{{ entry_waiting_status }}</span>
+                                    {% else %}
+                                        {{ entry_waiting_status }}
+                                    {% endif %}
+                                </label>
+                                <div class="col-sm-10">
+                                    <select name="payment_qiwi_waiting_status_id" id="input-waiting-status" class="form-control">
+                                        {% for order_status in order_statuses %}
+                                            {% if order_status.order_status_id == payment_qiwi_waiting_status_id %}
+                                                <option value="{{ order_status.order_status_id }}" selected="selected">{{ order_status.name }}</option>
+                                            {% else %}
+                                                <option value="{{ order_status.order_status_id }}">{{ order_status.name }}</option>
+                                            {% endif %}
+                                        {% endfor %}
+                                    </select>
+                                    {% if error.waiting_status %}
+                                        <div class="text-danger">{{ error.waiting_status }}</div>
+                                    {% endif %}
+                                </div>
+                            </div>
+                            <div class="form-group">
+                                <label class="col-sm-2 control-label" for="input-paid-status">
+                                    {% if help_paid_status is not empty %}
+                                        <span data-toggle="tooltip" title="{{ help_paid_status }}">{{ entry_paid_status }}</span>
+                                    {% else %}
+                                        {{ entry_paid_status }}
+                                    {% endif %}
+                                </label>
+                                <div class="col-sm-10">
+                                    <select name="payment_qiwi_paid_status_id" id="input-paid-status" class="form-control">
+                                        {% for order_status in order_statuses %}
+                                            {% if order_status.order_status_id == payment_qiwi_paid_status_id %}
+                                                <option value="{{ order_status.order_status_id }}" selected="selected">{{ order_status.name }}</option>
+                                            {% else %}
+                                                <option value="{{ order_status.order_status_id }}">{{ order_status.name }}</option>
+                                            {% endif %}
+                                        {% endfor %}
+                                    </select>
+                                    {% if error.paid_status %}
+                                        <div class="text-danger">{{ error.paid_status }}</div>
+                                    {% endif %}
+                                </div>
+                            </div>
+                            <div class="form-group">
+                                <label class="col-sm-2 control-label" for="input-rejected-status">
+                                    {% if help_rejected_status is not empty %}
+                                        <span data-toggle="tooltip" title="{{ help_rejected_status }}">{{ entry_rejected_status }}</span>
+                                    {% else %}
+                                        {{ entry_rejected_status }}
+                                    {% endif %}
+                                </label>
+                                <div class="col-sm-10">
+                                    <select name="payment_qiwi_rejected_status_id" id="input-rejected-status" class="form-control">
+                                        {% for order_status in order_statuses %}
+                                            {% if order_status.order_status_id == payment_qiwi_rejected_status_id %}
+                                                <option value="{{ order_status.order_status_id }}" selected="selected">{{ order_status.name }}</option>
+                                            {% else %}
+                                                <option value="{{ order_status.order_status_id }}">{{ order_status.name }}</option>
+                                            {% endif %}
+                                        {% endfor %}
+                                    </select>
+                                    {% if error.rejected_status %}
+                                        <div class="text-danger">{{ error.rejected_status }}</div>
+                                    {% endif %}
+                                </div>
+                            </div>
+                            <div class="form-group">
+                                <label class="col-sm-2 control-label" for="input-expired-status">
+                                    {% if help_expired_status is not empty %}
+                                        <span data-toggle="tooltip" title="{{ help_expired_status }}">{{ entry_expired_status }}</span>
+                                    {% else %}
+                                        {{ entry_expired_status }}
+                                    {% endif %}
+                                </label>
+                                <div class="col-sm-10">
+                                    <select name="payment_qiwi_expired_status_id" id="input-expired-status" class="form-control">
+                                        {% for order_status in order_statuses %}
+                                            {% if order_status.order_status_id == payment_qiwi_expired_status_id %}
+                                                <option value="{{ order_status.order_status_id }}" selected="selected">{{ order_status.name }}</option>
+                                            {% else %}
+                                                <option value="{{ order_status.order_status_id }}">{{ order_status.name }}</option>
+                                            {% endif %}
+                                        {% endfor %}
+                                    </select>
+                                    {% if error.expired_status %}
+                                        <div class="text-danger">{{ error.expired_status }}</div>
+                                    {% endif %}
+                                </div>
+                            </div>
+                            <div class="form-group">
+                                <label class="col-sm-2 control-label" for="input-partial-status">
+                                    {% if help_partial_status is not empty %}
+                                        <span data-toggle="tooltip" title="{{ help_partial_status }}">{{ entry_partial_status }}</span>
+                                    {% else %}
+                                        {{ entry_partial_status }}
+                                    {% endif %}
+                                </label>
+                                <div class="col-sm-10">
+                                    <select name="payment_qiwi_partial_status_id" id="input-partial-status" class="form-control">
+                                        {% for order_status in order_statuses %}
+                                            {% if order_status.order_status_id == payment_qiwi_partial_status_id %}
+                                                <option value="{{ order_status.order_status_id }}" selected="selected">{{ order_status.name }}</option>
+                                            {% else %}
+                                                <option value="{{ order_status.order_status_id }}">{{ order_status.name }}</option>
+                                            {% endif %}
+                                        {% endfor %}
+                                    </select>
+                                    {% if error.partial_status %}
+                                        <div class="text-danger">{{ error.partial_status }}</div>
+                                    {% endif %}
+                                </div>
+                            </div>
+                            <div class="form-group">
+                                <label class="col-sm-2 control-label" for="input-full-status">
+                                    {% if help_full_status is not empty %}
+                                        <span data-toggle="tooltip" title="{{ help_full_status }}">{{ entry_full_status }}</span>
+                                    {% else %}
+                                        {{ entry_full_status }}
+                                    {% endif %}
+                                </label>
+                                <div class="col-sm-10">
+                                    <select name="payment_qiwi_full_status_id" id="input-full-status" class="form-control">
+                                        {% for order_status in order_statuses %}
+                                            {% if order_status.order_status_id == payment_qiwi_full_status_id %}
+                                                <option value="{{ order_status.order_status_id }}" selected="selected">{{ order_status.name }}</option>
+                                            {% else %}
+                                                <option value="{{ order_status.order_status_id }}">{{ order_status.name }}</option>
+                                            {% endif %}
+                                        {% endfor %}
+                                    </select>
+                                    {% if error.full_status %}
+                                        <div class="text-danger">{{ error.full_status }}</div>
+                                    {% endif %}
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                </form>
+            </div>
+        </div>
+    </div>
+</div>
+{{ footer }}

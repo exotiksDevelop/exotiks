@@ -1,0 +1,123 @@
+.top-banner {
+  background-color: #efeff0;
+  position: relative;
+  text-align: left;
+
+
+
+  &__title {
+    margin-top: 84px;
+    display: inline-block;
+    color: #000;
+    font-size: 48px;
+    font-weight: 700;
+    line-height: 1em;
+    z-index: 3;
+    position: relative;
+  }
+
+  &__subtitle {
+    margin-top: 30px;
+    display: inline-block;
+    width: 450px;
+    font-size: 20px;
+    font-weight: 400;
+    line-height: 36px;
+    color: $text;
+    z-index: 3;
+    position: relative;
+  }
+
+  &__btn {
+    margin-top: 50px;
+    display: inline-flex;
+    align-items: center;
+    justify-content: center;
+    margin-bottom: 102px;
+    width: 243px;
+    height: 65px;
+    background-color: #e1133d;
+    color: #fff;
+    font-size: 15px;
+    font-weight: 600;
+    border-radius: 4px;
+    border-color: transparent;
+    z-index: 3;
+    position: relative;
+
+    &:hover,
+    &:focus,
+    &:active {
+      background-color: $accent;
+      outline-color: transparent;
+      text-decoration: none;
+      color: white
+    }
+
+    &:focus {
+      outline-color: transparent;
+    }
+  }
+
+  &__img-right {
+    width: 50%;
+    height: 100%;
+    background: url(./images/banner-cover.png) bottom / contain no-repeat;
+    display: inline-block;
+    bottom: 0;
+    position: absolute;
+    right: 15px;
+  }
+
+
+}
+
+@media screen and (max-width: 991.98px) {
+  .top-banner {
+ 
+
+    &__title,
+    &__subtitle {
+      position: relative;
+      z-index: 3;
+      border-radius: 5px;
+    }
+    &__img-right {
+      position: absolute;
+      right: 0;
+      bottom: 0;
+      opacity: 0.4;
+    }
+  }
+}
+
+@media screen and (max-width: 575.98px) {
+  .top-banner {
+
+    &__title {
+      margin-top: 16vw;
+      width: 100%;
+      text-align: center;
+      font-size: calc(1.4em + 2vw);
+      line-height: 1.3em;
+    }
+
+    &__subtitle {
+      margin-top: 10vw;
+      width: 100%;
+      text-align: center;
+      line-height: 1.8em;
+      font-size: calc(0.8em + 1vw);
+      background-color: rgba(255, 255, 255, .70);
+    }
+
+    &__btn {
+      margin: 10vw 5% 16vw;
+      width: 90%;
+    }
+
+    &__img-right {
+      width: 100%;
+    }
+  }
+}

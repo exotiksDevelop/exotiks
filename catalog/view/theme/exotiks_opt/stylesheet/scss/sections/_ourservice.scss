@@ -1,0 +1,233 @@
+.ourservice {
+  padding-top: 106px;
+  padding-bottom: 144px;
+  background: white url(./images/bg-flowers.png) center / 100% repeat;
+  height: auto;
+
+  .container {
+    padding: 0 45px;
+  }
+
+  &__box {
+    &-left {
+      display: inline-block;
+      max-width: 480px;
+      width: 40vw;
+
+      &-title {
+        display: inline-block;
+        font-size: 48px;
+        font-weight: 700;
+        line-height: 71px;
+        color: white;
+
+        span {
+          padding: 0 14px;
+        }
+
+        &-1 {
+          background-color: $red;
+        }
+
+        &-2 {
+          background-color: $accent;
+        }
+      }
+
+      &-subtitle {
+        margin-top: 30px;
+        width: inherit;
+        max-width: 405px;
+        font-size: 24px;
+        font-weight: 600;
+        line-height: 38px;
+        color: $text;
+      }
+    }
+
+    &-bottom {
+      margin-top: 75px;
+      display: flex;
+      justify-content: space-between;
+
+      &-item {
+        display: inline-block;
+
+        &-ico {
+          display: inline-block;
+          width: 91px;
+          height: 91px;
+
+          &.ico-1 {
+            background: url(./images/ourservices-1.png);
+          }
+
+          &.ico-2 {
+            background: url(./images/ourservices-2.png);
+          }
+
+          &.ico-3 {
+            background: url(./images/ourservices-3.png);
+          }
+        }
+
+        &-text {
+          margin-top: 7px;
+          font-size: 18px;
+          font-weight: 500;
+          line-height: 36px;
+          color: $text;
+          width: 351px;
+        }
+      }
+    }
+  }
+
+  &__video {
+    display: inline-block;
+    position: relative;
+    padding-bottom: 27%;
+    float: right;
+    max-width: 613px;
+    width: 51%;
+    height: 0;
+    box-shadow: 0 16px 27px rgba(30, 30, 30, 0.15);
+    border: 15px solid #ffffff;
+    background-color: #ebebeb;
+
+    &-content {
+      position: absolute;
+      left: 0;
+      top: 0;
+      width: 100%;
+      height: 100%;
+      // object-fit: cover;
+    }
+  }
+}
+
+@media screen and (max-width: 1199.98px) {
+  .ourservice {
+
+    .container {
+      padding: 0 25px;
+    }
+
+    &__box {
+      &-left {
+        &-title {
+          font-size: calc(1.5em + 1vw);
+          line-height: 1.5em;
+        }
+
+        &-subtitle {
+          font-size: calc(0.9em + 0.9vw);
+          line-height: 1.5em;
+        }
+      }
+
+      &-bottom {
+        width: 100%;
+
+        &-item {
+          width: 30%;
+
+          &-text {
+            width: 100%;
+          }
+        }
+      }
+    }
+  }
+}
+
+@media screen and (max-width: 767.98px) {
+
+  .ourservice {
+    padding-top: 12vw;
+    padding-bottom: 12vw;
+    .container {
+      padding: 0 15px;
+      display: flex;
+      flex-direction: column;
+    }
+
+    &__box {
+      &-left {
+        display: flex;
+        align-items: center;
+        max-width: 100%;
+        width: 100%;
+
+        &-title {
+          text-align: left;
+          width: 49%;
+          font-size: calc(1em + 2.3vw);
+          line-height: 1.7em;
+        }
+
+        &-subtitle {
+          width: 49%;
+          display: inline-block;
+          margin-top: 0;
+          text-align: right;
+        }
+      }
+
+      &-bottom {
+        margin-top: 3em;
+        width: 100%;
+        display: inline-flex;
+        flex-direction: column;
+        align-content: center;
+
+        &-item {
+          margin-bottom: 4vw;
+          width: 100%;
+          padding: 0 15px;
+          text-align: center;
+
+          &-text {
+            margin: 1em auto;
+            width: 80%;
+            font-size: calc(0.8em + 0.5vw);
+            line-height: 1.4em;
+          }
+        }
+      }
+    }
+
+    &__video {
+      width: 100%;
+      padding-bottom: 53.1%;
+      margin: 2em auto 0;
+    }
+  }
+}
+
+@media screen and (max-width: 575.98px) {
+  .ourservice {
+    padding-top: 15vw;
+    padding-bottom: 11vw;
+
+    &__video {
+      // width: 100%;
+      // padding-bottom: 53%;
+    }
+
+    &__box {
+      &-left {
+        flex-direction: column;
+
+        &-title {
+          width: 100%;
+        }
+
+        &-subtitle {
+          margin-top: 1em;
+          width: 100%;
+        }
+      }
+    }
+  }
+}

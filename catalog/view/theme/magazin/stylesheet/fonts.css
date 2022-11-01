@@ -1,0 +1,31 @@
+
+@font-face {
+  font-family: 'PFBeauSansPro-Regular';
+  src: url('fonts/PFBeauSansPro-Regular.eot?#iefix') format('embedded-opentype'),  
+  url('fonts/PFBeauSansPro-Regular.woff') format('woff'), 
+  url('fonts/PFBeauSansPro-Regular.ttf')  format('truetype'), 
+  url('fonts/PFBeauSansPro-Regular.svg#PFBeauSansPro-Regular') format('svg');
+
+}
+@font-face {
+  font-family: 'PFBeauSansPro-SemiBold';
+  src: url('fonts/PFBeauSansPro-SemiBold.eot?#iefix') format('embedded-opentype'),  
+  url('fonts/PFBeauSansPro-SemiBold.woff') format('woff'), 
+  url('fonts/PFBeauSansPro-SemiBold.ttf')  format('truetype'), 
+  url('fonts/PFBeauSansPro-SemiBold.svg#PFBeauSansPro-SemiBold') format('svg');
+
+}
+@font-face {
+  font-family: 'PFBeauSansPro-Bold';
+  src: url('fonts/PFBeauSansPro-Bold.eot?#iefix') format('embedded-opentype'),  
+  url('fonts/PFBeauSansPro-Bold.woff') format('woff'), 
+  url('fonts/PFBeauSansPro-Bold.ttf')  format('truetype'), 
+  url('fonts/PFBeauSansPro-Bold.svg#PFBeauSansPro-Bold') format('svg');
+ }
+ @font-face {
+  font-family: 'PFBeauSansPro-Black';
+  src: url('fonts/PFBeauSansPro-Black.eot?#iefix') format('embedded-opentype'),  
+  url('fonts/PFBeauSansPro-Black.woff') format('woff'), 
+  url('fonts/PFBeauSansPro-Black.ttf')  format('truetype'), 
+  url('fonts/PFBeauSansPro-Black.svg#PFDinDisplayPro-Black') format('svg');
+  }

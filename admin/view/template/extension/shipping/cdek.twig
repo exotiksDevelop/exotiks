@@ -1,0 +1,1094 @@
+{{ header }}{{ column_left }}
+<div id="content">
+
+	<div class="page-header">
+		<div class="container-fluid">
+			<div class="pull-right">
+				<button type="submit" form="form" data-toggle="tooltip" title="{{ button_save }}" class="btn btn-primary">
+					<i class="fa fa-save"></i>
+				</button>
+				<a onclick="$('#form input[name=apply]').val(1); $('#form').submit();" class="btn btn-primary">{{ button_apply }}</a>
+				<a href="{{ cancel }}" data-toggle="tooltip" title="{{ button_cancel }}" class="btn btn-default">
+					<i class="fa fa-reply"></i>
+				</a>
+			</div>
+			<h1>{{ heading_title }}</h1>
+			<ul class="breadcrumb">
+                {% for breadcrumb in breadcrumbs %}
+					<li><a href="{{ breadcrumb['href'] }}">{{ breadcrumb['text'] }}</a></li>
+                {% endfor %}
+			</ul>
+		</div>
+	</div>
+
+	<div class="container-fluid">
+        {% if (error_warning) %}
+			<div class="alert alert-danger"><i class="fa fa-exclamation-circle"></i>{{ error_warning }}
+				<button type="button" class="close" data-dismiss="alert">&times;</button>
+			</div>
+        {% endif %}
+        {% if (success) %}
+			<div class="alert alert-success"><i class="fa fa-exclamation-circle"></i>{{ success }}
+				<button type="button" class="close" data-dismiss="alert">&times;</button>
+			</div>
+        {% endif %}
+		<div class="panel panel-default">
+			<div class="panel-heading">
+				<h3 class="panel-title"><i class="fa fa-pencil"></i>{{ text_form }}</h3>
+			</div>
+			<div class="panel-body">
+				<form action="{{ action }}" method="post" enctype="multipart/form-data" id="form" class="form-horizontal">
+					<input type="hidden" name="apply" value="">
+					<ul class="nav nav-tabs">
+						<li class="active"><a href="#tab-general" data-toggle="tab">{{ tab_general }}</a></li>
+						<li><a href="#tab-data" data-toggle="tab">{{ tab_data }}</a></li>
+						<li><a href="#tab-auth" data-toggle="tab">{{ tab_auth }}</a></li>
+						<li><a href="#tab-tariff" data-toggle="tab">{{ tab_tariff }}</a></li>
+						<li><a href="#tab-discount" data-toggle="tab">{{ tab_discount }}</a></li>
+						<li><a href="#tab-package" data-toggle="tab">{{ tab_package }}</a></li>
+						<li><a href="#tab-additional" data-toggle="tab">{{ tab_additional }}</a></li>
+						<li><a href="#tab-empty" data-toggle="tab">{{ tab_empty }}</a></li>
+					</ul>
+					<div class="tab-content">
+						<div class="tab-pane active" id="tab-general">
+							<div class="form-group">
+								<label class="col-sm-2 control-label" for="input-parent">{{ entry_title }}</label>
+								<div class="col-sm-10">
+                                    {% for language in languages %}
+										<div class="input-group">
+											<span class="input-group-addon"><img src="language/{{ language['code'] }}/{{ language['code'] }}.png" title="{{ language['name'] }}" /></span>
+											<input class="form-control" type="text" name="shipping_cdek_title[{{ language['language_id'] }}]" value="{{ shipping_cdek_title[language['language_id']] is defined ? shipping_cdek_title[language['language_id']] : '' }}">
+										</div>
+                                    {% endfor %}
+								</div>
+							</div>
+
+							<div class="form-group">
+								<label class="col-sm-2 control-label" for="cdek-tax-class-id">{{ entry_tax_class }}</label>
+								<div class="col-sm-10">
+									<select class="form-control" id="cdek-tax-class-id" name="shipping_cdek_tax_class_id">
+										<option value="0">{{ text_none }}</option>
+                                        {% for tax_class in tax_classes %}
+                                            {% if (tax_class['tax_class_id'] == shipping_cdek_tax_class_id) %}
+												<option value="{{ tax_class['tax_class_id'] }}" selected="selected">{{ tax_class['title'] }}</option>
+                                            {% else %}
+												<option value="{{ tax_class['tax_class_id'] }}">{{ tax_class['title'] }}</option>
+                                            {% endif %}
+                                        {% endfor %}
+									</select>
+								</div>
+							</div>
+
+							<div class="form-group">
+								<label class="col-sm-2 control-label" for="cdek-cdek-log"><span data-toggle="tooltip" title="{{ entry_log_help }}">{{ entry_log }}</span></label>
+								<div class="col-sm-10">
+									<select class="form-control" id="cdek-cdek-log" name="shipping_cdek_log">
+                                        {% for key,variable in boolean_variables %}
+											<option {% if (shipping_cdek_log == key) %}{{ 'selected="selected"' }}{% endif %} value="{{ key }}">{{ variable }}</option>
+                                        {% endfor %}
+									</select>
+								</div>
+							</div>
+
+							<div class="form-group">
+								<label class="col-sm-2 control-label" for="">{{ entry_store }}</label>
+								<div class="col-sm-10">
+									<div class="well well-sm" style="height: 150px; overflow: auto;">
+                                        {% for store in stores %}
+											<div class="checkbox">
+												<label>
+													<input type="checkbox" name="shipping_cdek_store[]" value="{{ store['store_id'] }}"  {% if (shipping_cdek_store is defined and store['store_id'] in  shipping_cdek_store) %}{{ 'checked="checked"' }}{% endif %}>
+                                                   {{ store['name'] }}
+												</label>
+											</div>
+                                        {% endfor %}
+									</div>
+								</div>
+							</div>
+
+							<div class="form-group">
+								<label class="col-sm-2 control-label" for="cdek-status">{{ entry_status }}</label>
+								<div class="col-sm-10">
+									<select class="form-control" id="cdek-status" name="shipping_cdek_status">
+                                        {% for key,value in [text_disabled, text_enabled] %}
+											<option value="{{ key }}" {% if (shipping_cdek_status == key) %}{{ 'selected="selected"' }}{% endif %}>{{ value }}</option>
+                                        {% endfor %}
+									</select>
+								</div>
+							</div>
+
+							<div class="form-group">
+								<label class="col-sm-2 control-label" for="cdek-sort-order">{{ entry_sort_order }}</label>
+								<div class="col-sm-10">
+									<input class="form-control" id="cdek-sort-order" type="text" name="shipping_cdek_sort_order" value="{{ shipping_cdek_sort_order }}" size="1" />
+                                    {% if (error['shipping_cdek_sort_order'] is defined) %}
+										<div class="text-danger">{{ error['shipping_cdek_sort_order'] }}</div>
+                                    {% endif %}
+								</div>
+							</div>
+						</div>
+
+						<div class="tab-pane" id="tab-data">
+
+							<div class="form-group">
+								<label class="col-sm-2 control-label" for="cdek-default-size">{{ entry_default_size }}</label>
+								<div class="col-sm-10">
+									<select class="form-control" id="cdek-default-size" name="shipping_cdek_default_size[use]">
+                                        {% for key,variable in boolean_variables %}
+											<option {% if (shipping_cdek_default_size['use'] is not empty and shipping_cdek_default_size['use'] == key) %}{{ 'selected="selected"' }}{% endif %} value="{{ key }}">{{ variable }}</option>
+                                        {% endfor %}
+									</select>
+								</div>
+							</div>
+
+
+
+                            {% set style = {'cdek-default-size_parameters':''} %}
+                            {% if shipping_cdek_default_size['use'] == '0' or not shipping_cdek_default_size['use'] %}
+                                {% set style = style|merge({'cdek-default-size_parameters':'style="display:none"'}) %}
+                            {% endif %}
+							<div id="cdek-default-size_parameters" class="col-sm-offset-2 col-sm-10"{{ style['cdek-default-size_parameters'] }}>
+								<div class="form-group">
+									<label class="col-sm-2 control-label" for="">{{ entry_default_size_type }}</label>
+									<div class="col-sm-10">
+										<select class="form-control" id="cdek-default-size-type" name="shipping_cdek_default_size[type]">
+                                            {% for key,size_type in size_types %}
+												<option {% if (shipping_cdek_default_size['type'] is not empty and shipping_cdek_default_size['type'] == key) %}{{ 'selected="selected"' }}{% endif %} value="{{ key }}">{{ size_type }}</option>
+                                            {% endfor %}
+										</select>
+									</div>
+								</div>
+
+                                {% set style = style|merge({'cdek-default-size-type-volume':''}) %}
+                                {% set style = style|merge({'cdek-default-size-type_size':''}) %}
+
+                                {% if shipping_cdek_default_size['type'] == 'volume'  %}
+                                    {% set style = style|merge({'cdek-default-size-type_size':'style="display:none"'}) %}
+                                {% elseif shipping_cdek_default_size['type'] == 'size'  %}
+                                    {% set style = style|merge({'cdek-default-size-type-volume':'style="display:none"'}) %}
+                                {% endif %}
+
+								<div class="form-group required" id="cdek-default-size-type_volume"{{ style['cdek-default-size-type-volume'] }}>
+									<label class="col-sm-2 control-label" for="">{{ entry_volume }}</label>
+									<div class="col-sm-10 form-inline">
+										<input class="form-control" id="cdek-default-size-type-volume" type="text" name="shipping_cdek_default_size[volume]" value="{% if (shipping_cdek_default_size['volume'] is not empty) %}{{ shipping_cdek_default_size['volume'] }}{% endif %}" size="1" /> м³
+                                        {% if (error['shipping_cdek_default_size']['volume'] is defined) %}
+											<div class="text-danger">{{ error['shipping_cdek_default_size']['volume'] }}</div>
+                                        {% endif %}
+									</div>
+								</div>
+								<div class="form-group required" id="cdek-default-size-type_size"{{ style['cdek-default-size-type_size'] }}>
+									<label class="col-sm-2 control-label" for=""><span data-toggle="tooltip" title="{{ entry_size_help }}">{{ entry_size }}</span></label>
+									<div class="col-sm-10 form-inline">
+										<input class="form-control" id="cdek-default-size-type-size-a" type="text" placeholder="{{ text_short_length }}" name="shipping_cdek_default_size[size_a]" value="{% if (shipping_cdek_default_size['size_a'] is not empty) %}{{ shipping_cdek_default_size['size_a'] }}{% endif %}" size="2" /> x
+										<input class="form-control" type="text" placeholder="{{ text_short_width }}" name="shipping_cdek_default_size[size_b]" value="{% if (shipping_cdek_default_size['size_b'] is not empty) %}{{ shipping_cdek_default_size['size_b'] }}{% endif %}" size="2" /> x
+										<input class="form-control" type="text" placeholder="{{ text_short_height }}" name="shipping_cdek_default_size[size_c]" value="{% if (shipping_cdek_default_size['size_c'] is not empty) %}{{ shipping_cdek_default_size['size_c'] }}{% endif %}" size="2" />
+                                        {% if (error['shipping_cdek_default_size']['size'] is defined) %}
+											<div class="text-danger">{{ error['shipping_cdek_default_size']['size'] }}</div>
+                                        {% endif %}
+									</div>
+								</div>
+
+								<div class="form-group">
+									<label class="col-sm-2 control-label" for="">{{ entry_default_size_work_mode }}</label>
+									<div class="col-sm-10">
+										<select class="form-control" id="cdek-default-size-work-mode" name="shipping_cdek_default_size[work_mode]">
+                                            {% for key,mode in default_work_mode %}
+												<option {% if (shipping_cdek_default_size['work_mode'] is not empty and shipping_cdek_default_size['work_mode'] == key) %}{{ 'selected="selected"' }}{% endif %} value="{{ key }}">{{ mode }}</option>
+                                            {% endfor %}
+										</select>
+									</div>
+								</div>
+							</div>
+
+							<div class="form-group">
+								<label class="col-sm-2 control-label" for="cdek-default-weight">{{ entry_default_weight_use }}</label>
+								<div class="col-sm-10">
+									<select class="form-control" id="cdek-default-weight" name="shipping_cdek_default_weight[use]">
+                                        {% for key,variable in boolean_variables %}
+											<option {% if (shipping_cdek_default_weight['use'] is not empty and shipping_cdek_default_weight['use'] == key) %}{{ 'selected="selected"' }}{% endif %} value="{{ key }}">{{ variable }}</option>
+                                        {% endfor %}
+									</select>
+								</div>
+							</div>
+
+                            {% set style = style|merge({'cdek-default-weight_parameters':''}) %}
+                            {% if shipping_cdek_default_weight['use'] == '0' or not shipping_cdek_default_weight['use'] %}
+                                {% set style = style|merge({'cdek-default-weight_parameters':'style="display:none"'}) %}
+                            {% endif %}
+
+
+
+
+							<div id="cdek-default-weight_parameters" class="col-sm-offset-2 col-sm-10"{{ style['cdek-default-weight_parameters'] }}>
+								<div class="form-group required">
+									<label class="col-sm-2 control-label" for="">{{ entry_default_weight }}</label>
+									<div class="col-sm-10 form-inline">
+										<input class="form-control" id="cdek-default-weight-value" type="text" name="shipping_cdek_default_weight[value]" value="{% if (shipping_cdek_default_weight['value'] is not empty) %}{{ shipping_cdek_default_weight['value'] }}{% endif %}" size="1" /> кг.
+                                        {% if (error['shipping_cdek_default_weight']['value'] is defined) %}
+											<div class="text-danger">{{ error['shipping_cdek_default_weight']['value'] }}</div>
+                                        {% endif %}
+									</div>
+								</div>
+								<div class="form-group">
+									<label class="col-sm-2 control-label" for="">{{ entry_default_weight_work_mode }}</label>
+									<div class="col-sm-10">
+										<select class="form-control" id="cdek-default-weight-work-mode" name="shipping_cdek_default_weight[work_mode]">
+                                            {% for key,mode in default_work_mode %}
+												<option {% if (shipping_cdek_default_weight['work_mode'] is not empty and shipping_cdek_default_weight['work_mode'] == key) %}{{ 'selected="selected"' }}{% endif %} value="{{ key }}">{{ mode }}</option>
+                                            {% endfor %}
+										</select>
+									</div>
+								</div>
+							</div>
+
+							<div class="form-group">
+								<label class="col-sm-2 control-label" for="cdek-append-day">{{ entry_date_execute }}</label>
+								<div class="col-sm-10 form-inline">
+                                   {{ text_date_current }} + <input class="form-control" id="cdek-append-day" type="text" name="shipping_cdek_append_day" value="{{ shipping_cdek_append_day }}" size="1" />{{ text_day }}
+                                    {% if (error['shipping_cdek_append_day'] is defined) %}
+										<div class="text-danger">{{ error['shipping_cdek_append_day'] }}</div>
+                                    {% endif %}
+								</div>
+							</div>
+
+							<div class="form-group">
+								<label class="col-sm-2 control-label" for="cdek-cache-on-delivery">{{ entry_cache_on_delivery }}</label>
+								<div class="col-sm-10">
+									<select class="form-control" id="cdek-cache-on-delivery" name="shipping_cdek_cache_on_delivery">
+                                        {% for key,variable in boolean_variables %}
+											<option {% if (shipping_cdek_cache_on_delivery == key) %}{{ 'selected="selected"' }}{% endif %} value="{{ key }}">{{ variable }}</option>
+                                        {% endfor %}
+									</select>
+								</div>
+							</div>
+
+							<div class="form-group">
+								<label class="col-sm-2 control-label" for="cdek-weight-limit">{{ entry_weight_limit }}</label>
+								<div class="col-sm-10">
+									<select class="form-control" id="cdek-weight-limit" name="shipping_cdek_weight_limit">
+                                        {% for key,variable in boolean_variables %}
+											<option {% if (shipping_cdek_weight_limit == key) %}{{ 'selected="selected"' }}{% endif %} value="{{ key }}">{{ variable }}</option>
+                                        {% endfor %}
+									</select>
+								</div>
+							</div>
+
+							<div class="form-group">
+								<label class="col-sm-2 control-label" for="cdek-use-postcode"><span data-toggle="tooltip" title="{{ entry_use_region_russia_help }}">{{ entry_use_region_russia }}</span></label>
+								<div class="col-sm-10">
+									<select class="form-control" id="cdek-use-region-russia" name="shipping_cdek_use_region_russia">
+                                        {% for key,variable in boolean_variables %}
+											<option {% if (shipping_cdek_use_region_russia == key) %}{{ 'selected="selected"' }}{% endif %} value="{{ key }}">{{ variable }}</option>
+                                        {% endfor %}
+									</select>
+								</div>
+							</div>
+
+							<input type="hidden" name="shipping_cdek_use_region" value="0">
+
+							<div class="form-group">
+								<label class="col-sm-2 control-label" for="cdek-use-postcode"><span data-toggle="tooltip" title="{{ entry_use_postcode_help }}">{{ entry_use_postcode }}</span></label>
+								<div class="col-sm-10">
+									<select class="form-control" id="cdek-use-postcode" name="shipping_cdek_use_postcode">
+                                        {% for key,variable in boolean_variables %}
+											<option {% if (shipping_cdek_use_postcode == key) %}{{ 'selected="selected"' }}{% endif %} value="{{ key }}">{{ variable }}</option>
+                                        {% endfor %}
+									</select>
+								</div>
+							</div>
+
+							<div class="form-group required">
+								<label class="col-sm-2 control-label" for="cdek-city-from">{{ entry_city_from }}</label>
+								<div class="col-sm-10">
+									<input type="hidden" id="cdek-city-from-id" name="shipping_cdek_city_from_id" value="{{ shipping_cdek_city_from_id }}"/>
+									<a class="js city-from" {% if (not shipping_cdek_city_from_id) %}{{ 'style="display:none"' }}{% endif %}>{{ shipping_cdek_city_from }}</a>
+									<input class="form-control" type="text" id="cdek-city-from" name="shipping_cdek_city_from" value="{{ shipping_cdek_city_from }}" {% if (shipping_cdek_city_from_id) %}{{ 'style="display:none"' }}{% endif %} />
+                                    {% if (error['shipping_cdek_city_from'] is defined) %}
+										<div class="text-danger">{{ error['shipping_cdek_city_from'] }}</div>
+                                    {% endif %}
+								</div>
+							</div>
+
+							<div class="form-group required">
+								<label class="col-sm-2 control-label" for="cdek-length-class-id"><span data-toggle="tooltip" title="{{ entry_length_class_help }}">{{ entry_length_class }}</span></label>
+								<div class="col-sm-10">
+									<select class="form-control" id="cdek-length-class-id" name="shipping_cdek_length_class_id">
+                                        {% for length_class in length_classes %}
+											<option value="{{ length_class['length_class_id'] }}" {% if (length_class['length_class_id'] == shipping_cdek_length_class_id) %}{{ 'selected="selected"' }}{% endif %}>{{ length_class['title'] }}</option>
+                                        {% endfor %}
+									</select>
+                                    {% if (error['length_class_id'] is defined) %}
+										<div class="text-danger">{{ error['length_class_id'] }}</div>
+                                    {% endif %}
+								</div>
+							</div>
+
+							<div class="form-group required">
+								<label class="col-sm-2 control-label" for="cdek-weight-class-id"><span data-toggle="tooltip" title="{{ entry_weight_class_help }}">{{ entry_weight_class }}</span></label>
+								<div class="col-sm-10">
+									<select class="form-control" id="cdek-weight-class-id" name="shipping_cdek_weight_class_id">
+                                        {% for weight_class in weight_classes %}
+											<option value="{{ weight_class['weight_class_id'] }}" {% if (weight_class['weight_class_id'] == shipping_cdek_weight_class_id) %}{{ 'selected="selected"' }}{% endif %}>{{ weight_class['title'] }}</option>
+                                        {% endfor %}
+									</select>
+                                    {% if (error['shipping_cdek_weight_class_id'] is defined) %}
+										<div class="text-danger">{{ error['shipping_cdek_weight_class_id'] }}</div>
+                                    {% endif %}
+								</div>
+							</div>
+						</div>
+
+						<div class="tab-pane" id="tab-auth">
+							<div class="form-group col-sm-12">
+								<span class="help">{{ text_help_auth }}</span>
+							</div>
+							<div class="form-group col-sm-12">
+								<p class="help">{{ text_testing_api_keys }}</p>
+							</div>
+							<div class="form-group">
+								<label class="col-sm-2 control-label" for="cdek-login">{{ entry_login }}</label>
+								<div class="col-sm-10">
+									<input class="form-control" id="cdek-login" type="text" name="shipping_cdek_login" value="{{ shipping_cdek_login }}" />
+								</div>
+							</div>
+							<div class="form-group">
+								<label class="col-sm-2 control-label" for="cdek-password">{{ entry_password }}</label>
+								<div class="col-sm-10">
+									<input class="form-control" id="cdek-password" type="text" name="shipping_cdek_password" value="{{ shipping_cdek_password }}" />
+								</div>
+							</div>
+						</div>
+
+						<div class="tab-pane" id="tab-tariff">
+							<div class="form-group">
+								<label class="col-sm-2 control-label" for="cdek-work-mode"><span data-toggle="tooltip" title="{{ entry_work_mode_help }}">{{ entry_work_mode }}</span></label>
+								<div class="col-sm-10">
+									<div class="alert alert-warning" id="cdek-work-mode_parameters">{{ text_more_attention }}</div>
+									<select id="cdek-work-mode" class="form-control work-mode" name="shipping_cdek_work_mode">
+                                        {% for mode_id,mode_name in work_mode %}
+											<option {% if (mode_id == shipping_cdek_work_mode) %}{{ 'selected="selected"' }}{% endif %} value="{{ mode_id }}">{{ mode_name }}</option>
+                                        {% endfor %}
+									</select>
+								</div>
+							</div>
+
+							<input type="hidden" name="shipping_cdek_show_pvz" value="1">
+							<input type="hidden" name="shipping_cdek_pvz_more_one" value="merge">
+
+                            {% set style =  style|merge({'cdek-show-pvz_parameters':''})  %}
+                            {% if (shipping_cdek_show_pvz == 0) %}
+                                {% set style =  style|merge({'cdek-show-pvz_parameters':'style="display:none"'})  %}{% endif %}
+
+
+                            {% if (error['tariff_list'] is defined) %}
+								<div class="text-danger tariff_list">{{ error['tariff_list'] }}</div>
+                            {% endif %}
+
+							<table class="table table-striped list">
+								<thead>
+								<tr>
+									<td class="left" colspan="2">{{ column_tariff }}</td>
+									<td class="left"><span data-toggle="tooltip" title="{{ column_title_help }}">{{ column_title }}</span></td>
+									<td class="left">{{ column_customer_group }}</td>
+									<td class="left"><span data-toggle="tooltip" title="{{ column_geo_zone_help }}">{{ column_geo_zone }}</span></td>
+									<td class="left">{{ column_limit }}</td>
+									<td class="left"></td>
+								</tr>
+								</thead>
+								<tbody>
+                                {% set tariff_number = 0 %}
+                                {% for tariff_row,tariff_info in shipping_cdek_custmer_tariff_list %}
+									<tr id="tariff-{{ tariff_row }}">
+										<td class="drag" width="1"><a title="{{ text_drag }}">&nbsp;</a></td>
+										<td class="col-md-3">
+											<nobr>{{ tariff_info['tariff_name'] }}</nobr><br><b>{{ column_mode }}</b>:{{ tariff_info['mode_name'] }}
+                                            {% if (error['tariff_list_item'][tariff_row]['exists'] is defined) %}
+												<div class="text-danger">{{ error['tariff_list_item'][tariff_row]['exists'] }}</div>
+                                            {% endif %}
+											<input type="hidden" name="shipping_cdek_custmer_tariff_list[{{ tariff_row }}][sort_order]" value="{{ tariff_info['sort_order'] }}" class="sort_order" />
+											<input type="hidden" name="shipping_cdek_custmer_tariff_list[{{ tariff_row }}][tariff_id]" value="{{ tariff_info['tariff_id'] }}" />
+											<input type="hidden" name="shipping_cdek_custmer_tariff_list[{{ tariff_row }}][mode_id]" value="{{ tariff_info['mode_id'] }}" />
+										</td>
+										<td class="col-md-3 form-inline">
+                                            {% for language in languages %}
+												<div class="input-group">
+													<span class="input-group-addon"><img src="language/{{ language['code'] }}/{{ language['code'] }}.png" title="{{ language['name'] }}" /></span>
+													<input type="text" class="form-control" name="shipping_cdek_custmer_tariff_list[{{ tariff_row }}][title][{{ language['language_id'] }}]" value="{{ tariff_info['title'][language['language_id']] is defined and tariff_info['title'] is iterable ? tariff_info['title'][language['language_id']] : language['language_id'] == 1 and tariff_info['title'] ? tariff_info['title'] : '' }}" />
+												</div>
+                                            {% endfor %}
+										</td>
+										<td class="left">
+											<a href="#" onclick="$('#groupsBlock-{{ tariff_row }}').toggle(); return false;">{{ column_customer_group }}</a>
+											<div class="scrollbox" id="groupsBlock-{{ tariff_row }}" style="display: none;">
+                                                {% set class = 'even' %}
+                                                {% for customer_group in customer_groups %}
+                                                    {% set class = class == 'even' ? 'odd' : 'even' %}
+													<div class="{{ class }}">
+														<input type="checkbox" name="shipping_cdek_custmer_tariff_list[{{ tariff_row }}][customer_group_id][]" value="{{ customer_group['customer_group_id'] }}"  {% if (tariff_info['customer_group_id'] is not empty and tariff_info['customer_group_id'] is iterable and customer_group['customer_group_id'] in  tariff_info['customer_group_id']) %}{{ 'checked="checked"' }}{% endif %} />
+                                                       {{ customer_group['name'] }}
+													</div>
+                                                {% endfor %}
+											</div>
+										</td>
+										<td class="left">
+											<a href="#" onclick="$('#geozoneBlock-{{ tariff_row }}').toggle(); return false;">{{ column_geo_zone }}</a>
+											<div class="scrollbox" id="geozoneBlock-{{ tariff_row }}" style="display: none;">
+                                                {% set class = 'even' %}
+                                                {% for geo_zone in geo_zones %}
+                                                    {% set class = class == 'even' ? 'odd' : 'even' %}
+													<div class="{{ class }}">
+														<input type="checkbox" name="shipping_cdek_custmer_tariff_list[{{ tariff_row }}][geo_zone][]" value="{{ geo_zone['geo_zone_id'] }}"  {% if (tariff_info['geo_zone'] is defined and geo_zone['geo_zone_id'] in tariff_info['geo_zone']) %}{{ 'checked="checked"' }}{% endif %} />
+                                                       {{ geo_zone['name'] }}
+													</div>
+                                                {% endfor %}
+											</div>
+										</td>
+										<td class="left">
+											<a href="#" onclick="$('#limitBlock-{{ tariff_row }}').toggle(); return false;">{{ column_limit }}</a>
+											<div id="limitBlock-{{ tariff_row }}" style="display: none;">
+												<table class="form limit">
+													<tbody>
+													<tr>
+														<td><label for="cdek-custmer-tariff-list-{{ tariff_row }}-min-weight"><span data-toggle="tooltip" title="{{ entry_min_weight_help }}">{{ entry_min_weight }}</span></label></td>
+														<td>
+															<input id="cdek-custmer-tariff-list-{{ tariff_row }}-min-weight" type="text" name="shipping_cdek_custmer_tariff_list[{{ tariff_row }}][min_weight]" value="{% if (tariff_info['min_weight'] is defined) %}{{ tariff_info['min_weight'] }}{% endif %}" size="3" />
+                                                            {% if (error['tariff_list_item'][tariff_row]['min_weight'] is defined) %}
+																<div class="text-danger">{{ error['tariff_list_item'][tariff_row]['min_weight'] }}</div>
+                                                            {% endif %}
+														</td>
+													</tr>
+													<tr>
+														<td><label for="cdek-custmer-tariff-list-{{ tariff_row }}-max-weight"><span data-toggle="tooltip" title="{{ entry_max_weight_help }}">{{ entry_max_weight }}</span></label></td>
+														<td>
+															<input id="cdek-custmer-tariff-list-{{ tariff_row }}-max-weight" type="text" name="shipping_cdek_custmer_tariff_list[{{ tariff_row }}][max_weight]" value="{% if (tariff_info['max_weight'] is defined) %}{{ tariff_info['max_weight'] }}{% endif %}" size="3" />
+                                                            {% if (error['tariff_list_item'][tariff_row]['max_weight'] is defined) %}
+																<div class="text-danger">{{ error['tariff_list_item'][tariff_row]['max_weight'] }}</div>
+                                                            {% endif %}
+														</td>
+													</tr>
+													<tr>
+														<td><label for="cdek-custmer-tariff-list-{{ tariff_row }}-min-total"><span data-toggle="tooltip" title="{{ entry_min_total_help }}">{{ entry_min_total }}</span></label></td>
+														<td>
+															<input id="cdek-custmer-tariff-list-{{ tariff_row }}-min-total" type="text" name="shipping_cdek_custmer_tariff_list[{{ tariff_row }}][min_total]" value="{% if (tariff_info['min_total'] is defined) %}{{tariff_info['min_total'] }}{% endif %}" size="3" />
+                                                            {% if (error['tariff_list_item'][tariff_row]['min_total'] is defined) %}
+																<div class="text-danger">{{ error['tariff_list_item'][tariff_row]['min_total'] }}</div>
+                                                            {% endif %}
+														</td>
+													</tr>
+													<tr class="last">
+														<td><label for="cdek-custmer-tariff-list-{{ tariff_row }}-max-total"><span data-toggle="tooltip" title="{{ entry_max_total_help }}">{{ entry_max_total }}</span></label></td>
+														<td>
+															<input id="cdek-custmer-tariff-list-{{ tariff_row }}-max-total" type="text" name="shipping_cdek_custmer_tariff_list[{{ tariff_row }}][max_total]" value="{% if (tariff_info['max_total'] is defined) %}{{ tariff_info['max_total'] }}{% endif %}" size="3" />
+                                                            {% if (error['tariff_list_item'][tariff_row]['max_total'] is defined) %}
+																<div class="text-danger">{{ error['tariff_list_item'][tariff_row]['max_total'] }}</div>
+                                                            {% endif %}
+														</td>
+													</tr>
+													</tbody>
+												</table>
+											</div>
+										</td>
+										<td class="left"><a onclick="removeTariff({{ tariff_row }});" class="button">{{ button_remove }}</a></td>
+									</tr>
+									{%   set tariff_number = tariff_row + 1 %}
+                                {% endfor %}
+								</tbody>
+							</table>
+
+							<div class="form-group">
+								<label class="col-sm-2 control-label" for="cdek-pvz-more-one">{{ text_tariff }}</label>
+								<div class="col-sm-10">
+									<select class="form-control cdek-tariff">
+										<option value="0">{{ text_select }}</option>
+                                        {% for tariff_id,tariff_info in tariff_list %}
+											<option rel="{{ tariff_info['mode_id'] }}" value="{{ tariff_id }}">{{ tariff_info['title'] }}{% if tariff_info['im']  %}{{ '***' }}{% endif %}</option>
+                                        {% endfor %}
+									</select>
+								</div>
+							</div>
+							<a onclick="simtariffs();">Добавить все тарифы</a>
+							<p class="help">{{ text_help_im }}</p>
+						</div>
+
+						<div class="tab-pane" id="tab-discount">
+							<p class="help">{{ text_discount_help }}</p>
+							<table class="table" id="discount">
+								<thead>
+								<tr>
+									<td class="left"><span data-toggle="tooltip" title="{{ column_total_help }}">{{ column_total }}</span></td>
+									<td class="left">{{ column_tariff }}</td>
+									<td class="left">{{ column_tax_class }}</td>
+									<td class="left">{{ column_customer_group }}</td>
+									<td class="left">{{ column_geo_zone }}</td>
+									<td class="left">{{ column_discount_value }}</td>
+									<td></td>
+								</tr>
+								</thead>
+								<tbody>
+                                {% set discount_row_number = 0 %}
+                                {% if (shipping_cdek_discounts) %}
+                                    {% for discount_row,discount in shipping_cdek_discounts %}
+										<tr id="discount-row{{ discount_row }}">
+											<td class="left">
+												<input type="text" class="form-control" name="shipping_cdek_discounts[{{ discount_row }}][total]" value="{{ discount['total'] }}" size="12" />
+                                                {% if (error['shipping_cdek_discounts'][discount_row]['total'] is defined) %}
+													<div class="text-danger">{{ error['shipping_cdek_discounts'][discount_row]['total'] }}</div>
+                                                {% endif %}
+											</td>
+											<td class="left">
+												<div class="well well-sm" style="height: 150px; overflow: auto;">
+                                                    {% set class = 'even' %}
+                                                    {% for tariff_id,tariff_info in tariff_list %}
+                                                        {% set class = class == 'even' ? 'odd' : 'even' %}
+														<div class="{{ class }}">
+															<input type="checkbox" name="shipping_cdek_discounts[{{ discount_row }}][tariff_id][]" value="{{ tariff_id }}"  {% if (discount['tariff_id'] is not empty and discount['tariff_id'] is iterable  and tariff_id in discount['tariff_id']) %}{{ 'checked="checked"' }}{% endif %} />
+                                                           {{ tariff_info['title'] }}
+														</div>
+                                                    {% endfor %}
+												</div>
+											</td>
+											<td class="left">
+												<select class="form-control" name="shipping_cdek_discounts[{{ discount_row }}][tax_class_id]">
+													<option value="0">{{ text_none }}</option>
+                                                    {% for tax_class in tax_classes %}
+														<option {% if (tax_class['tax_class_id'] == discount['tax_class_id']) %}{{ 'selected="selected"' }}{% endif %} value="{{ tax_class['tax_class_id'] }}">{{ tax_class['title'] }}</option>
+                                                    {% endfor %}
+												</select>
+											</td>
+											<td class="left">
+												<div class="scrollbox">
+                                                    {% set class = 'even' %}
+                                                    {% for customer_group in customer_groups %}
+                                                        {% set class = class == 'even' ? 'odd' : 'even' %}
+														<div class="{{ class }}">
+															<input type="checkbox" name="shipping_cdek_discounts[{{ discount_row }}][customer_group_id][]" value="{{ customer_group['customer_group_id'] }}"  {% if (discount['customer_group_id'] is not empty and discount['customer_group_id'] is iterable  and customer_group['customer_group_id'] in  discount['customer_group_id']) %}{{ 'checked="checked"' }}{% endif %} />
+                                                           {{ customer_group['name'] }}
+														</div>
+                                                    {% endfor %}
+												</div>
+											</td>
+											<td class="left">
+												<div class="scrollbox">
+                                                    {% set class = 'even' %}
+                                                    {% for geo_zone in geo_zones %}
+                                                        {% set class = class == 'even' ? 'odd' : 'even' %}
+														<div class="{{ class }}">
+															<input type="checkbox" name="shipping_cdek_discounts[{{ discount_row }}][geo_zone][]" value="{{ geo_zone['geo_zone_id'] }}"  {% if (discount['geo_zone'] is defined and geo_zone['geo_zone_id'] in  discount['geo_zone']) %}{{ 'checked="checked"' }}{% endif %} />
+                                                           {{ geo_zone['name'] }}
+														</div>
+                                                    {% endfor %}
+												</div>
+											</td>
+											<td class="left form-inline">
+												<select class="form-control" name="shipping_cdek_discounts[{{ discount_row }}][prefix]">
+                                                    {% for prefix in ['-','+'] %}
+														<option {% if (prefix == discount['prefix']) %}{{ 'selected="selected"' }}{% endif %} value="{{ prefix }}">{{ prefix }}</option>
+                                                    {% endfor %}
+												</select>
+												<input type="text" class="form-control" name="shipping_cdek_discounts[{{ discount_row }}][value]" value="{{ discount['value'] }}" size="3" />
+												<select class="form-control" name="shipping_cdek_discounts[{{ discount_row }}][mode]">
+                                                    {% for type,name in discount_type %}
+														<option {% if (type == discount['mode']) %}{{ 'selected="selected"' }}{% endif %} value="{{ type }}">{{ name }}</option>
+                                                    {% endfor %}
+												</select>
+                                                {% if (error['shipping_cdek_discounts'][discount_row]['value'] is defined) %}
+													<div class="text-danger">{{ error['shipping_cdek_discounts'][discount_row]['value'] }}</div>
+                                                {% endif %}
+											</td>
+											<td class="left"><a onclick="$('#discount-row{{ discount_row }}').remove();return FALSE;" class="button">{{ button_remove }}</a></td>
+										</tr>
+                                        {% set discount_row_number = discount_row + 1 %}
+                                    {% endfor %}
+
+                                {% endif %}
+								</tbody>
+							</table>
+							<a class="button" onclick="addDiscount();">{{ button_add_discount }}</a>
+						</div>
+
+						<div class="tab-pane" id="tab-package">
+							<div class="form-group">
+								<label class="col-sm-2 control-label" for="">{{ entry_packing_min_weight }}</label>
+								<div class="col-sm-10 form-inline">
+									<input class="form-control" id="cdek-packing-min-weight" type="text" name="shipping_cdek_packing_min_weight" value="{{ shipping_cdek_packing_min_weight }}" size="1" />
+									<select class="form-control" name="shipping_cdek_packing_weight_class_id">
+                                        {% for weight_class in weight_classes %}
+											<option value="{{ weight_class['weight_class_id'] }}" {% if (weight_class['weight_class_id'] == shipping_cdek_packing_weight_class_id) %}{{ 'selected="selected"' }}{% endif %}>{{ weight_class['title'] }}</option>
+                                        {% endfor %}
+									</select>
+                                    {% if (error['shipping_cdek_packing_min_weight'] is defined) %}
+										<div class="text-danger">{{ error['shipping_cdek_packing_min_weight'] }}</div>
+                                    {% endif %}
+								</div>
+							</div>
+							<div class="form-group">
+								<label class="col-sm-2 control-label" for=""><span data-toggle="tooltip" title="{{ entry_packing_additional_weight_help }}">{{ entry_packing_additional_weight }}</span></label>
+								<div class="col-sm-10 form-inline">
+									<select class="form-control" name="shipping_cdek_packing_prefix">
+                                        {% for prefix in ['-','+'] %}
+											<option {% if (prefix == shipping_cdek_packing_prefix) %}{{ 'selected="selected"' }}{% endif %} value="{{ prefix }}">{{ prefix }}</option>
+                                        {% endfor %}
+									</select>
+									<input class="form-control" id="cdek-packing-value" type="text" name="shipping_cdek_packing_value" value="{{ shipping_cdek_packing_value }}" size="1" />
+									<select class="form-control" name="shipping_cdek_packing_mode">
+                                        {% for key,value in additional_weight_mode %}
+											<option {% if (shipping_cdek_packing_mode == key) %}{{ 'selected="selected"' }}{% endif %} value="{{ key }}">{{ value }}</option>
+                                        {% endfor %}
+									</select>
+                                    {% if (error['shipping_cdek_packing_value'] is defined) %}
+										<div class="text-danger">{{ error['shipping_cdek_packing_value'] }}</div>
+                                    {% endif %}
+								</div>
+							</div>
+						</div>
+
+						<div class="tab-pane" id="tab-additional">
+							<div class="form-group">
+								<label class="col-sm-2 control-label" for="">{{ entry_more_days }}</label>
+								<div class="col-sm-10 form-inline">
+									+ <input class="form-control" id="cdek-more-days" type="text" name="shipping_cdek_more_days" value="{{ shipping_cdek_more_days }}" size="1" />{{ text_day }}
+                                    {% if (error['shipping_cdek_more_days'] is defined) %}
+										<div class="text-danger">{{ error['shipping_cdek_more_days'] }}</div>
+                                    {% endif %}
+								</div>
+							</div>
+							<div class="form-group">
+								<label class="col-sm-2 control-label" for="">{{ entry_period }}</label>
+								<div class="col-sm-10 form-inline">
+									<select class="form-control" id="cdek-period" name="shipping_cdek_period">
+                                        {% for key,variable in boolean_variables %}
+											<option {% if (shipping_cdek_period == key) %}{{ 'selected="selected"' }}{% endif %} value="{{ key }}">{{ variable }}</option>
+                                        {% endfor %}
+									</select>
+								</div>
+							</div>
+							<div class="form-group">
+								<label class="col-sm-2 control-label" for="">{{ entry_delivery_data }}</label>
+								<div class="col-sm-10 form-inline">
+									<select class="form-control" id="cdek-delivery-data" name="shipping_cdek_delivery_data">
+                                        {% for key,variable in boolean_variables %}
+											<option {% if (shipping_cdek_delivery_data == key) %}{{ 'selected="selected"' }}{% endif %} value="{{ key }}">{{ variable }}</option>
+                                        {% endfor %}
+									</select>
+								</div>
+							</div>
+							<div class="form-group">
+								<label class="col-sm-2 control-label" for=""><span data-toggle="tooltip" title="{{ entry_empty_address_help }}">{{ entry_empty_address }}</span></label>
+								<div class="col-sm-10 form-inline">
+									<select class="form-control" id="cdek-empty-address" name="shipping_cdek_empty_address">
+                                        {% for key,variable in boolean_variables %}
+											<option {% if (shipping_cdek_empty_address == key) %}{{ 'selected="selected"' }}{% endif %} value="{{ key }}">{{ variable }}</option>
+                                        {% endfor %}
+									</select>
+								</div>
+							</div>
+							<div class="form-group">
+								<label class="col-sm-2 control-label" for="">{{ entry_min_weight }}</label>
+								<div class="col-sm-10 form-inline">
+									<input class="form-control" id="cdek-min-weight" type="text" name="shipping_cdek_min_weight" value="{{ shipping_cdek_min_weight }}" />
+                                    {% if (error['shipping_cdek_min_weight'] is defined) %}
+										<div class="text-danger">{{ error['shipping_cdek_min_weight'] }}</div>
+                                    {% endif %}
+								</div>
+							</div>
+							<div class="form-group">
+								<label class="col-sm-2 control-label" for="">{{ entry_max_weight }}</label>
+								<div class="col-sm-10 form-inline">
+									<input class="form-control" id="cdek-max-weight" type="text" name="shipping_cdek_max_weight" value="{{ shipping_cdek_max_weight }}" />
+                                    {% if (error['shipping_cdek_max_weight'] is defined) %}
+										<div class="text-danger">{{ error['shipping_cdek_max_weight'] }}</div>
+                                    {% endif %}
+								</div>
+							</div>
+							<div class="form-group">
+								<label class="col-sm-2 control-label" for="">{{ entry_min_total }}</label>
+								<div class="col-sm-10 form-inline">
+									<input class="form-control" id="cdek-min-total" type="text" name="shipping_cdek_min_total" value="{{ shipping_cdek_min_total }}" />
+                                    {% if (error['shipping_cdek_min_total'] is defined) %}
+										<div class="text-danger">{{ error['shipping_cdek_min_total'] }}</div>
+                                    {% endif %}
+								</div>
+							</div>
+							<div class="form-group">
+								<label class="col-sm-2 control-label" for="">{{ entry_max_total }}</label>
+								<div class="col-sm-10 form-inline">
+									<input class="form-control" id="cdek-max-total" type="text" name="shipping_cdek_max_total" value="{{ shipping_cdek_max_total }}" />
+                                    {% if (error['shipping_cdek_max_total'] is defined) %}
+										<div class="text-danger">{{ error['shipping_cdek_max_total'] }}</div>
+                                    {% endif %}
+								</div>
+							</div>
+							<div class="form-group">
+								<label class="col-sm-2 control-label" for=""><span data-toggle="tooltip" title="{{ entry_city_ignore_help }}">{{ entry_city_ignore }}</span></label>
+								<div class="col-sm-10 form-inline">
+									<textarea class="form-control" id="cdek-city-ignore" name="shipping_cdek_city_ignore" rows="4" cols="50">{{ shipping_cdek_city_ignore }}</textarea>
+								</div>
+							</div>
+						</div>
+
+						<div class="tab-pane" id="tab-empty">
+							<div class="form-group">
+								<label class="col-sm-2 control-label" for="">{{ entry_empty }}</label>
+								<div class="col-sm-10 form-inline">
+									<select class="form-control" id="cdek-empty" name="shipping_cdek_empty[use]">
+                                        {% for key,variable in boolean_variables %}
+											<option {% if (shipping_cdek_empty['use'] is not empty and shipping_cdek_empty['use'] == key) %}{{ 'selected="selected"' }}{% endif %} value="{{ key }}">{{ variable }}</option>
+                                        {% endfor %}
+									</select>
+								</div>
+							</div>
+                            {% set style = style|merge({'cdek-empty_parameters':''})%}
+                            {% if (shipping_cdek_empty['use'] == 0) %}
+                                {% set style = style|merge({'cdek-empty_parameters':'style="display:none;"'})%}{% endif %}
+
+							<div id="cdek-empty_parameters"{{ style['cdek-empty_parameters'] }}>
+								<div class="form-group">
+									<label class="col-sm-2 control-label" for="">{{ entry_title }}</label>
+									<div class="col-sm-10">
+                                        {% for language in languages %}
+											<div class="input-group">
+												<span class="input-group-addon"><img src="language/{{ language['code'] }}/{{ language['code'] }}.png" title="{{ language['name'] }}" /></span>
+												<input class="form-control" type="text" name="shipping_cdek_empty[title][{{ language['language_id'] }}]" value="{{ shipping_cdek_empty['title'][language['language_id']] is defined ? shipping_cdek_empty['title'][language['language_id']] : '' }}" />
+											</div>
+                                        {% endfor %}
+									</div>
+								</div>
+
+								<div class="form-group">
+									<label class="col-sm-2 control-label" for=""><span data-toggle="tooltip" title="{{ entry_empty_cost_help }}">{{ entry_empty_cost }}</span></label>
+									<div class="col-sm-10 form-inline">
+										<td>
+											<input class="form-control" id="cdek-empty-cost" type="text" name="shipping_cdek_empty[cost]" value="{% if (shipping_cdek_empty['cost'] is not empty) %}{{ shipping_cdek_empty['cost'] }}{% endif %}" />
+                                            {% if (error['shipping_cdek_empty']['cost'] is defined) %}
+												<div class="text-danger">{{ error['shipping_cdek_empty']['cost'] }}</div>
+                                            {% endif %}
+										</td>
+									</div>
+								</div>
+							</div>
+						</div>
+					</div>
+				</form>
+			</div>
+		</div>
+
+	</div>
+
+</div>
+<link href="view/javascript/codemirror/lib/codemirror.css" rel="stylesheet" />
+<link href="view/javascript/codemirror/theme/monokai.css" rel="stylesheet" />
+<script type="text/javascript" src="view/javascript/codemirror/lib/codemirror.js"></script>
+<script type="text/javascript" src="view/javascript/codemirror/lib/xml.js"></script>
+<script type="text/javascript" src="view/javascript/codemirror/lib/formatting.js"></script>
+<script type="text/javascript" src="view/javascript/summernote/summernote.js"></script>
+<link href="view/javascript/summernote/summernote.css" rel="stylesheet" />
+<script type="text/javascript" src="view/javascript/summernote/summernote-image-attributes.js"></script>
+<script type="text/javascript" src="view/javascript/summernote/opencart.js"></script>
+<script type="text/javascript"><!--
+
+    $('#cdek-default-size').change(function(event) {
+        var val = $(this).val();
+        if (val == '1') {
+            $('#cdek-default-size_parameters').show();
+        } else {
+            $('#cdek-default-size_parameters').hide();
+        }
+    });
+
+    $('#cdek-default-weight').change(function(event) {
+        var val = $(this).val();
+        if (val == '1') {
+            $('#cdek-default-weight_parameters').show();
+        } else {
+            $('#cdek-default-weight_parameters').hide();
+        }
+    });
+
+    $('#cdek-show-pvz').change(function(event) {
+        var val = $(this).val();
+        if (val == '1') {
+            $('#cdek-show-pvz_parameters').show();
+        } else {
+            $('#cdek-show-pvz_parameters').hide();
+        }
+    });
+
+    $('#cdek-empty').change(function(event) {
+        var val = $(this).val();
+        if (val == '1') {
+            $('#cdek-empty_parameters').show();
+        } else {
+            $('#cdek-empty_parameters').hide();
+        }
+    });
+
+    $('#cdek-default-size-type').change(function(event){
+
+        var type = $(this).val();
+
+        if (type == 'volume') {
+            $('#cdek-default-size-type_volume').show();
+            $('#cdek-default-size-type_size').hide();
+        } else {
+            $('#cdek-default-size-type_size').show();
+            $('#cdek-default-size-type_volume').hide();
+        }
+
+    });
+
+    var mode_list = [];
+
+    {% for mode_id,mode_name in tariff_mode %}
+    mode_list[{{ mode_id }}] = '{{ mode_name }}';
+    {% endfor %}
+
+    var tariff_list = [];
+
+    {% for tariff_id,tariff_info in tariff_list %}
+    tariff_list[{{ tariff_id }}] = '{{ tariff_info['title'] }}';
+    {% endfor %}
+
+
+    var discount_row ={{ discount_row_number }};
+
+    function addDiscount() {
+
+        var html = '<tr id="discount-row' + discount_row + '">';
+        html += '		<td class="left">';
+        html += '			<input type="text" class="form-control" name="shipping_cdek_discounts[' + discount_row + '][total]" value="" size="12" />';
+        html += '		</td>';
+        html += '		<td class="left">';
+        html += '			<div class="well well-sm" style="height: 150px; overflow: auto;">';
+        {% set class = 'even' %}
+        {% for tariff_id,tariff_info in tariff_list %}
+        {% set class = class == 'even' ? 'odd' : 'even' %}
+        html += '				<div class="{{ class }}">';
+        html += '				<input type="checkbox" name="shipping_cdek_discounts[' + discount_row + '][tariff_id][]" value="{{ tariff_id }}" />';
+        html += '				{{ tariff_info['title'] }}';
+        html += '				</div>';
+        {% endfor %}
+        html += '			</div>';
+        html += '		</td>';
+        html += '		<td class="left">';
+        html += '			<select class="form-control" name="shipping_cdek_discounts[' + discount_row + '][tax_class_id]">';
+        html += '				<option value="0">{{ text_none }}</option>';
+        {% for tax_class in tax_classes %}
+        html += '				<option value="{{ tax_class['tax_class_id'] }}">{{ tax_class['title'] }}</option>';
+        {% endfor %}
+        html += '			</select>';
+        html += '		</td>';
+        html += '		<td class="left">';
+        html += '			<div class="scrollbox">';
+        {% set class = 'even' %}
+        {% for customer_group in customer_groups %}
+        {% set class = class == 'even' ? 'odd' : 'even' %}
+        html += '				<div class="{{ class }}">';
+        html += '				<input type="checkbox" name="shipping_cdek_discounts[' + discount_row + '][customer_group_id][]" value="{{ customer_group['customer_group_id'] }}" />';
+        html += '				{{ customer_group['name'] }}';
+        html += '				</div>';
+        {% endfor %}
+        html += '			</div>';
+        html += '		</td>';
+        html += '		<td class="left">';
+        html += '			<div class="scrollbox">';
+        {% set class = 'even' %}
+        {% for geo_zone in geo_zones %}
+        {% set class = class == 'even' ? 'odd' : 'even' %}
+        html += '				<div class="{{ class }}">';
+        html += '					<input type="checkbox" name="shipping_cdek_discounts[' + discount_row + '][geo_zone][]" value="{{ geo_zone['geo_zone_id'] }}" />';
+        html += '					{{ geo_zone['name'] }}';
+        html += '				</div>';
+        {% endfor %}
+        html += '			</div>';
+        html += '		</td>';
+        html += '		<td class="left"><div class="form-inline">';
+        html += '			<select class="form-control" name="shipping_cdek_discounts[' + discount_row + '][prefix]">';
+        {% for prefix in ['-','+'] %}
+        html += '				<option value="{{ prefix }}">{{ prefix }}</option>';
+        {% endfor %}
+        html += '			</select>';
+        html += '			<input class="form-control" type="text" name="shipping_cdek_discounts[' + discount_row + '][value]" value="" size="3" />';
+        html += '			<select class="form-control" name="shipping_cdek_discounts[' + discount_row + '][mode]">';
+        {% for type,name in discount_type %}
+        html += '				<option value="{{ type }}">{{ name }}</option>';
+        {% endfor %}
+        html += '			</select>';
+        html += '		</div></td>';
+        html += '		<td class="left"><a onclick="$(\'#discount-row' + discount_row + '\').remove();return FALSE;" class="button">{{ button_remove }}</a></td>';
+        html += '</tr>';
+
+        $('#discount tbody').append(html);
+
+        discount_row++;
+
+    }
+
+    var tariff_row ={{ tariff_number }};
+
+    function simtariffs()
+    {
+        $.each( tariff_list, function( key, value ) {
+            if (value != null) {
+                $('.cdek-tariff').val(key).trigger('change');
+            }
+        });
+    }
+	console.log(tariff_row);
+    $('.cdek-tariff').on('change', function(event){
+        event.preventDefault();
+
+        var tariff_id = $(this).val();
+        var tariff_name = $(".cdek-tariff option:selected").text();
+        console.log(tariff_name);
+        if (tariff_id == 0) return;
+
+        var parent = $('#tab-tariff');
+
+        var option = $('select.cdek-tariff option[value=' + tariff_id + ']', parent);
+        var mode_id = $(option).attr('rel');
+
+        var sort_orde = 0;
+
+        $('table.list tr', parent).each(function(){
+
+            var order = $('input.sort_order', this).val();
+
+            if (order > sort_orde) {
+                sort_orde = order;
+            }
+
+        });
+
+        sort_orde++;
+
+        var html = '<tr id="tariff-' + tariff_row + '">';
+        html += '		<td class="left drag" width="1"><a title="{{ text_drag }}">&nbsp;</a></td>';
+        html += '		<td class="left"><nobr>' + $(option).text() + '</nobr><span class="help"><b>{{ column_mode }}</b>: ' + mode_list[mode_id] + '</span><input class="sort_order" type="hidden" name="shipping_cdek_custmer_tariff_list[' + tariff_row + '][sort_order]" value="' + sort_orde + '" /><input type="hidden" name="shipping_cdek_custmer_tariff_list[' + tariff_row + '][tariff_id]" value="' + tariff_id + '" /><input type="hidden" name="shipping_cdek_custmer_tariff_list[' + tariff_row + '][mode_id]" value="' + mode_id + '" /></td>';
+        html += '		<td class="left col-md-3 form-inline">';
+        {% for language in languages %}
+        html += '<div class="input-group">';
+        html += '<span class="input-group-addon"><img src="language/{{ language['code'] }}/{{ language['code'] }}.png" title="{{ language['name'] }}" /></span>';
+        html += '<input type="text" class="form-control" name="shipping_cdek_custmer_tariff_list[' + tariff_row + '][title][{{ language['language_id'] }}]" value="'+tariff_name+'" />';
+        html += '</div>';
+        {% endfor %}
+        html += '		</td>';
+        html += '		<td class="left">';
+        html += ' 			<a href="#" onclick="$(\'#groupsBlock-'+ tariff_row +'\').toggle(); return false;">{{ column_customer_group }}</a>';
+        html += '			<div class="scrollbox" id="groupsBlock-'+ tariff_row +'" style="display: none;">';
+        {% set class = 'even' %}
+        {% for customer_group in customer_groups %}
+        {% set class = class == 'even' ? 'odd' : 'even' %}
+        html += '				<div class="{{ class }}">';
+        html += '				<input type="checkbox" name="shipping_cdek_custmer_tariff_list[' + tariff_row + '][customer_group_id][]" value="{{ customer_group['customer_group_id'] }}" />';
+        html += '				{{ customer_group['name'] }}';
+        html += '				</div>';
+        {% endfor %}
+        html += '			</div>';
+        html += '		</td>';
+        html += '		<td class="left">';
+        html += ' 			<a href="#" onclick="$(\'#geozoneBlock-'+ tariff_row +'\').toggle(); return false;">{{ column_geo_zone }}</a>';
+        html += '			<div class="scrollbox" id="geozoneBlock-' + tariff_row + '" style="display: none;">';
+        {% set class = 'even' %}
+        {% for geo_zone in geo_zones %}
+        {% set class = class == 'even' ? 'odd' : 'even' %}
+        html += '				<div class="{{ class }}">';
+        html += '					<input type="checkbox" name="shipping_cdek_custmer_tariff_list[' + tariff_row + '][geo_zone][]" value="{{ geo_zone['geo_zone_id'] }}" />';
+        html += '					{{ geo_zone['name'] }}';
+        html += '				</div>';
+        {% endfor %}
+        html += '			</div>';
+        html += '		</td>';
+        html += '		<td class="left">';
+        html += ' 		<a href="#" onclick="$(\'#limitBlock-'+ tariff_row +'\').toggle(); return false;">{{ column_limit }}</a>';
+        html += ' 		<div id="limitBlock-'+ tariff_row +'" style="display: none;">';
+        html += '			<table class="form limit">';
+        html += '				<tbody>';
+        html += '					<tr>';
+        html += '						<td><label for="cdek-custmer-tariff-list-' + tariff_row + '-min-weight">{{ entry_min_weight }}</label></td>';
+        html += '						<td><input id="cdek-custmer-tariff-list-' + tariff_row + '-min-weight" type="text" name="shipping_cdek_custmer_tariff_list[' + tariff_row + '][min_weight]" value="" size="3" /></td>';
+        html += '					</tr>';
+        html += '					<tr>';
+        html += '						<td><label for="cdek-custmer-tariff-list-' + tariff_row + '-max-weight">{{ entry_max_weight }}</label></td>';
+        html += '						<td><input id="cdek-custmer-tariff-list-' + tariff_row + '-max-weight" type="text" name="shipping_cdek_custmer_tariff_list[' + tariff_row + '][max_weight]" value="" size="3" /></td>';
+        html += '					</tr>';
+        html += '					<tr>';
+        html += '						<td><label for="cdek-custmer-tariff-list-' + tariff_row + '-min-total">{{ entry_min_total }}</label></td>';
+        html += '						<td><input id="cdek-custmer-tariff-list-' + tariff_row + '-min-total" type="text" name="shipping_cdek_custmer_tariff_list[' + tariff_row + '][min_total]" value="" size="3" /></td>';
+        html += '					</tr>';
+        html += '					<tr class="last">';
+        html += '						<td><label for="cdek-custmer-tariff-list-' + tariff_row + '-max-total">{{ entry_max_total }}</label></td>';
+        html += '						<td><input id="cdek-custmer-tariff-list-' + tariff_row + '-max-total" type="text" name="shipping_cdek_custmer_tariff_list[' + tariff_row + '][max_total]" value="" size="3" /></td>';
+        html += '					</tr>';
+        html += '				</tbody>';
+        html += '			</table>';
+        html += '		</div>';
+        html += '		</td>';
+        html += '		<td class="left"><a onclick="removeTariff(' + tariff_row + ');" class="button">{{ button_remove }}</a></td>';
+        html += '</tr>';
+
+        $('table.list tbody:first', parent).append(html);
+
+        $('select.cdek-tariff option', parent).removeAttr('selected');
+
+        tariff_row++;
+    });
+
+    function removeTariff(tariff_row) {
+        $('#tariff-' + tariff_row).remove();
+        $('select.cdek-tariff option[value=' + tariff_row + ']').show();
+    }
+
+    $('.js.city-from').click(function(){
+        $("#cdek-city-from").show().focus().trigger('keydown');
+        $(this).hide();
+    });
+
+    $("#cdek-city-from").blur(function(){
+        if ($('#cdek-city-from-id').val() != '') {
+            $('.js.city-from').show();
+            $(this).hide();
+        }
+    });
+
+    $("#cdek-city-from").change(function(){
+        $('#cdek-city-from-id').val('');
+    });
+
+    $(function() {
+        $("#cdek-city-from").autocomplete({
+            source: function(request,response) {
+                $.ajax({
+                    url: "//api.cdek.ru/city/getListByTerm/jsonp.php?callback=?",
+                    dataType: "jsonp",
+                    data: {
+                        q: function () { return $("#cdek-city-from").val() },
+                        name_startsWith: function () { return $("#cdek-city-from").val() }
+                    },
+                    success: function(data) {
+                        console.log(data);
+                        response($.map(data.geonames, function(item) {
+                            return {
+                                label: item.name,
+                                value: item.name,
+                                id: item.id
+                            }
+                        }));
+                    }
+                });
+            },
+            minLength: 1,
+            select: function(event) {
+                $('#cdek-city-from-id').parent().find('.error').remove();
+                $('#cdek-city-from-id').val(event.id);
+                $("#cdek-city-from").val(event.label);
+                $('.js.city-from').text(event.label).show();
+                $("#cdek-city-from").hide();
+            }
+        });
+
+    });
+
+</script>
+
+{{ footer }}

@@ -1,0 +1,108 @@
+.blog {
+    &__select {
+        width: 33%;
+        float: right;
+    }
+
+    &__tags {
+        margin-top: 2em;
+        display: flex;
+        flex-direction: column;
+        width: 66%;
+        flex-wrap: wrap;
+        height: 100px;
+        align-content: space-between;
+        font-weight: 700;
+
+        a {
+            color: $accent;
+
+            &:hover {
+                // text-decoration: none;
+            }
+        }
+    }
+
+    &__box {
+        display: flex;
+        flex-wrap: wrap;
+        justify-content: space-between;
+
+        &-item {
+            margin-top: 1.5em !important;
+            // margin: 4px 0;
+            width: 48%;
+            overflow: hidden;
+            border-radius: 15px;
+            box-shadow: 0 0 6px #c0c0c0;
+
+            &-title {
+                padding: 1em;
+                margin-bottom: 0;
+                text-align: center;
+                font-size: 1.3em;
+
+                &-link {
+                    line-height: 1.2em;
+                    color: black;
+
+                    &:hover {
+                        text-decoration: none;
+                        color: $accent;
+                    }
+                }
+            }
+
+            img {
+                object-fit: cover;
+                width: 100%;
+            }
+
+            p {
+                text-align: left !important;
+                padding: .5em 1em;
+            }
+        }
+    }
+}
+
+@media screen and (max-width: 1199.98px) {
+    .blog {
+        &__tags {
+            width: 50%;
+            flex-wrap: nowrap;
+            height: auto;
+        }
+
+        &__select {
+            margin-top: 2em;
+        }
+    }
+}
+
+@media screen and (max-width: 991.98px) {
+    .blog {
+        &__box-item {
+            width: 90%;
+            margin: 2em auto 0 !important;
+        }
+    }
+}
+
+@media screen and (max-width: 575.98px) {
+    .blog {
+        &__select {
+            margin: 2em auto 0;
+            width: 90%;
+            float: unset;
+        }
+
+        &__tags {
+            width: 100%;
+        }
+
+        &__box-item {
+            width: 100%;
+        }
+    }
+}

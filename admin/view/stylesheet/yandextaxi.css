@@ -1,0 +1,75 @@
+.control-text {
+    padding-top: 9px;
+}
+.form-group .form-check-input {
+    margin-top: 13px;
+}
+.estimation-price-label, .estimation-price-value {
+    font-size: 20px;
+}
+.estimation-tariff {
+    display: none;
+}
+.address-map {
+    display: none;
+    height: 200px;
+    width: 100%;
+    margin-top: 15px;
+    position: relative;
+}
+.destinations .destination:first-child .destination-actions-up {
+    display: none;
+}
+.destinations .destination:last-child .destination-actions-down {
+    display: none;
+}
+.destination {
+    margin-bottom: 40px;
+}
+.destination-actions {
+    float: right;
+}
+.destination-actions button {
+    background: none;
+    border: none;
+}
+.destination-actions button:focus {
+    outline: none;
+}
+.destination .panel-title a {
+    text-decoration: underline;
+    color: #1e91cf;
+}
+.inline-from-group {
+    display: flex;
+    flex-flow: row wrap;
+    align-items: center;
+}
+.inline-from-group .form-control {
+    flex: 1;
+}
+.inline-from-group .form-control:not(:last-child) {
+    margin-right: 15px;
+}
+.yandex-taxi-delivery-warehouse-index-container {
+    margin-bottom: 10px;
+}
+.yandex-taxi-delivery-work-time-divider {
+    font-size: 20px;
+}
+
+.tariff-requirement {
+    margin-left: 10px;
+}
+
+.top-space-10 {
+    margin-top: 10px;
+}
+
+.tariff-requirement-label {
+    font-weight: bold;
+}
+
+.tariff-option {
+    font-weight: normal;
+}

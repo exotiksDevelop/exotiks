@@ -1,0 +1,237 @@
+.delivery {
+  padding-top: 77px;
+  padding-bottom: 127px;
+  text-align: center;
+  background-size: cover;
+  background-attachment: fixed;
+  background: url('./images/bg2.jpg');
+
+  &__title {
+    font-size: 48px;
+    font-weight: 700;
+    line-height: 1em;
+    color: white;
+    text-align: center;
+    width: 100%;
+    padding: 0 15px;
+  }
+
+  &__subtitle {
+    margin-top: 31px;
+    color: #939393;
+    text-align: center;
+    width: 100%;
+    font-weight: 700;
+    padding: 0 15px;
+    line-height: 1em;
+    font-size: 24px;
+  }
+
+  &__box {
+    margin-top: 96px;
+    display: flex;
+    justify-content: space-between;
+
+    &-item {
+      display: inline-block;
+      width: 371px;
+      height: 234px;
+      background-image: url(./images/delivery-item.png);
+      background-position: center;
+      background-size: contain;
+      background-repeat: no-repeat;
+      // border: 2px solid #757575;
+      text-align: center;
+
+      &-ico {
+        margin-top: -45px;
+        display: inline-block;
+        width: 79px;
+        height: 79px;
+        background-position: center;
+        background-repeat: no-repeat;
+
+        &.ico-1 {
+          background-image: url(./images/delivery-1.png);
+        }
+
+        &.ico-2 {
+          background-image: url(./images/delivery-2.png);
+        }
+
+        &.ico-3 {
+          background-image: url(./images/delivery-3.png);
+        }
+      }
+
+      &-title {
+        margin-top: 16px;
+        display: inline-block;
+        font-size: 24px;
+        font-weight: 600;
+        line-height: 1em;
+        color: white;
+        text-align: center;
+        width: 100%;
+      }
+
+      &-text {
+        margin-top: 11px;
+        display: inline-block;
+        color: white;
+        font-size: 18px;
+        font-weight: 600;
+        line-height: 30px;
+
+        .green {
+          color: #71c500;
+        }
+
+        .red {
+          color: #e1133d;
+        }
+      }
+
+    }
+  }
+
+  &__btn {
+    margin-top: 64px;
+    display: inline-flex;
+    justify-content: center;
+    align-items: center;
+    width: 243px;
+    height: 65px;
+    border: 3px solid #757575;
+    color: white;
+    border-radius: 4px;
+    font-weight: 600;
+
+    &:hover,
+    &:active,
+    &:focus {
+      border: 3px solid #757575;
+      color: white;
+      text-decoration: none;
+      background-color: $accent;
+      border-color: $accent;
+    }
+  }
+}
+
+@media screen and (max-width: 1199.98px) {
+  .delivery {
+    padding-top: 6vw;
+    padding-bottom: 6vw;
+
+    &__box {
+      justify-content: space-around;
+
+      &-item {
+        max-width: 371px;
+        width: 32%;
+        height: 19.3vw;
+
+        &-ico {
+          margin-top: -2.6vw;
+          width: 5vw;
+          background-size: contain;
+          height: 5vw;
+        }
+
+        &-title {
+          margin-top: 1vw;
+          font-size: calc(0.6em + 1.1vw);
+        }
+
+        &-text {
+          margin-top: 1vw;
+          font-size: calc(0.4em + 0.9vw);
+          line-height: 1.4em;
+        }
+      }
+    }
+
+    &__btn {
+      width: 20vw;
+      height: 5.5vw;
+    }
+  }
+}
+
+@media screen and (max-width: 767.98px) {
+  .delivery {
+    padding-top: 10vw;
+    padding-bottom: 10vw;
+
+    &__box {
+      margin-top: 16vw;
+      flex-direction: column;
+      align-items: center;
+
+      &-item {
+        margin-bottom: 16vw;
+        width: 70%;
+        height: 30.7vw;
+        margin-bottom: 4em;
+
+        &-ico {
+          margin-top: -5vw;
+          width: 9vw;
+          height: 9vw;
+        }
+
+        &-title {
+          margin-top: 2vw;
+          font-size: calc(1em + 1vw);
+        }
+
+        &-text {
+          margin-top: 2.2vw;
+          font-size: calc(0.6em + 1vw);
+        }
+      }
+    }
+
+    &__btn {
+      width: 230px;
+      height: 60px;
+    }
+  }
+}
+
+@media screen and (max-width: 575.98px) {
+  .delivery {
+    padding-top: 22vw;
+    padding-bottom: 22vw;
+
+    &__title {
+      font-size: calc(2em + 1.5vw);
+    }
+
+    &__subtitle {
+      font-size: calc(0.9em + 1.1vw);
+    }
+
+    &__box {
+      &-item {
+        width: 90%;
+        height: 48vw;
+
+        &-text {
+          font-size: calc(0.6em + 1.3vw);
+        }
+
+        &-ico {
+          margin-top: -6.6vw;
+          width: 13vw;
+          height: 13vw;
+        }
+      }
+    }
+
+    &__btn {
+      margin-top: 0;
+    }
+  }
+}

@@ -1,0 +1,121 @@
+.our-store {
+  padding-bottom: 107px;
+  background-size: cover;
+  background-attachment: fixed;
+  background: url('./images/bg2.jpg');
+
+  .container {
+    max-width: 1400px;
+  }
+
+  &__title {
+    padding-top: 86px;
+    padding-bottom: 86px;
+    font-size: 48px;
+    font-weight: 700;
+    line-height: 48px;
+    color: white;
+    text-align: center;
+  }
+
+  &__box {
+    display: flex;
+    flex-wrap: wrap;
+    justify-content: center;
+
+    &-item {
+      display: inline-block;
+      width: inherit;
+      height: inherit;
+      max-height: inherit;
+      position: relative;
+      cursor: pointer;
+      overflow: hidden;
+
+      &-wrap {
+        margin: 10px;
+        width: 432px;
+        height: 367px;
+      }
+
+      &:focus &-title,
+      &:active &-title,
+      &:hover &-title {
+        background-color: $accent;
+        cursor: pointer;
+      }
+
+      &-img {
+        width: inherit;
+        height: inherit;
+        object-fit: cover;
+      }
+
+      &-title {
+        display: inline-flex;
+        justify-content: center;
+        align-items: center;
+        height: 106px;
+        width: inherit;
+        background-color: $red;
+        opacity: 0.88;
+        font-size: 20px;
+        font-weight: 700;
+        color: white;
+        position: absolute;
+        bottom: 0;
+        left: 0;
+        text-align: center;
+      }
+    }
+  }
+}
+
+@media screen and (max-width: 991.98px) {
+  .our-store {
+    &__box {
+      &-item {
+
+        &-wrap {
+          width: 43vw;
+          max-height: 367px;
+        }
+
+        &-title {
+          height: 30%;
+        }
+      }
+    }
+  }
+}
+
+@media screen and (max-width: 767.98px) {
+  .our-store {
+    padding-bottom: 15vw;
+
+    &__title {
+      font-size: calc(1em + 4vw);
+      padding: 8vw 16px;
+      line-height: 1.5em;
+    }
+  }
+}
+
+@media screen and (max-width: 575.98px) {
+  .our-store {
+    &__box {
+      &-item {
+        &-wrap {
+          margin: 8px 16px;
+          max-width: 432px;
+        width: 100%;
+        }
+
+        &-title {
+          line-height: 1em;
+          font-size: calc(0.9em + 1vw);
+        }
+      }
+    }
+  }
+}

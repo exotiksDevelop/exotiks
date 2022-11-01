@@ -1,0 +1,46 @@
+.exposition {
+  background-color: white;
+
+  &__box {
+    display: flex;
+    justify-content: space-between;
+    padding: 67px 0 57px 0;
+
+    &-title {
+      display: inline-block;
+      width: 9.7em;
+      font-size: 18px;
+      line-height: 30px;
+      font-weight: 700;
+      color: black;
+    }
+  }
+}
+
+@media screen and (max-width: 991.98px) {
+  .exposition {
+    &__box-title {
+      font-size: calc(0.8rem + 1vw);
+      line-height: 1.4em;
+    }
+  }
+}
+
+@media screen and (max-width: 767.98px) {
+  .exposition {
+    &__box {
+      padding: 4vw 0 9vw 0;
+      flex-direction: column;
+
+      &-title {
+        margin-top: 5vw;
+        width: 100%;
+        font-size: calc(1rem + 1vw);
+        line-height: 1.4em;
+
+        width: 100%;
+        text-align: center;
+      }
+    }
+  }
+}

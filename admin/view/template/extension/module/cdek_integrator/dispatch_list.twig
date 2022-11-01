@@ -1,0 +1,299 @@
+{{ header }}{{ column_left }}
+<div id="content">
+
+	<div class="page-header">
+		<div class="container-fluid">
+			<div class="pull-right">
+				<a href="{{ cancel }}" class="btn btn-default">{{ button_cancel }}</a>
+			</div>
+
+			<h1>{{ heading_title }}</h1>
+			<ul class="breadcrumb">
+                {% for breadcrumb in breadcrumbs %}
+					<li><a href="{{ breadcrumb['href'] }}">{{ breadcrumb['text'] }}</a></li>
+                {% endfor %}
+			</ul>
+		</div>
+	</div>
+
+	<div class="container-fluid">
+        {% if (error_warning) %}
+			<div class="alert alert-danger"><i class="fa fa-exclamation-circle"></i> {{ error_warning }}
+				<button type="button" class="close" data-dismiss="alert">&times;</button>
+			</div>
+        {% endif %}
+        {% if (success) %}
+			<div class="alert alert-success"><i class="fa fa-exclamation-circle"></i> {{ success }}
+				<button type="button" class="close" data-dismiss="alert">&times;</button>
+			</div>
+        {% endif %}
+
+		<div class="panel panel-default">
+			<div class="panel-heading">
+				<h3 class="panel-title"><i class="fa fa-pencil"></i> {{ heading_title }}</h3>
+			</div>
+
+			<div class="panel-body">
+				<div class="well">
+					<div class="row">
+
+						<div class="col-sm-4">
+
+							<div class="form-group">
+								<label class="control-label">№ заказа</label>
+								<input type="text" class="form-control" name="filter_order_id" value="{{ filter_order_id }}">
+							</div>
+
+							<div class="form-group">
+								<label class="control-label">Номер отправления</label>
+								<input type="text" class="form-control" name="filter_dispatch_number" value="{{ filter_dispatch_number }}">
+							</div>
+
+							<div class="form-group">
+								<label class="control-label">Акт приема-передачи</label>
+								<input type="text" class="form-control" name="filter_act_number" value="{{ filter_act_number }}">
+							</div>
+
+						</div>
+
+						<div class="col-sm-4">
+
+							<div class="form-group">
+								<label class="control-label">Дата отгрузки</label>
+								<input type="text" class="form-control date" name="filter_date" value="{{ filter_date }}">
+							</div>
+
+							<div class="form-group">
+								<label class="control-label">Откуда</label>
+								<input type="text" class="form-control" name="filter_city_from" value="{{ filter_city_from }}">
+							</div>
+
+							<div class="form-group">
+								<label class="control-label">Куда</label>
+								<input type="text" class="form-control" name="filter_city_to" value="{{ filter_city_to }}">
+							</div>
+
+						</div>
+
+						<div class="col-sm-4">
+							<div class="form-group">
+								<label class="control-label">Статус</label>
+								<select name="filter_status_id" class="form-control">
+									<option value="*"></option>
+                                    {% for status_id,status_info in statuses %}
+										<option {% if (filter_status_id == status_id) %} {{ 'selected="selected"' }}{% endif %} value="{{ status_id }}">{{ status_info['title'] }}</option>
+                                    {% endfor %}
+								</select>
+							</div>
+
+							<div class="form-group">
+								<label class="control-label">Стоимость доставки</label>
+								<input type="text" class="form-control" name="filter_total" value="{{ filter_total }}">
+							</div>
+
+							<div class="form-group">
+								<button type="button" onclick="filter();" class="btn btn-primary pull-right"><i class="fa fa-search"></i> {{ button_filter }}</button>
+							</div>
+						</div>
+					</div>
+				</div>
+
+				<table class="list table" style="table-layout: fixed;">
+					<thead>
+					<tr>
+						<td class="left"><a href="{{ sort_order_id }}"{% if (sort == 'o.order_id') %} class="{{ order|lower }}"{% endif %}>№ заказа</a></td>
+						<td class="left"><a href="{{ sort_dispatch_number }}"{% if (sort == 'd.dispatch_number') %} class="{{ order|lower }}"{% endif %}>Номер отправления</a></td>
+						<td class="left"><a href="{{ sort_order_id }}"{% if (sort == 'o.order_id') %} class="{{ order|lower }}"{% endif %}>Акт приема-передачи</a></td>
+						<td class="left"><a href="{{ sort_act_number }}"{% if (sort == 'o.act_number') %} class="{{ order|lower }}"{% endif %}>Дата отгрузки</a></td>
+						<td class="left"><a href="{{ sort_city_from }}"{% if (sort == 'o.city_name') %} class="{{ order|lower }}"{% endif %}>Откуда</a></td>
+						<td class="left"><a href="{{ sort_city_to }}"{% if (sort == 'o.recipient_city_name') %} class="{{ order|lower }}"{% endif %}>Куда</a></td>
+						<td class="left"><a href="{{ sort_status }}"{% if (sort == 'o.status_id') %} class="{{ order|lower }}"{% endif %}>Статус</a></td>
+						<td class="left"><a href="{{ sort_total }}"{% if (sort == 'o.delivery_cost') %} class="{{ order|lower }}"{% endif %}>Стоимость доставки</a></td>
+						<td class="right">{{ column_action }}</td>
+					</tr>
+					</thead>
+					<tbody>
+                    {% if (dispatches is not empty) %}
+                        {% for dispatch_info in dispatches %}
+							<tr>
+								<td class="left">{{ dispatch_info['order_id'] }}</td>
+								<td class="left">{{ dispatch_info['dispatch_number'] }}</td>
+								<td class="left">
+                                    {% if (dispatch_info['act_number']) %}
+                                        {{ dispatch_info['act_number'] }}
+                                    {% else %}
+										<a class="js sync-row">Синхронизовать</a>
+                                    {% endif %}
+								</td>
+								<td class="left">{{ dispatch_info['date'] }}</td>
+								<td class="left">{{ dispatch_info['city_name'] }}</td>
+								<td class="left">{{ dispatch_info['recipient_city_name'] }}</td>
+								<td class="left">{{ dispatch_info['status'] }}<span class="help">{{ dispatch_info['status_date'] }}</span></td>
+								<td class="left">
+                                    {% if (dispatch_info['cost']) %}
+                                        {{ dispatch_info['cost'] }}
+                                    {% else %}
+										<a class="js sync-row">Синхронизовать</a>
+                                    {% endif %}
+								</td>
+								<td class="right action">
+                                    {% for action in dispatch_info['action'] %}
+										<a href="{{ action['href'] }}" {% if (action['class'] is not empty) %} {{ 'class="' ~ action['class'] ~ '"' }}{% endif %}>{{ action['text'] }}</a>
+                                    {% endfor %}
+								</td>
+							</tr>
+                        {% endfor %}
+                    {% else %}
+						<tr>
+							<td class="center" colspan="9">{{ text_no_results }}</td>
+						</tr>
+                    {% endif %}
+					</tbody>
+				</table>
+				<div class="pagination">
+                    {% if (pagination) %}
+						<div class="limit">
+							<select onchange="location = $(this).val();">
+                                {% for key,url in limits %}
+									<option {% if (limit == key) %} {{ 'selected="selected"' }}{% endif %} value="{{ url }}">{{ key }}</option>
+                                {% endfor %}
+							</select>
+						</div>
+                    {% endif %}
+                    {{ pagination }}
+				</div>
+			</div>
+
+		</div>
+	</div>
+</div>
+<script type="text/javascript"><!--
+
+    $('.right.action a.sync').on('click', function(event){
+
+        ajaxSend(this, {
+            beforeSend: function(context) {
+
+                $(context).removeClass('right').addClass('center').css('width', $(context).width()).append('<img class="loader" src="view/image/cdek_integrator/loader.gif" alt="Загрузка..." title="Загрузка..." />');
+                $('a', context).hide();
+
+            },
+            complete: function(context) {
+
+                $('a', context).show();
+
+                $('.loader', context).remove();
+
+                $(context).removeClass('center').addClass('right');
+
+            },
+            callback: function(el, json){
+
+                var context = $(el).closest('tr');
+
+                if (json.status != 'error') {
+
+                    $('td', context).animate({'background-color': '#000000'}, 'fast', function(){
+
+                        $('td:eq(2)', context).html(json.act_number);
+                        $('td:eq(3)', context).html(json.date);
+                        $('td:eq(4)', context).html(json.city_name);
+                        $('td:eq(5)', context).html(json.recipient_city_name);
+                        $('td:eq(6)', context).html(json.status_title + '<span class="help">' + json.status_date + '</span>');
+                        $('td:eq(7)', context).html(json.cost);
+
+                        $('td', context).animate({'background-color': '#FFFFFF'}, 'fast');
+
+                    });
+
+                } else {
+
+                    $('.box').before('<div class="warning">' + json.message + '</div>');
+
+                }
+
+            }
+        });
+
+        event.preventDefault();
+
+    });
+
+    $('a.js.sync-row').on('click', function(event){
+
+        var row = $(this).closest('tr');
+
+        $('.right.action a.sync', row).trigger('click');
+
+    });
+
+    $('tr.filter input').keydown(function(e) {
+        if (e.keyCode == 13) {
+            filter();
+        }
+    });
+
+    function filter() {
+
+        url = 'index.php?route=extension/module/cdek_integrator/dispatch&user_token={{ token }}';
+
+        var filter_order_id = $('input[name=\'filter_order_id\']').val();
+
+        if (filter_order_id) {
+            url += '&filter_order_id=' + encodeURIComponent(filter_order_id);
+        }
+
+        var filter_dispatch_number = $('input[name=\'filter_dispatch_number\']').val();
+
+        if (filter_dispatch_number) {
+            url += '&filter_dispatch_number=' + encodeURIComponent(filter_dispatch_number);
+        }
+
+        var filter_act_number = $('input[name=\'filter_act_number\']').val();
+
+        if (filter_act_number) {
+            url += '&filter_act_number=' + encodeURIComponent(filter_act_number);
+        }
+
+        var filter_date = $('input[name=\'filter_date\']').val();
+
+        if (filter_date) {
+            url += '&filter_date=' + encodeURIComponent(filter_date);
+        }
+
+        var filter_city_from = $('input[name=\'filter_city_from\']').val();
+
+        if (filter_city_from) {
+            url += '&filter_city_from=' + encodeURIComponent(filter_city_from);
+        }
+
+        var filter_city_to = $('input[name=\'filter_city_to\']').val();
+
+        if (filter_city_to) {
+            url += '&filter_city_to=' + encodeURIComponent(filter_city_to);
+        }
+
+        var filter_status_id = $('select[name=\'filter_status_id\']').val();
+
+        if (filter_status_id != '*') {
+            url += '&filter_status_id=' + encodeURIComponent(filter_status_id);
+        }
+
+        var filter_total = $('input[name=\'filter_total\']').val();
+
+        if (filter_total) {
+            url += '&filter_total=' + encodeURIComponent(filter_total);
+        }
+
+        location = url;
+    }
+
+    $(document).ready(function() {
+        $('.date').datetimepicker({
+            format: 'YYYY-MM-DD',
+            pickTime: false
+        })
+    });
+
+    //--></script>
+{{ footer }}

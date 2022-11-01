@@ -1,0 +1,203 @@
+{{ header }}{{ column_left }}
+<div id="content">
+    <div class="page-header">
+        <div class="container-fluid">
+            <h1>{{ title }} {% if warehouse.id is not empty %}
+                    № {{ warehouse.id }}
+                {% endif %}</h1>
+            <ul class="breadcrumb">
+                {% for breadcrumb in breadcrumbs %}
+                    <li><a href="{{ breadcrumb.href }}">{{ breadcrumb.text }}</a></li>
+                {% endfor %}
+            </ul>
+        </div>
+    </div>
+
+
+    <div class="container-fluid">
+        <input type="hidden" name="setting_url" value="{{ settings_url }}" data-message="{{ bad_geotoken_message }}">
+        <div class="panel panel-default">
+            <div class="panel-heading">
+                <h3 class="panel-title"><i class="fa fa-pencil"></i> {{ heading_warehouses_edit }}</h3>
+            </div>
+            <div class="panel-body">
+                {{ message }}
+
+                <form method="POST" id="warehouse_form">
+                    <input type="hidden" name="id" value="{{ warehouse.id }}">
+                    {# warehouse address #}
+                    <div class="form-group address required row">
+                        <label class="col-sm-3 control-label">
+                            {{ entry_address }}
+                        </label>
+                        <div class="col-sm-9">
+                            <input
+                                    type="text"
+                                    name="address"
+                                    value="{{ warehouse.address|default('') }}"
+                                    class="form-control address-input warehouse-address"
+                                    required
+                            />
+                            <span class="help-block"></span>
+                            <div class="address-map"></div>
+                            {# warehouse coordinate #}
+                            <input type="hidden" name="lat" class="address-lat" required/>
+                            <input type="hidden" name="lon" class="address-lon" required/>
+                            <div class="address-detail"></div>
+                        </div>
+                    </div>
+
+                    {# warehouse comment #}
+                    <div class="form-group row">
+                        <label class="col-sm-3 control-label">
+                            {{ entry_comment }}
+                        </label>
+                        <div class="col-sm-9">
+                            <textarea name="comment" rows="5" cols="10"
+                                      class="form-control">{{ warehouse.comment }}</textarea>
+                        </div>
+                    </div>
+
+                    {# warehouse address detail #}
+                    <div class="form-group row">
+                        <label class="col-sm-3 control-label">
+                            {{ entry_address_detail }}
+                        </label>
+                        <div class="col-sm-9">
+                            <div class="inline-from-group">
+                                <input placeholder="{{ text_placeholder_flat }}" type="text" name="flat"
+                                       class="form-control"/>
+                                <input placeholder="{{ text_placeholder_porch }}" type="text" name="porch"
+                                       class="form-control"/>
+                                <input placeholder="{{ text_placeholder_floor }}" type="text" name="floor"
+                                       class="form-control"/>
+                            </div>
+                        </div>
+                    </div>
+
+                    {# worktime #}
+                    <div class="form-group row">
+                        <label class="col-sm-3 control-label">
+                            {{ entry_warehouse_worktime }}
+                        </label>
+                        <div class="col-sm-4">
+                            <select id="start_time" name="start_time" class="form-control">
+                                {% for key, label in hours %}
+                                    <option value="{{ key }}"
+                                            {% if warehouse.startTime == key %}
+                                                selected
+                                            {% endif %} >{{ label }}</option>
+                                {% endfor %}
+                            </select>
+                            <span class="help-block"></span>
+                        </div>
+                        <div class="col-sm-1 text-center"><span class="yandex-taxi-delivery-work-time-divider">–</span>
+                        </div>
+                        <div class="col-sm-4">
+                            <select id="end_time" name="end_time" class="form-control">
+                                {% for key, label in hours %}
+                                    <option value="{{ key }}"
+                                            {% if warehouse.endTime == key %}
+                                                selected
+                                            {% endif %} >{{ label }}</option>
+                                {% endfor %}
+                            </select>
+                            <span class="help-block"></span>
+                        </div>
+                    </div>
+
+                    {# warehouse email #}
+                    <div class="form-group required row">
+                        <label class="col-sm-3 control-label">
+                            {{ entry_email }}
+                        </label>
+                        <div class="col-sm-9">
+                            <input type="text" name="email" value="{{ warehouse.contactEmail|default('') }}"
+                                   class="form-control" required/>
+                            <span class="help-block"></span>
+                        </div>
+                    </div>
+
+                    {# warehouse name #}
+                    <div class="form-group required row">
+                        <label class="col-sm-3 control-label">
+                            {{ entry_name }}
+                        </label>
+                        <div class="col-sm-9">
+                            <input type="text" name="name" value="{{ warehouse.contactName|default('') }}"
+                                   class="form-control" required/>
+                            <span class="help-block"></span>
+                        </div>
+                    </div>
+
+                    {# warehouse phone #}
+                    <div class="form-group required row">
+                        <label class="col-sm-3 control-label">
+                            {{ entry_phone }}
+                        </label>
+                        <div class="col-sm-9">
+                            <input type="tel" name="phone" value="{{ warehouse.contactPhone|default('') }}"
+                                   class="form-control" required/>
+                            <span class="help-block"></span>
+                        </div>
+                    </div>
+
+                    {# default #}
+                    <div class="form-group row">
+                        <label class="col-sm-3 control-label" for="is_default">
+                            {{ entry_warehouse_default }}
+                        </label>
+                        <div class="col-sm-9">
+                            <input id="is_default" name="is_default" type="checkbox" class="form-check-input"
+                                    {% if isDefault %}
+                                        checked
+                                    {% endif %}
+                            >
+                        </div>
+                    </div>
+
+                    <button type="submit" class="btn btn-primary">Submit</button>
+                </form>
+            </div>
+        </div>
+        {{ support_contact }}
+    </div>
+</div>
+<script type="text/javascript"
+        src="https://api-maps.yandex.ru/2.1/?lang=ru_RU&amp;apikey={{ geo_coder_token }}"></script>
+{{ translations_map }}
+{{ translations_validation }}
+<script type="text/javascript"><!--
+    $('input[type="tel"]').intlTelInput({
+        initialCountry: 'ru',
+        formatOnDisplay: false,
+        utilsScript:'{{ base_url }}/admin/view/javascript/yandextaxi/lib/intlTelInput/js/utils.js'
+    });
+
+    $(document).on('input', 'input[type="tel"]', function () {
+        let input = $(this);
+        const formattedNumber = intlTelInputUtils.formatNumber(
+            input.val(),
+            null,
+            intlTelInputUtils.numberFormat.E164
+        );
+
+        input.val(formattedNumber);
+    });
+
+    $(document).on('submit', '#warehouse_form', function (event) {
+        if (!yandexTaxiDeliveryFormValidator.validateForm($(this), function () {
+        })) {
+            event.preventDefault();
+            return false;
+        } else {
+            return true;
+        }
+    });
+
+    $('input[required]').on('change', function () {
+        yandexTaxiDeliveryFormValidator.validateField($(this));
+    });
+    //--></script>
+{{ footer }}
+{{ cabinet_modal }}

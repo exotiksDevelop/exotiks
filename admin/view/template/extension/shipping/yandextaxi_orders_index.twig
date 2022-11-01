@@ -1,0 +1,160 @@
+{{ header }}{{ column_left }}
+<div id="content">
+    <div class="page-header">
+        <div class="container-fluid">
+            <h1>{{ heading_order_index }}</h1>
+            <ul class="breadcrumb">
+                {% for breadcrumb in breadcrumbs %}
+                    <li><a href="{{ breadcrumb.href }}">{{ breadcrumb.text }}</a></li>
+                {% endfor %}
+            </ul>
+
+            <div class="pull-right">
+                <button
+                    type="button"
+                    id="button-yandextaxi-create-order"
+                    data-toggle="tooltip"
+                    title="{{ button_send_to_yandex_go }}"
+                    class="btn btn-warning"
+                    disabled
+                /><i class="fa fa-taxi"></i></button>
+            </div>
+        </div>
+    </div>
+    <div class="container-fluid">
+        <div class="panel panel-default">
+            <div class="panel-heading">
+                <h3 class="panel-title"><i class="fa fa-pencil"></i> {{ heading_orders_index }}</h3>
+            </div>
+            <div class="panel-body">
+                <table class="table table-bordered table-hover">
+                    <thead>
+                    <tr>
+                        <td style="width: 1px;" class="text-center">
+                            <input
+                                type="checkbox"
+                                onclick="$('input[name*=\'selected\']').prop('checked', this.checked);"/>
+                        </td>
+                        <th scope="col">{{ entry_name }}</th>
+                        <th scope="col">{{ entry_address }}</th>
+                        <th scope="col">{{ entry_order_status }}</th>
+                        <th scope="col">{{ entry_date }}</th>
+                        <th scope="col">{{ entry_sum }}</th>
+                        <th scope="col">{{ entry_yandex_go_status }}</th>
+                        <th class="text-right"></th>
+                    </tr>
+                    </thead>
+                    <tbody>
+                    {% for order in orders %}
+                        <tr>
+                            <td class="text-center">
+                                <input type="checkbox" name="selected[]" value="{{ order.id }}"/>
+                            </td>
+                            <td>{{ order.customer }}</td>
+                            <td>{{ order.address }}</td>
+                            <td>{{ order.order_status }}</td>
+                            <td>{{ order.date_added }}</td>
+                            <td>{{ order.total }}</td>
+                            <td>{{ order.shipment_status }}</td>
+                            <td>
+                                <a href="{{ order.viewUrl }}" class="btn btn-primary" title="{{ button_view }}"><i class="fa fa-eye"></i></a>
+                                <a
+                                    href="index.php?route=extension/shipping/yandextaxi/createOrder&user_token={{ user_token }}&order_ids[]={{ order.id }}"
+                                    data-toggle="tooltip"
+                                    title="{{ button_send_to_yandex_go }}"
+                                    class="btn btn-warning {{ order.can_ship_by_yandex_taxi_shipping ? '' : 'disabled' }}"
+                                /><i class="fa fa-taxi"></i></a>
+                                <button
+                                    data-toggle="tooltip"
+                                    title="{{ button_cancel_yandex_go }}"
+                                    class="btn btn-warning"
+                                    onclick="getCancelInfo({{ order.id }})"
+                                    type="button"
+                                    {{ order.can_cancel_yandex_taxi_shipping_order ? '' : 'disabled' }}
+                                /><i class="fa fa-times-circle" aria-hidden="true"></i></button>
+                            </td>
+                        </tr>
+                    {% endfor %}
+                    </tbody>
+                    <div class="row">
+                        <div class="col-sm-6 text-left">{{ pagination }}</div>
+                    </div>
+                </table>
+            </div>
+        </div>
+
+        {{ support_contact }}
+    </div>
+</div>
+<script type="text/javascript">
+    $('#button-yandextaxi-create-order').click(function () {
+        const orders = {{ orders|json_encode }};
+        const orders_in_shipping = orders.reduce((result, order) => {
+            if (!order.can_ship_by_yandex_taxi_shipping) {
+                result.push(order.order_id);
+            }
+            return result;
+        }, []);
+
+        const selected_order_ids = $('input[name^=\'selected\']:checked').toArray().map(item => item.value);
+        const selected_orders_in_shipping = selected_order_ids.filter(order_id => orders_in_shipping.includes(order_id));
+
+        if (selected_orders_in_shipping.length > 0) {
+            let message = '';
+            if (selected_orders_in_shipping.length === 1) {
+                message = '{{ order_already_sent_to_yandex_go }}'.replace('%d', selected_orders_in_shipping[0]);
+            } else {
+                message = '{{ orders_already_sent_to_yandex_go }}'.replace('%d', selected_orders_in_shipping.join(', №'));
+            }
+            if (!confirm(message)) {
+                return false;
+            }
+        }
+
+        const query = selected_order_ids.map(item => 'order_ids[]=' + item).join('&');
+        window.location.href = `index.php?route=extension/shipping/yandextaxi/createOrder&user_token={{ user_token }}&${query}`;
+    });
+
+    $('input[name^=\'selected\']').on('change', function() {
+        $('#button-yandextaxi-create-order').prop('disabled', true);
+
+        const selected = $('input[name^=\'selected\']:checked');
+
+        if (selected.length) {
+            $('#button-yandextaxi-create-order').prop('disabled', false);
+        }
+    });
+
+    function getCancelInfo(order_id) {
+        $.get('index.php?route=extension/shipping/yandextaxi/getCancelInfo', {
+            order_id,
+            user_token: '{{ user_token }}'
+        })
+            .done(function (response) {
+                if (response.error) {
+                    alert(response.error);
+                    return;
+                }
+
+                if (confirm(response.message)) {
+                    cancelOrder(order_id, response.version, response.status);
+                }
+            });
+    }
+
+    function cancelOrder(order_id, version, status) {
+        $.post('index.php?route=extension/shipping/yandextaxi/cancelOrder&user_token={{ user_token }}', {
+            order_id,
+            version,
+            status
+        })
+            .done(function (response) {
+                if (response.error) {
+                    alert(response.error);
+                    return;
+                }
+                location.reload();
+            });
+    }
+</script>
+{{ footer }}

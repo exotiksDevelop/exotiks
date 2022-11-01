@@ -1,0 +1,1 @@
+/opt/php4-cgi/bin/php

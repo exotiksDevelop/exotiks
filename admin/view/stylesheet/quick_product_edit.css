@@ -1,0 +1,65 @@
+
+#quickeditproduct .accordion-toggle .panel-heading:hover {
+		text-decoration: none;
+}
+
+#quickeditproduct .accordion-toggle .panel-heading:hover span,
+#quickeditproduct .accordion-toggle .panel-heading:hover strong {
+		text-decoration: underline;
+}
+#quickeditproduct .accordion-toggle .panel-heading:before {
+		font-size: 25px;
+		vertical-align: -3px;
+}
+#quickeditproduct .accordion-toggle:not(.collapsed) .panel-heading:before {
+		content: "▾";
+		margin-right: 0px;
+		position: absolute;
+    right: 5px;
+    top: 7px;
+}
+#quickeditproduct .accordion-toggle:not(.collapsed) .panel-heading{
+	padding:15px;
+}
+
+#quickeditproduct .accordion-toggle.collapsed .panel-heading:before {
+		content: "▸";
+		margin-right: 0;
+    position: absolute;
+    right: 5px;
+    top: 7px;
+		
+}
+#quickeditproduct .accordion-toggle.collapsed .panel-heading{
+	padding:15px;
+}
+
+#quickeditproduct .accordion-toggle:not(.collapsed) .panel-heading{
+	background:#eee;
+}
+#quickeditproduct .accordion-toggle.collapsed .panel-heading{
+	background:#f7f7f7;
+}
+
+/**********/
+#quickeditproduct .form-horizontal .form-group {
+    margin-left:0px;
+    margin-right:0px;
+}
+#quickeditproduct .form-group {
+    margin-bottom: 0;
+    padding-bottom:0;
+    padding-top: 6px;
+}
+#quickeditproduct #tab-option .form-group {
+	  padding-bottom:15px;
+}
+#quickeditproduct .form-group + .form-group {
+    border-top:0px;
+}
+#quickeditproduct .form-horizontal .control-label {
+    margin-bottom: 0;
+    padding-bottom: 6px;
+    padding-top: 9px;
+    text-align: right;
+}

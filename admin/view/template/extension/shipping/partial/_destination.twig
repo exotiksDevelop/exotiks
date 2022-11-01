@@ -1,0 +1,141 @@
+<div class="panel panel-default destination">
+    <div class="panel-heading">
+        <h3 class="panel-title">
+            <i class="fa fa-map-marker" aria-hidden="true"></i>
+            <span class="destination-title">
+                {{ text_destination|format(index + 2) }}
+            </span>
+            {% if destination is defined %}
+                <a
+                    href="index.php?route=sale/order/info&user_token={{ user_token }}&order_id={{ destination.order_id }}"
+                    target="_blank"
+                >
+                    {{ text_order_id|format(destination.order_id) }}
+                </a>
+            {% endif %}
+        </h3>
+        <span class="destination-actions">
+            <button type="button" class="destination-actions-up">
+                <i class="fa fa-arrow-up" aria-hidden="true"></i>
+            </button>
+            <button type="button" class="destination-actions-down">
+                <i class="fa fa-arrow-down" aria-hidden="true"></i>
+            </button>
+            <button type="button" class="destination-actions-remove">
+                <i class="fa fa-times" aria-hidden="true"></i>
+            </button>
+        </span>
+    </div>
+    <div class="panel-body">
+        {# Destination order id #}
+        <input type="hidden" name="destinations[{{ index }}][order_id]" value="{{ destination.order_id|default('') }}">
+        {# Destination address #}
+        <div class="form-group address required">
+            <label class="col-sm-3 control-label">
+                {{ entry_address }}
+            </label>
+            <div class="col-sm-9">
+                <input
+                    type="text"
+                    name="destinations[{{ index }}][address]"
+                    value="{{ destination.address|default('') }}"
+                    class="form-control address-input destination-address js-yandex-taxi-form-param"
+                    required
+                />
+                <span class="help-block"></span>
+                <div class="address-map"></div>
+                {# Destination coordinate #}
+                <input type="hidden" name="destinations[{{ index }}][lat]" class="address-lat" required/>
+                <input type="hidden" name="destinations[{{ index }}][lon]" class="address-lon" required/>
+                <div class="address-detail"></div>
+            </div>
+        </div>
+        {# Destination comment #}
+        <div class="form-group">
+            <label class="col-sm-3 control-label">
+                {{ entry_comment }}
+            </label>
+            <div class="col-sm-9">
+                <textarea
+                    name="destinations[{{ index }}][comment]"
+                    rows="5"
+                    cols="10"
+                    class="form-control destination-comment js-yandex-taxi-form-param"
+                >{{ destination.comment }}</textarea>
+            </div>
+        </div>
+        {# Destination address detail #}
+        <div class="form-group">
+            <label class="col-sm-3 control-label">
+                {{ entry_address_detail }}
+            </label>
+            <div class="col-sm-9">
+                <div class="inline-from-group">
+                    <input
+                        placeholder="{{ text_placeholder_flat }}"
+                        type="text"
+                        name="destinations[{{ index }}][flat]"
+                        class="form-control js-yandex-taxi-form-param"
+                    />
+                    <input
+                        placeholder="{{ text_placeholder_porch }}"
+                        type="text"
+                        name="destinations[{{ index }}][porch]"
+                        class="form-control js-yandex-taxi-form-param"
+                    />
+                    <input
+                        placeholder="{{ text_placeholder_floor }}"
+                        type="text"
+                        name="destinations[{{ index }}][floor]"
+                        class="form-control js-yandex-taxi-form-param"
+                    />
+                </div>
+            </div>
+        </div>
+        {# Destination name #}
+        <div class="form-group required">
+            <label class="col-sm-3 control-label">
+                {{ entry_name }}
+            </label>
+            <div class="col-sm-9">
+                <input
+                    type="text"
+                    name="destinations[{{ index }}][name]"
+                    value="{{ destination.name|default('') }}"
+                    class="form-control destination-name js-yandex-taxi-form-param"
+                    required
+                />
+                <span class="help-block"></span>
+            </div>
+        </div>
+        {# Destination phone #}
+        <div class="form-group required">
+            <label class="col-sm-3 control-label">
+                {{ entry_phone }}
+            </label>
+            <div class="col-sm-9">
+                <input
+                    type="tel"
+                    name="destinations[{{ index }}][phone]"
+                    value="{{ destination.phone|default('') }}"
+                    class="form-control destination-phone js-yandex-taxi-form-param"
+                    required
+                />
+                <span class="help-block"></span>
+            </div>
+        </div>
+        {# Destination sms on #}
+        <div class="form-group">
+            <label class="col-sm-3 control-label">
+                {{ entry_sms_on }}
+            </label>
+            <div class="col-sm-9">
+                <input
+                    name="destinations[{{ index }}][sms_on]"
+                    type="checkbox"
+                    class="form-check-input destination-sms-on js-yandex-taxi-form-param"
+                >
+            </div>
+        </div>
+    </div>
+</div>

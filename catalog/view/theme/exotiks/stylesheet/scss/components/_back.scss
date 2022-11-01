@@ -1,0 +1,35 @@
+.back {
+  float: left;
+  color: #000000;
+  font-size: 18px;
+  font-weight: 500;
+  line-height: 40px;
+
+  &.position {
+    margin-top: 65px;
+  }
+
+  &:hover {
+    text-decoration: none;
+    color: black;
+    cursor: pointer;
+  }
+
+  &-ico {
+    margin-left: 19px;
+    margin-right: 12px;
+    display: inline-block;
+    width: 25px;
+    height: 21px;
+    vertical-align: middle;
+    background: url(./images/back-arrow.svg) center / 100% no-repeat;
+  }
+}
+
+@media screen and (max-width: 991.98px) {
+  .back {
+    &.position {
+      margin-top: 25px;
+    }
+  }
+}

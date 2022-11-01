@@ -1,0 +1,30 @@
+<?php
+$_ = array_merge(
+  (isset($_)?$_:array()),
+  array (
+  'heading_title' => 'eBay Listing',
+  'text_module' => 'Modules',
+  'text_success' => 'Success: You have modified module eBay featured!',
+  'text_edit' => 'Edit eBay module',
+  'text_list' => 'Layout List',
+  'text_register' => 'You need to register and enable OpenBay Pro for eBay!',
+  'text_about' => 'The eBay display module allows you to display products from your eBay account directly on your website.',
+  'text_latest' => 'Latest',
+  'text_random' => 'Random',
+  'entry_name' => 'Module Name',
+  'entry_username' => 'eBay username',
+  'entry_keywords' => 'Search Keywords',
+  'entry_description' => 'Include Description Search',
+  'entry_limit' => 'Limit',
+  'entry_length' => 'Length',
+  'entry_width' => 'Width',
+  'entry_height' => 'Height',
+  'entry_site' => 'eBay Site',
+  'entry_sort' => 'Sort by',
+  'entry_status' => 'Status',
+  'error_permission' => 'Warning: You do not have permission to modify module eBay!',
+  'error_name' => 'Module Name must be between 3 and 64 characters!',
+  'error_width' => 'Width required!',
+  'error_height' => 'Height required!',
+));
+

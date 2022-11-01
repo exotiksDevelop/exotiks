@@ -1,0 +1,60 @@
+.button {
+  display: inline-flex;
+  align-items: center;
+  justify-content: center;
+  width: 14.5em;
+  height: 4.5em;
+  font-size: 15px;
+  font-weight: 600;
+  border-radius: 5px;
+  border-color: transparent;
+  z-index: 3;
+  position: relative;
+  color: #fff;
+  cursor: pointer;
+  background-color: $accent;
+
+
+  &.ml-4 {
+    margin-left: 4em;
+  }
+
+  &.mt-2 {
+    margin-top: 2em;
+  }
+
+  &:hover,
+  &:focus,
+  &:active {
+    outline-color: transparent;
+    border-color: transparent;
+    text-decoration: none;
+    color: white;
+    background-color: $red;
+  }
+
+
+
+  &.red {
+    background-color: $red;
+
+    &:hover,
+    &:focus,
+    &:active {
+      background-color: $accent;
+    }
+  }
+
+
+  &.mt-1 {
+    margin-top: 1em;
+  }
+
+}
+
+@media screen and (max-width: 575.98px) {
+  .button {
+    margin: auto!important;
+    display: flex;
+  }
+}

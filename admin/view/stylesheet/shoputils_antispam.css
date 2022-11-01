@@ -1,0 +1,17 @@
+div.even {background: #FFFFFF;}
+div.odd {background: #E4EEF7;}
+.form-group a {cursor: pointer;}
+legend {color: #FF802B; font-weight: bold; border-bottom: 1px dotted #000000;}
+.btn-group-toggle > .btn input[type="radio"], .btn-group-toggle > .btn-group > .btn input[type="radio"], .btn-group-toggle > .btn input[type="checkbox"], .btn-group-toggle > .btn-group > .btn input[type="checkbox"] {
+    position: absolute;
+    clip: rect(0, 0, 0, 0);
+    pointer-events: none;
+}
+.btn-group-toggle > .btn {
+    opacity: 0.7;
+}
+.btn-group-toggle > .btn:focus, .btn-group-toggle > .btn.focus, .btn-group-toggle > .btn:active, .btn-group-toggle > .btn.active {
+    outline: 0;
+    box-shadow: 0 0 0 0.3rem rgba(30, 145, 207, .25);
+    opacity: 1;
+}

@@ -1,0 +1,1458 @@
+{
+    "address": {
+        "geoIpMode": 1,
+        "rows": {
+            "default": [{
+                "displayWhen": {},
+                "hideForGuest": false,
+                "hideForLogged": false,
+                "id": "firstname",
+                "masterField": "",
+                "requireWhen": {},
+                "required": "1",
+                "sortOrder": 1,
+                "type": "field"
+            }, {
+                "displayWhen": {},
+                "hideForGuest": false,
+                "hideForLogged": false,
+                "id": "lastname",
+                "masterField": "",
+                "requireWhen": {},
+                "required": "1",
+                "sortOrder": 2,
+                "type": "field"
+            }, {
+                "displayWhen": {},
+                "hideForGuest": false,
+                "hideForLogged": false,
+                "id": "country_id",
+                "masterField": "",
+                "requireWhen": {},
+                "required": "1",
+                "sortOrder": 3,
+                "type": "field"
+            }, {
+                "displayWhen": {},
+                "hideForGuest": false,
+                "hideForLogged": false,
+                "id": "zone_id",
+                "masterField": "",
+                "requireWhen": {},
+                "required": "1",
+                "sortOrder": 4,
+                "type": "field"
+            }, {
+                "displayWhen": {},
+                "hideForGuest": false,
+                "hideForLogged": false,
+                "id": "city",
+                "masterField": "",
+                "requireWhen": {},
+                "required": "1",
+                "sortOrder": 5,
+                "type": "field"
+            }, {
+                "displayWhen": {},
+                "hideForGuest": false,
+                "hideForLogged": false,
+                "id": "postcode",
+                "masterField": "",
+                "requireWhen": {},
+                "required": "1",
+                "sortOrder": 6,
+                "type": "field"
+            }, {
+                "displayWhen": {},
+                "hideForGuest": false,
+                "hideForLogged": false,
+                "id": "address_1",
+                "masterField": "",
+                "requireWhen": {},
+                "required": "1",
+                "sortOrder": 7,
+                "type": "field"
+            }, {
+                "displayWhen": {},
+                "hideForGuest": false,
+                "hideForLogged": false,
+                "id": "default",
+                "masterField": "",
+                "requireWhen": {},
+                "required": 0,
+                "sortOrder": 9,
+                "type": "field"
+            }]
+        },
+        "scrollToError": true
+    },
+    "addressFormat": "{firstname} {lastname}, {city}, {address_1}",
+    "checkout": [{
+        "agreement": {
+            "displayHeader": true
+        },
+        "agreementId": 0,
+        "asapForGuests": true,
+        "asapForLogged": true,
+        "cart": {
+            "displayHeader": false,
+            "displayModel": true,
+            "maxAmount": {},
+            "maxQuantity": {},
+            "maxWeight": {},
+            "minAmount": {},
+            "minQuantity": {},
+            "minWeight": {}
+        },
+        "comment": {
+            "displayHeader": true,
+            "label": {
+                "en": "Comment",
+                "ru": "\u041a\u043e\u043c\u043c\u0435\u043d\u0442\u0430\u0440\u0438\u0439"
+            },
+            "placeholder": {
+                "en": "Comment",
+                "ru": "\u041a\u043e\u043c\u043c\u0435\u043d\u0442\u0430\u0440\u0438\u0439"
+            }
+        },
+        "customer": {
+            "addressSameInit": true,
+            "addressSelectionFormat": "{firstname} {lastname}, {city}, {address_1}",
+            "displayAddressSame": false,
+            "displayAddressSelection": true,
+            "displayHeader": true,
+            "displayLogin": true,
+            "displayYouWillRegistered": true,
+            "rows": {
+                "default": [{
+                    "displayWhen": {},
+                    "hideForGuest": false,
+                    "hideForLogged": true,
+                    "id": "register",
+                    "masterField": "",
+                    "requireWhen": {},
+                    "required": 0,
+                    "sortOrder": 1,
+                    "type": "field"
+                }, {
+                    "displayWhen": {
+                        "1": true,
+                        "0": true
+                    },
+                    "hideForGuest": false,
+                    "hideForLogged": true,
+                    "id": "email",
+                    "masterField": "register",
+                    "requireWhen": {
+                        "1": true
+                    },
+                    "required": "2",
+                    "sortOrder": 2,
+                    "type": "field"
+                }, {
+                    "displayWhen": {
+                        "1": true
+                    },
+                    "hideForGuest": false,
+                    "hideForLogged": true,
+                    "id": "password",
+                    "masterField": "register",
+                    "requireWhen": {},
+                    "required": "1",
+                    "sortOrder": 3,
+                    "type": "field"
+                }, {
+                    "displayWhen": {
+                        "1": true
+                    },
+                    "hideForGuest": false,
+                    "hideForLogged": true,
+                    "id": "confirm_password",
+                    "masterField": "register",
+                    "requireWhen": {
+                        "1": false
+                    },
+                    "required": "1",
+                    "sortOrder": 4,
+                    "type": "field"
+                }, {
+                    "displayWhen": {},
+                    "hideForGuest": false,
+                    "hideForLogged": false,
+                    "id": "firstname",
+                    "masterField": "",
+                    "requireWhen": {},
+                    "required": "1",
+                    "sortOrder": 6,
+                    "type": "field"
+                }, {
+                    "displayWhen": {},
+                    "hideForGuest": false,
+                    "hideForLogged": false,
+                    "id": "lastname",
+                    "masterField": "",
+                    "requireWhen": {},
+                    "required": "1",
+                    "sortOrder": 7,
+                    "type": "field"
+                }, {
+                    "displayWhen": {},
+                    "hideForGuest": false,
+                    "hideForLogged": false,
+                    "id": "telephone",
+                    "masterField": "",
+                    "requireWhen": {},
+                    "required": "1",
+                    "sortOrder": 8,
+                    "type": "field"
+                }]
+            }
+        },
+        "displayProceedText": true,
+        "displayWeight": false,
+        "geoIpMode": 1,
+        "help": {
+            "displayHeader": true
+        },
+        "helpId": 0,
+        "leftColumnWidth": "",
+        "loginType": "popup",
+        "payment": {
+            "displayHeader": true,
+            "hideForGuest": false,
+            "methods": {},
+            "rows": {},
+            "selectFirst": true
+        },
+        "paymentAddress": {
+            "addressSameInit": true,
+            "displayAddressSame": true,
+            "displayHeader": true,
+            "rows": {
+                "default": [{
+                    "displayWhen": {},
+                    "hideForGuest": true,
+                    "hideForLogged": false,
+                    "id": "address_id",
+                    "masterField": "",
+                    "requireWhen": {},
+                    "required": "1",
+                    "sortOrder": 1,
+                    "type": "field"
+                }, {
+                    "displayWhen": {
+                        "1": false
+                    },
+                    "hideForGuest": false,
+                    "hideForLogged": false,
+                    "id": "firstname",
+                    "masterField": "",
+                    "requireWhen": {},
+                    "required": "1",
+                    "sortOrder": 2,
+                    "type": "field"
+                }, {
+                    "displayWhen": {},
+                    "hideForGuest": false,
+                    "hideForLogged": false,
+                    "id": "lastname",
+                    "masterField": "",
+                    "requireWhen": {},
+                    "required": "1",
+                    "sortOrder": 3,
+                    "type": "field"
+                }, {
+                    "displayWhen": {},
+                    "hideForGuest": false,
+                    "hideForLogged": false,
+                    "id": "country_id",
+                    "masterField": "",
+                    "requireWhen": {},
+                    "required": "1",
+                    "sortOrder": 4,
+                    "type": "field"
+                }, {
+                    "displayWhen": {},
+                    "hideForGuest": false,
+                    "hideForLogged": false,
+                    "id": "zone_id",
+                    "masterField": "",
+                    "requireWhen": {},
+                    "required": "1",
+                    "sortOrder": 6,
+                    "type": "field"
+                }, {
+                    "displayWhen": {},
+                    "hideForGuest": false,
+                    "hideForLogged": false,
+                    "id": "city",
+                    "masterField": "",
+                    "requireWhen": {},
+                    "required": "1",
+                    "sortOrder": 7,
+                    "type": "field"
+                }, {
+                    "displayWhen": {},
+                    "hideForGuest": false,
+                    "hideForLogged": false,
+                    "id": "postcode",
+                    "masterField": "",
+                    "requireWhen": {},
+                    "required": "1",
+                    "sortOrder": 8,
+                    "type": "field"
+                }, {
+                    "displayWhen": {},
+                    "hideForGuest": false,
+                    "hideForLogged": false,
+                    "id": "address_1",
+                    "masterField": "",
+                    "requireWhen": {},
+                    "required": "1",
+                    "sortOrder": 9,
+                    "type": "field"
+                }]
+            }
+        },
+        "rightColumnWidth": "",
+        "scrollToError": true,
+        "scrollToPaymentForm": true,
+        "settingsId": 0,
+        "shipping": {
+            "displayHeader": true,
+            "hideForGuest": false,
+            "methods": {},
+            "rows": {},
+            "selectFirst": true
+        },
+        "shippingAddress": {
+            "addressSelectionFormat": "{firstname} {lastname}, {city}, {address_1}",
+            "displayAddressSelection": true,
+            "displayHeader": true,
+            "hideForGuest": false,
+            "hideForLogged": false,
+            "rows": {
+                "default": [{
+                    "displayWhen": {},
+                    "hideForGuest": true,
+                    "hideForLogged": false,
+                    "id": "address_id",
+                    "masterField": "",
+                    "requireWhen": {},
+                    "required": 0,
+                    "sortOrder": 1,
+                    "type": "field"
+                }, {
+                    "displayWhen": {
+                        "1": false
+                    },
+                    "hideForGuest": false,
+                    "hideForLogged": false,
+                    "id": "firstname",
+                    "masterField": "",
+                    "requireWhen": {},
+                    "required": "1",
+                    "sortOrder": 2,
+                    "type": "field"
+                }, {
+                    "displayWhen": {},
+                    "hideForGuest": false,
+                    "hideForLogged": false,
+                    "id": "lastname",
+                    "masterField": "",
+                    "requireWhen": {},
+                    "required": "1",
+                    "sortOrder": 3,
+                    "type": "field"
+                }, {
+                    "displayWhen": {},
+                    "hideForGuest": false,
+                    "hideForLogged": false,
+                    "id": "country_id",
+                    "masterField": "",
+                    "requireWhen": {},
+                    "required": "1",
+                    "sortOrder": 4,
+                    "type": "field"
+                }, {
+                    "displayWhen": {},
+                    "hideForGuest": false,
+                    "hideForLogged": false,
+                    "id": "zone_id",
+                    "masterField": "",
+                    "requireWhen": {},
+                    "required": "1",
+                    "sortOrder": 5,
+                    "type": "field"
+                }, {
+                    "displayWhen": {},
+                    "hideForGuest": false,
+                    "hideForLogged": false,
+                    "id": "city",
+                    "masterField": "",
+                    "requireWhen": {},
+                    "required": "1",
+                    "sortOrder": 6,
+                    "type": "field"
+                }, {
+                    "displayWhen": {},
+                    "hideForGuest": false,
+                    "hideForLogged": false,
+                    "id": "postcode",
+                    "masterField": "",
+                    "requireWhen": {},
+                    "required": "1",
+                    "sortOrder": 7,
+                    "type": "field"
+                }, {
+                    "displayWhen": {},
+                    "hideForGuest": false,
+                    "hideForLogged": false,
+                    "id": "address_1",
+                    "masterField": "",
+                    "requireWhen": {},
+                    "required": "1",
+                    "sortOrder": 8,
+                    "type": "field"
+                }]
+            }
+        },
+        "shipping_address": {
+            "hideForGuest": true,
+            "hideForLogged": true
+        },
+        "steps": [{
+            "id": "step_0",
+            "label": {
+                "en": "Step 1"
+            },
+            "manual": 0,
+            "template": "{left_column}{cart}{customer}{payment_address}{shipping_address}{/left_column}{right_column}{shipping}{payment}{comment}{/right_column}{payment_form}"
+        }],
+        "summary": {
+            "displayHeader": true
+        }
+    }],
+    "colorbox": true,
+    "edit": {
+        "rows": {
+            "default": [{
+                "displayWhen": {},
+                "hideForGuest": false,
+                "hideForLogged": false,
+                "id": "email",
+                "masterField": "",
+                "requireWhen": {},
+                "required": "1",
+                "sortOrder": 2,
+                "type": "field"
+            }, {
+                "displayWhen": {},
+                "hideForGuest": false,
+                "hideForLogged": false,
+                "id": "firstname",
+                "masterField": "",
+                "requireWhen": {},
+                "required": "1",
+                "sortOrder": 3,
+                "type": "field"
+            }, {
+                "displayWhen": {},
+                "hideForGuest": false,
+                "hideForLogged": false,
+                "id": "lastname",
+                "masterField": "",
+                "requireWhen": {},
+                "required": "1",
+                "sortOrder": 4,
+                "type": "field"
+            }, {
+                "displayWhen": {},
+                "hideForGuest": false,
+                "hideForLogged": false,
+                "id": "telephone",
+                "masterField": "",
+                "requireWhen": {},
+                "required": "1",
+                "sortOrder": 5,
+                "type": "field"
+            }]
+        },
+        "scrollToError": true
+    },
+    "fields": [{
+        "autoreload": false,
+        "custom": false,
+        "dateEndType": "calculated",
+        "dateSelected": {},
+        "dateStartType": "calculated",
+        "default": {
+            "saved": "1",
+            "source": "saved"
+        },
+        "description": {},
+        "id": "register",
+        "label": {
+            "en": "Register account",
+            "ru": "\u0417\u0430\u0440\u0435\u0433\u0438\u0441\u0442\u0440\u0438\u0440\u043e\u0432\u0430\u0442\u044c\u0441\u044f"
+        },
+        "mask": {
+            "source": "saved"
+        },
+        "objects": {
+            "address": false,
+            "customer": true,
+            "order": false
+        },
+        "placeholder": {},
+        "rules": {
+            "api": {},
+            "byLength": {},
+            "equal": {},
+            "notEmpty": {},
+            "regexp": {}
+        },
+        "saveToComment": false,
+        "type": "radio",
+        "values": {
+            "method": "getYesNo",
+            "saved": {},
+            "source": "model"
+        },
+        "valuesList": {}
+    }, {
+        "autoreload": false,
+        "custom": false,
+        "dateEndType": "calculated",
+        "dateSelected": {},
+        "dateStartType": "calculated",
+        "default": {
+            "saved": "",
+            "source": "saved"
+        },
+        "description": {
+            "en": ""
+        },
+        "id": "email",
+        "label": {
+            "en": "Email",
+            "ru": "Email"
+        },
+        "mask": {
+            "source": "saved"
+        },
+        "masterField": "register",
+        "objects": {
+            "customer": true
+        },
+        "placeholder": {},
+        "rules": {
+            "api": {
+                "enabled": true,
+                "errorText": {
+                    "en": "E-Mail Address is already registered!",
+                    "ru": "\u0410\u0434\u0440\u0435\u0441 \u0443\u0436\u0435 \u0437\u0430\u0440\u0435\u0433\u0438\u0441\u0442\u0440\u0438\u0440\u043e\u0432\u0430\u043d!"
+                },
+                "filter": "register",
+                "method": "checkEmailForUniqueness"
+            },
+            "byLength": {},
+            "equal": {},
+            "notEmpty": {},
+            "regexp": {
+                "enabled": true,
+                "errorText": {
+                    "en": "E-Mail Address does not appear to be valid!",
+                    "ru": "\u041d\u0435\u043a\u043e\u0440\u0440\u0435\u043a\u0442\u043d\u044b\u0439 \u0430\u0434\u0440\u0435\u0441 \u044d\u043b\u0435\u043a\u0442\u0440\u043e\u043d\u043d\u043e\u0439 \u043f\u043e\u0447\u0442\u044b!"
+                },
+                "value": ".+@.+"
+            }
+        },
+        "saveToComment": false,
+        "type": "email",
+        "valuesList": {}
+    }, {
+        "custom": false,
+        "dateEndType": "calculated",
+        "dateSelected": {},
+        "dateStartType": "calculated",
+        "default": {
+            "method": "getRandomPassword",
+            "saved": "",
+            "source": "saved"
+        },
+        "description": {},
+        "id": "password",
+        "label": {
+            "en": "Password",
+            "ru": "\u041f\u0430\u0440\u043e\u043b\u044c"
+        },
+        "mask": {
+            "source": "saved"
+        },
+        "masterField": "register",
+        "objects": {
+            "customer": true
+        },
+        "placeholder": {},
+        "rules": {
+            "api": {},
+            "byLength": {
+                "enabled": true,
+                "errorText": {
+                    "en": "Password must be between 4 and 20 characters!",
+                    "ru": "\u041f\u0430\u0440\u043e\u043b\u044c \u0434\u043e\u043b\u0436\u0435\u043d \u0431\u044b\u0442\u044c \u043e\u0442 4 \u0434\u043e 20 \u0441\u0438\u043c\u0432\u043e\u043b\u043e\u0432!"
+                },
+                "max": "20",
+                "min": "4"
+            },
+            "equal": {},
+            "notEmpty": {},
+            "regexp": {}
+        },
+        "saveToComment": false,
+        "type": "password",
+        "valuesList": {}
+    }, {
+        "autoreload": false,
+        "custom": false,
+        "dateEndType": "calculated",
+        "dateSelected": {},
+        "dateStartType": "calculated",
+        "default": {
+            "method": "getRandomPassword",
+            "saved": "",
+            "source": "saved"
+        },
+        "description": {},
+        "id": "confirm_password",
+        "label": {
+            "en": "Confirm password",
+            "ru": "\u041f\u043e\u0434\u0442\u0432\u0435\u0440\u0434\u0438\u0442\u0435 \u043f\u0430\u0440\u043e\u043b\u044c"
+        },
+        "mask": {
+            "source": "saved"
+        },
+        "objects": {
+            "customer": true
+        },
+        "placeholder": {},
+        "rules": {
+            "api": {
+                "enabled": false,
+                "errorText": {}
+            },
+            "byLength": {},
+            "equal": {
+                "enabled": true,
+                "errorText": {
+                    "en": "Password confirmation does not match password!",
+                    "ru": "\u041f\u043e\u0434\u0442\u0432\u0435\u0440\u0436\u0434\u0435\u043d\u0438\u0435 \u043f\u0430\u0440\u043e\u043b\u044f \u043d\u0435 \u0441\u043e\u043e\u0442\u0432\u0435\u0442\u0441\u0442\u0432\u0443\u0435\u0442 \u043f\u0430\u0440\u043e\u043b\u044e!"
+                },
+                "fieldId": "password"
+            },
+            "notEmpty": {},
+            "regexp": {}
+        },
+        "saveToComment": false,
+        "type": "password",
+        "valuesList": {}
+    }, {
+        "autoreload": false,
+        "custom": false,
+        "dateEndType": "calculated",
+        "dateSelected": {},
+        "dateStartType": "calculated",
+        "default": {
+            "saved": "1",
+            "source": "saved"
+        },
+        "description": {},
+        "id": "newsletter",
+        "label": {
+            "en": "Subscribe",
+            "ru": "\u041f\u043e\u0434\u043f\u0438\u0441\u0430\u0442\u044c\u0441\u044f \u043d\u0430 \u043d\u043e\u0432\u043e\u0441\u0442\u0438"
+        },
+        "mask": {
+            "source": "saved"
+        },
+        "objects": {
+            "customer": true
+        },
+        "placeholder": {},
+        "rules": {
+            "api": {},
+            "byLength": {},
+            "equal": {},
+            "notEmpty": {},
+            "regexp": {}
+        },
+        "saveToComment": false,
+        "type": "radio",
+        "values": {
+            "method": "getYesNo",
+            "saved": {},
+            "source": "model"
+        },
+        "valuesList": {}
+    }, {
+        "autoreload": true,
+        "custom": false,
+        "dateEndType": "calculated",
+        "dateSelected": {},
+        "dateStartType": "calculated",
+        "default": {
+            "method": "getDefaultGroup",
+            "saved": "",
+            "source": "model"
+        },
+        "description": {},
+        "id": "customer_group_id",
+        "label": {
+            "en": "Customer group",
+            "ru": "\u0413\u0440\u0443\u043f\u043f\u0430 \u043f\u043e\u043a\u0443\u043f\u0430\u0442\u0435\u043b\u044f"
+        },
+        "mask": {
+            "source": "saved"
+        },
+        "objects": {
+            "customer": true
+        },
+        "placeholder": {},
+        "rules": {
+            "api": {},
+            "byLength": {},
+            "equal": {},
+            "notEmpty": {},
+            "regexp": {}
+        },
+        "saveToComment": false,
+        "type": "radio",
+        "values": {
+            "method": "getCustomerGroups",
+            "saved": {},
+            "source": "model"
+        },
+        "valuesList": {}
+    }, {
+        "custom": false,
+        "dateEndType": "calculated",
+        "dateSelected": {},
+        "dateStartType": "calculated",
+        "default": {
+            "saved": "",
+            "source": "saved"
+        },
+        "description": {},
+        "id": "firstname",
+        "label": {
+            "en": "Firstname",
+            "ru": "\u0418\u043c\u044f"
+        },
+        "mask": {
+            "source": "saved"
+        },
+        "objects": {
+            "address": true,
+            "customer": true
+        },
+        "placeholder": {},
+        "rules": {
+            "api": {},
+            "byLength": {
+                "enabled": true,
+                "errorText": {
+                    "en": "First Name must be between 1 and 32 characters!",
+                    "ru": "\u0418\u043c\u044f \u0434\u043e\u043b\u0436\u043d\u043e \u0431\u044b\u0442\u044c \u043e\u0442 1 \u0434\u043e 32 \u0441\u0438\u043c\u0432\u043e\u043b\u043e\u0432!"
+                },
+                "max": "32",
+                "min": "1"
+            },
+            "equal": {},
+            "notEmpty": {},
+            "regexp": {}
+        },
+        "saveToComment": false,
+        "type": "text",
+        "valuesList": {}
+    }, {
+        "autoreload": false,
+        "custom": false,
+        "dateEndType": "calculated",
+        "dateSelected": {},
+        "dateStartType": "calculated",
+        "default": {
+            "saved": "",
+            "source": "saved"
+        },
+        "description": {},
+        "id": "lastname",
+        "label": {
+            "en": "Lastname",
+            "ru": "\u0424\u0430\u043c\u0438\u043b\u0438\u044f"
+        },
+        "mask": {
+            "source": "saved"
+        },
+        "objects": {
+            "address": true,
+            "customer": true
+        },
+        "placeholder": {
+            "en": ""
+        },
+        "rules": {
+            "api": {},
+            "byLength": {
+                "enabled": true,
+                "errorText": {
+                    "en": "Last Name must be between 1 and 32 characters!",
+                    "ru": "\u0424\u0430\u043c\u0438\u043b\u0438\u044f \u0434\u043e\u043b\u0436\u043d\u0430 \u0431\u044b\u0442\u044c \u043e\u0442 1 \u0434\u043e 32 \u0441\u0438\u043c\u0432\u043e\u043b\u043e\u0432!"
+                },
+                "max": "32",
+                "min": "1"
+            },
+            "equal": {},
+            "notEmpty": {},
+            "regexp": {}
+        },
+        "saveToComment": false,
+        "type": "text",
+        "valuesList": {}
+    }, {
+        "custom": false,
+        "dateEndType": "calculated",
+        "dateSelected": {},
+        "dateStartType": "calculated",
+        "default": {
+            "saved": "",
+            "source": "saved"
+        },
+        "description": {},
+        "id": "telephone",
+        "label": {
+            "en": "Telephone",
+            "ru": "\u0422\u0435\u043b\u0435\u0444\u043e\u043d"
+        },
+        "mask": {
+            "filter": "country_id",
+            "method": "getTelephoneMask",
+            "saved": "",
+            "source": "saved"
+        },
+        "masterField": "",
+        "objects": {
+            "customer": true
+        },
+        "placeholder": {},
+        "rules": {
+            "api": {},
+            "byLength": {
+                "enabled": true,
+                "errorText": {
+                    "en": "Telephone must be between 3 and 32 characters!",
+                    "ru": "\u0422\u0435\u043b\u0435\u0444\u043e\u043d \u0434\u043e\u043b\u0436\u0435\u043d \u0431\u044b\u0442\u044c \u043e\u0442 3 \u0434\u043e 32 \u0441\u0438\u043c\u0432\u043e\u043b\u043e\u0432!"
+                },
+                "max": "32",
+                "min": "3"
+            },
+            "equal": {},
+            "notEmpty": {},
+            "regexp": {}
+        },
+        "saveToComment": false,
+        "type": "phone",
+        "valuesList": {}
+    }, {
+        "custom": false,
+        "dateEndType": "calculated",
+        "dateSelected": {},
+        "dateStartType": "calculated",
+        "default": {
+            "saved": "",
+            "source": "saved"
+        },
+        "description": {},
+        "id": "fax",
+        "label": {
+            "en": "Fax",
+            "ru": "\u0424\u0430\u043a\u0441"
+        },
+        "mask": {
+            "source": "saved"
+        },
+        "objects": {
+            "customer": true
+        },
+        "placeholder": {},
+        "rules": {
+            "api": {},
+            "byLength": {},
+            "equal": {},
+            "notEmpty": {},
+            "regexp": {}
+        },
+        "saveToComment": false,
+        "type": "text",
+        "valuesList": {}
+    }, {
+        "custom": false,
+        "dateEndType": "calculated",
+        "dateSelected": {},
+        "dateStartType": "calculated",
+        "default": {
+            "saved": "",
+            "source": "saved"
+        },
+        "description": {},
+        "id": "company",
+        "label": {
+            "en": "Company",
+            "ru": "\u041a\u043e\u043c\u043f\u0430\u043d\u0438\u044f"
+        },
+        "mask": {
+            "source": "saved"
+        },
+        "objects": {
+            "address": true
+        },
+        "placeholder": {},
+        "rules": {
+            "api": {},
+            "byLength": {},
+            "equal": {},
+            "notEmpty": {
+                "enabled": false,
+                "errorText": {
+                    "en": ""
+                }
+            },
+            "regexp": {}
+        },
+        "saveToComment": false,
+        "type": "text",
+        "valuesList": {}
+    }, {
+        "autoreload": false,
+        "custom": false,
+        "dateEndType": "calculated",
+        "dateSelected": {},
+        "dateStartType": "calculated",
+        "default": {
+            "saved": "",
+            "source": "saved"
+        },
+        "description": {},
+        "id": "address_1",
+        "label": {
+            "en": "Address 1",
+            "ru": "\u0410\u0434\u0440\u0435\u0441"
+        },
+        "mask": {
+            "source": "saved"
+        },
+        "objects": {
+            "address": true
+        },
+        "placeholder": {},
+        "rules": {
+            "api": {},
+            "byLength": {
+                "enabled": true,
+                "errorText": {
+                    "en": "Address 1 must be between 3 and 128 characters!",
+                    "ru": "\u0410\u0434\u0440\u0435\u0441 \u0434\u043e\u043b\u0436\u0435\u043d \u0431\u044b\u0442\u044c \u043e\u0442 3 \u0434\u043e 128 \u0441\u0438\u043c\u0432\u043e\u043b\u043e\u0432!"
+                },
+                "max": "128",
+                "min": "3"
+            },
+            "equal": {},
+            "notEmpty": {},
+            "regexp": {}
+        },
+        "saveToComment": false,
+        "type": "text",
+        "valuesList": {}
+    }, {
+        "custom": false,
+        "dateEndType": "calculated",
+        "dateSelected": {},
+        "dateStartType": "calculated",
+        "default": {
+            "saved": "",
+            "source": "saved"
+        },
+        "description": {},
+        "id": "address_2",
+        "label": {
+            "en": "Address 2",
+            "ru": "\u041f\u0440\u043e\u0434\u043e\u043b\u0436\u0435\u043d\u0438\u0435 \u0430\u0434\u0440\u0435\u0441\u0430"
+        },
+        "mask": {
+            "source": "saved"
+        },
+        "objects": {
+            "address": true
+        },
+        "placeholder": {},
+        "rules": {
+            "api": {},
+            "byLength": {},
+            "equal": {},
+            "notEmpty": {},
+            "regexp": {}
+        },
+        "saveToComment": false,
+        "type": "text",
+        "valuesList": {}
+    }, {
+        "autoreload": true,
+        "custom": false,
+        "dateEndType": "calculated",
+        "dateSelected": {},
+        "dateStartType": "calculated",
+        "default": {
+            "saved": "",
+            "source": "saved"
+        },
+        "description": {},
+        "id": "city",
+        "label": {
+            "en": "City",
+            "ru": "\u0413\u043e\u0440\u043e\u0434"
+        },
+        "mask": {
+            "source": "saved"
+        },
+        "objects": {
+            "address": true
+        },
+        "placeholder": {},
+        "rules": {
+            "api": {},
+            "byLength": {
+                "enabled": true,
+                "errorText": {
+                    "en": "City must be between 2 and 128 characters!",
+                    "ru": "\u0413\u043e\u0440\u043e\u0434 \u0434\u043e\u043b\u0436\u0435\u043d \u0431\u044b\u0442\u044c \u043e\u0442 2 \u0434\u043e 128 \u0441\u0438\u043c\u0432\u043e\u043b\u043e\u0432!"
+                },
+                "max": "128",
+                "min": "2"
+            },
+            "equal": {},
+            "notEmpty": {},
+            "regexp": {}
+        },
+        "saveToComment": false,
+        "type": "text",
+        "valuesList": {}
+    }, {
+        "autoreload": true,
+        "custom": false,
+        "dateEndType": "calculated",
+        "dateSelected": {},
+        "dateStartType": "calculated",
+        "default": {
+            "saved": "",
+            "source": "saved"
+        },
+        "description": {},
+        "id": "postcode",
+        "label": {
+            "en": "Postcode",
+            "ru": "\u0418\u043d\u0434\u0435\u043a\u0441"
+        },
+        "mask": {
+            "source": "saved"
+        },
+        "objects": {
+            "address": true
+        },
+        "placeholder": {},
+        "rules": {
+            "api": {},
+            "byLength": {
+                "enabled": true,
+                "errorText": {
+                    "en": "Postcode must be between 2 and 10 characters!",
+                    "ru": "\u0418\u043d\u0434\u0435\u043a\u0441 \u0434\u043e\u043b\u0436\u0435\u043d \u0431\u044b\u0442\u044c \u043e\u0442 2 \u0434\u043e 10 \u0441\u0438\u043c\u0432\u043e\u043b\u043e\u0432!"
+                },
+                "max": "10",
+                "min": "2"
+            },
+            "equal": {},
+            "notEmpty": {},
+            "regexp": {}
+        },
+        "saveToComment": false,
+        "type": "text",
+        "valuesList": {}
+    }, {
+        "autoreload": true,
+        "custom": false,
+        "dateEndType": "calculated",
+        "dateSelected": {},
+        "dateStartType": "calculated",
+        "default": {
+            "saved": "",
+            "source": "saved"
+        },
+        "description": {},
+        "id": "country_id",
+        "label": {
+            "en": "Country",
+            "ru": "\u0421\u0442\u0440\u0430\u043d\u0430"
+        },
+        "mask": {
+            "source": "saved"
+        },
+        "objects": {
+            "address": true
+        },
+        "placeholder": {},
+        "rules": {
+            "api": {},
+            "byLength": {},
+            "equal": {},
+            "notEmpty": {
+                "enabled": true,
+                "errorText": {
+                    "en": "Please select a country!",
+                    "ru": "\u0412\u044b\u0431\u0435\u0440\u0438\u0442\u0435 \u0441\u0442\u0440\u0430\u043d\u0443!"
+                }
+            },
+            "regexp": {}
+        },
+        "saveToComment": false,
+        "type": "select",
+        "values": {
+            "method": "getCountries",
+            "saved": {},
+            "source": "model"
+        },
+        "valuesList": {}
+    }, {
+        "autoreload": true,
+        "custom": false,
+        "dateEndType": "calculated",
+        "dateSelected": {},
+        "dateStartType": "calculated",
+        "default": {
+            "saved": "",
+            "source": "saved"
+        },
+        "description": {},
+        "id": "zone_id",
+        "label": {
+            "en": "Region / state",
+            "ru": "\u0420\u0435\u0433\u0438\u043e\u043d"
+        },
+        "mask": {
+            "source": "saved"
+        },
+        "objects": {
+            "address": true
+        },
+        "placeholder": {},
+        "rules": {
+            "api": {},
+            "byLength": {},
+            "equal": {},
+            "notEmpty": {
+                "enabled": true,
+                "errorText": {
+                    "en": "Please select a zone!",
+                    "ru": "\u0412\u044b\u0431\u0435\u0440\u0438\u0442\u0435 \u0440\u0435\u0433\u0438\u043e\u043d!"
+                }
+            },
+            "regexp": {}
+        },
+        "saveToComment": false,
+        "type": "select",
+        "values": {
+            "filter": "country_id",
+            "method": "getZones",
+            "saved": {},
+            "source": "model"
+        },
+        "valuesList": {}
+    }, {
+        "custom": false,
+        "dateEndType": "calculated",
+        "dateSelected": {},
+        "dateStartType": "calculated",
+        "default": {
+            "saved": "",
+            "source": "saved"
+        },
+        "description": {},
+        "id": "captcha",
+        "label": {
+            "en": "Verification code",
+            "ru": "\u0417\u0430\u0449\u0438\u0442\u043d\u044b\u0439 \u043a\u043e\u0434"
+        },
+        "mask": {
+            "source": "saved"
+        },
+        "objects": {
+            "customer": true,
+            "order": false
+        },
+        "placeholder": {},
+        "rules": {
+            "api": {
+                "enabled": true,
+                "errorText": {
+                    "en": "Verification code does not match the image!",
+                    "ru": "\u0417\u0430\u0449\u0438\u0442\u043d\u044b\u0439 \u043a\u043e\u0434 \u043d\u0435 \u0441\u043e\u043e\u0442\u0432\u0435\u0442\u0441\u0442\u0432\u0443\u0435\u0442 \u0438\u0437\u043e\u0431\u0440\u0430\u0436\u0435\u043d\u0438\u044e!"
+                },
+                "method": "checkCaptcha"
+            },
+            "byLength": {},
+            "equal": {},
+            "notEmpty": {
+                "enabled": true,
+                "errorText": {
+                    "en": "Please enter verification code!",
+                    "ru": "\u0412\u0432\u0435\u0434\u0438\u0442\u0435 \u0437\u0430\u0449\u0438\u0442\u043d\u044b\u0439 \u043a\u043e\u0434!"
+                }
+            },
+            "regexp": {}
+        },
+        "saveToComment": false,
+        "type": "captcha",
+        "valuesList": {}
+    }, {
+        "custom": false,
+        "dateEndType": "calculated",
+        "dateSelected": {},
+        "dateStartType": "calculated",
+        "default": {
+            "filter": "address_id",
+            "method": "isDefaultAddress",
+            "saved": "",
+            "source": "model"
+        },
+        "description": {},
+        "id": "default",
+        "label": {
+            "en": "Default address",
+            "ru": "\u041e\u0441\u043d\u043e\u0432\u043d\u043e\u0439 \u0430\u0434\u0440\u0435\u0441"
+        },
+        "mask": {
+            "source": "saved"
+        },
+        "objects": {
+            "address": true
+        },
+        "placeholder": {},
+        "rules": {
+            "api": {},
+            "byLength": {},
+            "equal": {},
+            "notEmpty": {},
+            "regexp": {}
+        },
+        "saveToComment": false,
+        "type": "radio",
+        "values": {
+            "method": "getYesNo",
+            "saved": {},
+            "source": "model"
+        },
+        "valuesList": {}
+    }, {
+        "autoreload": true,
+        "custom": false,
+        "dateEndType": "calculated",
+        "dateSelected": {},
+        "dateStartType": "calculated",
+        "default": {
+            "method": "getDefaultAddressId",
+            "saved": "",
+            "source": "model"
+        },
+        "description": {},
+        "id": "address_id",
+        "label": {
+            "en": "Select address",
+            "ru": "\u0412\u044b\u0431\u0435\u0440\u0438\u0442\u0435 \u0430\u0434\u0440\u0435\u0441"
+        },
+        "mask": {
+            "source": "saved"
+        },
+        "objects": {
+            "address": true
+        },
+        "placeholder": {},
+        "rules": {
+            "api": {},
+            "byLength": {},
+            "equal": {},
+            "notEmpty": {},
+            "regexp": {}
+        },
+        "saveToComment": false,
+        "type": "select",
+        "values": {
+            "method": "getAddresses",
+            "saved": {},
+            "source": "model"
+        },
+        "valuesList": {}
+    }],
+    "headers": [{
+        "custom": true,
+        "id": "main",
+        "label": {
+            "en": "Your Personal Details",
+            "ru": "\u041e\u0441\u043d\u043e\u0432\u043d\u0430\u044f \u0438\u043d\u0444\u043e\u0440\u043c\u0430\u0446\u0438\u044f"
+        }
+    }, {
+        "custom": true,
+        "id": "address",
+        "label": {
+            "en": "Your Address",
+            "ru": "\u0412\u0430\u0448 \u0430\u0434\u0440\u0435\u0441"
+        }
+    }],
+    "modules": [],
+    "register": {
+        "agreementCheckboxInit": false,
+        "agreementId": 0,
+        "displayAgreementCheckbox": false,
+        "geoIpMode": 1,
+        "rows": {
+            "default": [{
+                "displayWhen": {},
+                "hideForGuest": false,
+                "hideForLogged": false,
+                "id": "main",
+                "masterField": "",
+                "requireWhen": {},
+                "required": 0,
+                "sortOrder": 2,
+                "type": "header"
+            }, {
+                "displayWhen": {},
+                "hideForGuest": false,
+                "hideForLogged": false,
+                "id": "email",
+                "masterField": "",
+                "requireWhen": {},
+                "required": "1",
+                "sortOrder": 3,
+                "type": "field"
+            }, {
+                "displayWhen": {},
+                "hideForGuest": false,
+                "hideForLogged": false,
+                "id": "firstname",
+                "masterField": "",
+                "requireWhen": {},
+                "required": "1",
+                "sortOrder": 4,
+                "type": "field"
+            }, {
+                "displayWhen": {},
+                "hideForGuest": false,
+                "hideForLogged": false,
+                "id": "lastname",
+                "masterField": "",
+                "requireWhen": {},
+                "required": "1",
+                "sortOrder": 6,
+                "type": "field"
+            }, {
+                "displayWhen": {},
+                "hideForGuest": false,
+                "hideForLogged": false,
+                "id": "telephone",
+                "masterField": "",
+                "requireWhen": {},
+                "required": "1",
+                "sortOrder": 7,
+                "type": "field"
+            }, {
+                "displayWhen": {},
+                "hideForGuest": false,
+                "hideForLogged": false,
+                "id": "address",
+                "masterField": "",
+                "requireWhen": {},
+                "required": 0,
+                "sortOrder": 8,
+                "type": "header"
+            }, {
+                "displayWhen": {},
+                "hideForGuest": false,
+                "hideForLogged": false,
+                "id": "country_id",
+                "masterField": "",
+                "requireWhen": {},
+                "required": "1",
+                "sortOrder": 9,
+                "type": "field"
+            }, {
+                "displayWhen": {},
+                "hideForGuest": false,
+                "hideForLogged": false,
+                "id": "zone_id",
+                "masterField": "",
+                "requireWhen": {},
+                "required": "1",
+                "sortOrder": 10,
+                "type": "field"
+            }, {
+                "displayWhen": {},
+                "hideForGuest": false,
+                "hideForLogged": false,
+                "id": "city",
+                "masterField": "",
+                "requireWhen": {},
+                "required": "1",
+                "sortOrder": 11,
+                "type": "field"
+            }, {
+                "displayWhen": {},
+                "hideForGuest": false,
+                "hideForLogged": false,
+                "id": "postcode",
+                "masterField": "",
+                "requireWhen": {},
+                "required": "1",
+                "sortOrder": 12,
+                "type": "field"
+            }, {
+                "displayWhen": {},
+                "hideForGuest": false,
+                "hideForLogged": false,
+                "id": "address_1",
+                "masterField": "",
+                "requireWhen": {},
+                "required": "1",
+                "sortOrder": 13,
+                "type": "field"
+            }, {
+                "displayWhen": {},
+                "hideForGuest": false,
+                "hideForLogged": false,
+                "id": "newsletter",
+                "masterField": "",
+                "requireWhen": {},
+                "required": 0,
+                "sortOrder": 14,
+                "type": "field"
+            }]
+        },
+        "scrollToError": true,
+        "useGeoIp": false,
+        "useGoogleApi": false
+    },
+    "replaceAddress": true,
+    "replaceCart": false,
+    "replaceCheckout": true,
+    "replaceEdit": true,
+    "replaceRegister": true,
+    "javascriptCallback":"$('#cart > ul').load('index.php?route=common/cart/info ul li');/*$('nav#top').load('index.php?route=common/simple_connector/header #top > div');*/"
+}

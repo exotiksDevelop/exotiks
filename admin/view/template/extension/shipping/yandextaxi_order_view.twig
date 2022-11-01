@@ -1,0 +1,94 @@
+{{ header }}{{ column_left }}
+<div id="content">
+    <div class="page-header">
+        <div class="container-fluid">
+            <h1>{{ heading_order_view }}</h1>
+            <ul class="breadcrumb">
+                {% for breadcrumb in breadcrumbs %}
+                    <li><a href="{{ breadcrumb.href }}">{{ breadcrumb.text }}</a></li>
+                {% endfor %}
+            </ul>
+        </div>
+    </div>
+    <div class="container-fluid">
+        <div class="panel panel-default">
+            <div class="panel-heading">
+                <h3 class="panel-title">
+                    <i class="fa fa-info-circle"></i>
+                    {{ order_details }}
+                </h3>
+            </div>
+            <div class="panel-body">
+                <table class="table table-shipment">
+                    <tbody>
+                    <tr>
+                        <td>ID</td>
+                        <td><a href="{{ order.viewSale }}" target="_blank">{{ order.id }}</a></td>
+                    </tr>
+                    <tr>
+                        <td>{{ entry_name }}</td>
+                        <td>{{ order.customer }}</td>
+                    </tr>
+                    <tr>
+                        <td>{{ entry_phone }}</td>
+                        <td>{{ order.phone }}</td>
+                    </tr>
+                    <tr>
+                        <td>{{ entry_address }}</td>
+                        <td>{{ order.address }}</td>
+                    </tr>
+                    <tr>
+                        <td>{{ entry_order_status }}</td>
+                        <td>{{ order.status }}</td>
+                    </tr>
+                    <tr>
+                        <td>{{ entry_date }}</td>
+                        <td>{{ order.date_added }}</td>
+                    </tr>
+                    <tr>
+                        <td>{{ entry_sum }}</td>
+                        <td>{{ order.total }}</td>
+                    </tr>
+                    </tbody>
+                </table>
+            </div>
+        </div>
+        <div id="shipment-info-container">
+            {{ shipment_info }}
+        </div>
+        {{ support_contact }}
+    </div>
+</div>
+<script>
+    $(document).ready(function () {
+        assignButtonEvent();
+
+        function assignButtonEvent() {
+          $('#button-sync-shipping-status').on('click', function () {
+            const btn = $(this).button('loading');
+
+            $.get('index.php?route=extension/shipping/yandextaxi/syncShipment', {
+              user_token: '{{ user_token }}',
+              order_id: '{{ order.id }}',
+            })
+              .done(function (response) {
+                if (response.error) {
+                  alert(response.error);
+                  return;
+                }
+
+                displayShipmentInfo(response);
+                assignButtonEvent();
+              })
+                .always(function () {
+                  btn.button('reset');
+              })
+          });
+        }
+
+        function displayShipmentInfo(html) {
+          $("#shipment-info-container").html(html);
+        }
+    });
+</script>
+{{ footer }}

@@ -1,0 +1,58 @@
+
+#rp2overlay {
+	height:100%;
+	width:100%;
+	position:fixed;
+	left:0;
+	top:0;
+	z-index:99999 !important;
+	background-color:black;
+			
+	filter: alpha(opacity=75); /* internet explorer */
+	-khtml-opacity: 0.75;      /* khtml, old safari */
+	-moz-opacity: 0.75;       /* mozilla, netscape */
+	opacity: 0.5;           /* fx, safari, opera */
+	cursor: pointer;
+}
+
+#rp2box
+{
+	background: #fff;
+	z-index:999990 !important;
+	border-radius: 15px;
+	padding-bottom: 57px; 
+	padding: 15px; 
+	top: 50px; 
+	left: 368px; 
+	position: fixed; 
+	width: 500px; 
+	
+	
+    overflow-x: hidden;
+    overflow-y: auto;
+}
+
+#rp2boxHeader {
+	padding-top: 15px;
+	padding-bottom: 15px;
+	font-size: 20px;
+}
+
+#rp2boxBody {
+}
+
+
+#rp2boxClose {
+	position: absolute;
+    top: 20px;
+    right: 20px;
+}
+
+#rp2boxClose a {
+	font-size: 30px;
+	color: #1e91cf;
+}
+
+#rp2boxClose a:hover {
+	color: #1e91cf;
+}

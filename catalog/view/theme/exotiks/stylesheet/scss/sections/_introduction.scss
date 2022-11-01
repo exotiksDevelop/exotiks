@@ -1,0 +1,77 @@
+.introduction {
+  margin-top: 2em;
+  height: auto;
+  display: flex;
+  align-items: center;
+
+  p {
+    span {
+      font-size: 1.2em !important;
+      font-family: 'Gilroy' !important;
+    }
+  }
+
+  &__img {
+    height: inherit;
+    width: auto;
+
+    &-wrap {
+      display: inline-block;
+      float: left;
+      height: auto;
+      width: 25%;
+    }
+  }
+
+  &__text {
+    width: 70%;
+    margin-left: 3em;
+    height: inherit;
+    display: inline-flex;
+    flex-wrap: wrap;
+    flex-direction: column;
+    justify-content: center;
+  }
+
+  &__clear {
+    clear: both;
+  }
+}
+
+@media screen and (max-width: 991.98px) {
+  .introduction {
+    p {
+      span {
+        font-size: calc(1vw + 0.5em) !important;
+      }
+    }
+  }
+}
+
+
+@media screen and (max-width: 767.98px) {
+  .introduction {
+    flex-direction: column;
+
+    &__title {
+      text-align: center;
+    }
+
+    &__img-wrap,
+    &__text {
+      display: flex;
+      width: 100%;
+      justify-content: center;
+    }
+
+    &__text {
+      margin-top: 1em;
+      margin-left: 0;
+      font-size: 1.2em;
+
+      p {
+        margin-bottom: 0;
+      }
+    }
+  }
+}

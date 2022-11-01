@@ -1,0 +1,115 @@
+.prmn-cmngr {
+    position: relative;
+}
+
+.prmn-cmngr a {
+    cursor: pointer;
+}
+
+.prmn-cmngr__confirm {
+    position: absolute;
+    top: 25px;
+    left: -50px;
+    background: #fff;
+    padding: 15px 25px;
+    min-width: 250px;
+    max-width: 400px;
+    z-index: 9999;
+    border: 1px solid #dadada;
+    -webkit-box-shadow: 0 2px 5px #5b5a5a;
+    -moz-box-shadow: 0 2px 5px #5b5a5a;
+    box-shadow: 0 2px 5px #5b5a5a;
+    line-height: 20px;
+    font-size: 16px;
+    text-align: center;
+    color: #333;
+    display: none;
+}
+
+.prmn-cmngr .prmn-cmngr__confirm-city {
+    white-space: nowrap;
+}
+
+.prmn-cmngr .prmn-cmngr__confirm-btns {
+    margin-top: 15px;
+}
+
+.prmn-cmngr-cities__title {
+    margin-bottom: 20px;
+}
+
+.prmn-cmngr-cities__close {
+    -webkit-appearance: none;
+    padding: 0;
+    cursor: pointer;
+    background: 0 0;
+    border: 0;
+    float: right;
+    filter: alpha(opacity=20);
+    opacity: .2;
+    font-size: 30px;
+    font-weight: 500;
+    line-height: 1;
+    color: #000;
+    text-shadow: 0 1px 0 #fff;
+}
+
+.prmn-cmngr-cities__close:focus,
+.prmn-cmngr-cities__close:hover {
+    color: #000;
+    cursor: pointer;
+    filter: alpha(opacity=50);
+    opacity: .5;
+}
+
+.prmn-cmngr-cities a {
+    cursor: pointer;
+}
+
+.prmn-cmngr-cities__city {
+    margin-bottom: 5px;
+}
+
+.prmn-cmngr-cities__search-block {
+    margin-bottom: 15px;
+}
+
+.prmn-cmngr-cities__search-label {
+    font-size: 15px;
+    font-weight: 500;
+}
+
+.prmn-cmngr-cities__search {
+    max-width: 400px;
+}
+
+.prmn-cmngr-cities__search-item > span {
+    display: block;
+    padding: 3px 20px;
+    clear: both;
+    font-weight: 400;
+    line-height: 1.42857143;
+    color: #333;
+    white-space: nowrap;
+    cursor: pointer;
+}
+
+.prmn-cmngr-cities__search-item_selected {
+    background-color: #229ac8;
+    background-image: linear-gradient(to bottom, #23a1d1, #1f90bb);
+    background-repeat: repeat-x;
+}
+
+.prmn-cmngr-cities__search-item_selected > span {
+    color: #ffffff;
+}
+
+@media (max-width: 400px) {
+    .prmn-cmngr-cities .col-xs-4 {
+        width: 100%;
+    }
+}
+
+.prmn-cmngr-simplecity {
+    cursor: pointer;
+}

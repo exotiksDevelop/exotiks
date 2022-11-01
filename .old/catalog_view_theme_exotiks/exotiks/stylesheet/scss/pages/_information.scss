@@ -1,0 +1,18 @@
+.information {
+  &__content {
+    width: 90%;
+    margin: auto;
+
+    .map {
+      width: 100%;
+    }
+  }
+}
+
+@media screen and (max-width: 575.98px) {
+  .information {
+    &__content {
+      width: 100%;
+    }
+  }
+}

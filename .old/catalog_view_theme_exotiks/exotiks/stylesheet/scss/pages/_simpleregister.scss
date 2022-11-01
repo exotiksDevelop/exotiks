@@ -1,0 +1,17 @@
+.simpleregister {
+  &__simple-content {
+    margin: auto;
+    margin-top: 2em;
+    width: 90%;
+  }
+  .form-control {
+    margin: 0 !important;
+  }
+  &-have-account {
+    a {
+      color: $accent;
+    }
+  }
+  
+  
+}

@@ -1,0 +1,1381 @@
+{{ header }}{{ column_left }}
+<div id="content">
+	<div class="page-header">
+		<div class="container-fluid">
+			<div class="pull-right">
+				<a onclick="$('#form').submit();" class="btn btn-primary">{{ button_send }}</a>
+				<a href="{{ cancel }}" class="btn btn-primary">{{ button_cancel }}</a>
+			</div>
+			<h1>{{ heading_title }}</h1>
+			<ul class="breadcrumb">
+                {% for breadcrumb in breadcrumbs %}
+					<li><a href="{{ breadcrumb['href'] }}">{{ breadcrumb['text'] }}</a></li>
+                {% endfor %}
+			</ul>
+		</div>
+	</div>
+	<div class="container-fluid">
+        {% if (error_warning) %}
+			<div class="warning">
+				<ul>
+                    {% for message in error_warning %}
+						<li>{{ message }}</li>
+                    {% endfor %}
+				</ul>
+			</div>
+        {% endif %}
+        {% if (success) %}
+			<div class="success">{{ success }}</div>
+        {% endif %}
+		<div class="box">
+			<div class="content">
+				<form action="{{ action }}" method="post" enctype="multipart/form-data" id="form">
+					<table class="form table">
+						<tbody>
+						<tr>
+							<td><em>Номер отправления</em></td>
+							<td>
+                                {{ number }}
+								<input type="hidden" name="number" value="{{ number }}" />
+							</td>
+						</tr>
+						<tr>
+							<td><em>{{ text_order_count_items }}</em></td>
+							<td>{{ total }}</td>
+						</tr>
+                        {% if (city_default) %}
+							<tr>
+								<td><em>{{ text_city }}</em></td>
+								<td>{{ city_name }}</td>
+							</tr>
+                        {% endif %}
+						</tbody>
+					</table>
+
+
+
+					<div id="vtabs" class="vtabs col-md-2">
+						<h2>{{ text_title_orders }}</h2>
+
+                        {% for row,order_info in cdek_orders %}
+                            {% set activeA = '' %}
+                            {% if (row == 0) %}
+                                {% set activeA = 'active' %}
+                            {% endif %}
+
+							<a class="vtabs-link {{ activeA }}" href="#order-{{ order_info['order_id'] }}" {% if (error['cdek_orders'][order_info['order_id']] is defined) %} {{ 'class="error-tab"' }}{% endif %} data-toggle="tab">{{ text_order_n }}{{ order_info['order_id'] }}</a><br>
+                        {% endfor %}
+
+				</div>
+					<div class="cdek-orders col-md-10 tab-content">
+						{% for row,order_info in cdek_orders %}
+                        {% set activeTab = '' %}
+                        {% if (row == 0) %}
+                            {% set activeTab = ' active' %}
+                        {% endif %}
+
+						<div class="vtabs-content order tab-pane{{ activeTab }}" id="order-{{ order_info['order_id'] }}" data-order="{{ order_info['order_id'] }}">
+							<ul id="tabs-order-{{ order_info['order_id'] }}" class="nav nav-tabs">
+								<li class="active"><a href="#order-{{ order_info['order_id'] }}-data" data-toggle="tab">{{ tab_data }}</a></li>
+								<li><a href="#order-{{ order_info['order_id'] }}-recipient {% if (error['cdek_orders'][order_info['order_id']]['recipient'] is defined) %} {{ 'class="error-tab"' }}{% endif %}" data-toggle="tab">{{ tab_recipient }}</a></li>
+								<li><a href="#order-{{ order_info['order_id'] }}-package" {% if (error['cdek_orders'][order_info['order_id']]['package'] is defined) %} {{ 'class="error-tab"' }}{% endif %} data-toggle="tab">{{ tab_package }}</a></li>
+								<li><a href="#order-{{ order_info['order_id'] }}-schedule" {% if (error['cdek_orders'][order_info['order_id']]['schedule'] is defined) %} {{ 'class="error-tab"' }}{% endif %} data-toggle="tab">{{ tab_schedule }}</a></li>
+								<li><a href="#order-{{ order_info['order_id'] }}-courier" {% if (error['cdek_orders'][order_info['order_id']]['courier'] is defined) %} {{ 'class="error-tab"' }}{% endif %} data-toggle="tab">{{ tab_courier }}</a></li>
+								<li><a href="#order-{{ order_info['order_id'] }}-additional" {% if (error['cdek_orders'][order_info['order_id']]['add_service'] is defined) %} {{ 'class="error-tab"' }}{% endif %} data-toggle="tab">{{ tab_additional }}</a></li>
+		          			</ul>
+
+							<div class="tab-content">
+								<div id="order-{{ order_info['order_id'] }}-data" class="form-horizontal tab-pane active">
+
+									<div class="form-group">
+										<label class="col-sm-2 control-label">{{ text_order_id }}</label>
+										<div class="col-sm-10">
+                                            {{ order_info['order_id'] }}
+											<input type="hidden" name="cdek_orders[{{ order_info['order_id'] }}][order_id]" value="{{ order_info['order_id'] }}" />
+										</div>
+									</div>
+
+									<div class="form-group">
+										<label class="col-sm-2 control-label">{{ text_order_total }}</label>
+										<div class="col-sm-10">
+                                            {{ order_info['total'] }}
+										</div>
+									</div>
+
+									<div class="form-group {% if (not city_default) %}required{% endif %}">
+										<label class="col-sm-2 control-label" for="cdek-orders-{{ order_info['order_id'] }}-city-id">{{ text_city }}</label>
+										<div class="col-sm-10">
+                                            {% if (city_default) %}
+                                                {{ city_name }}
+												<input type="hidden" name="cdek_orders[{{ order_info['order_id'] }}][city_id]" value="{{city_id}}" />
+												<input type="hidden" name="cdek_orders[{{ order_info['order_id'] }}][city_name]" value="{{ city_name }}" />
+                                            {% else %}
+												<input type="hidden" class="setting-city-id" name="cdek_orders[{{ order_info['order_id'] }}][city_id]" value="{% if (order_info['city_id'] is not empty) %}{{order_info['city_id']|trim}}{% endif %}"/>
+
+												<a class="js city-from" style="{% if (order_info['city_id'] is empty) %} {{ ' display:none;' }}{% endif %}">{% if (order_info['city_name'] is not empty) %}{{ order_info['city_name'] }}{% endif %}</a>
+
+												<input type="text" id="cdek-orders-{{ order_info['order_id'] }}-city-id" class="setting-city-name form-control" name="cdek_orders[{{ order_info['order_id'] }}][city_name]" value="{% if (order_info['city_name'] is not empty) %} {{ order_info['city_name'] }}{% endif %}" style="{% if (order_info['city_id'] is not empty) %} {{ ' display: none;' }}{% endif %}"/>
+                                            {% endif %}
+
+                                            {% if (error['cdek_orders'][order_info['order_id']]['city_id'] is defined) %}
+												<div class="text-danger">{{ error['cdek_orders'][order_info['order_id']]['city_id'] }}</div>
+                                            {% endif %}
+										</div>
+									</div>
+
+									<div class="form-group required">
+										<label class="col-sm-2 control-label" for="cdek-orders-{{ order_info['order_id'] }}-tariff-id">{{ entry_tariff }}</label>
+										<div class="col-sm-10">
+                                            {% if (order_info['shipping_method']) %}
+												<p class="help">{{ text_customer_shipping_method }}: {{ order_info['shipping_method'] }}</p>
+                                            {% endif %}
+											<select id="cdek-orders-{{ order_info['order_id'] }}-tariff-id" class="tariff_switcher form-control" name="cdek_orders[{{ order_info['order_id'] }}][tariff_id]">
+												<option value="">{{ text_select }}</option>
+                                                {% for tariff_id,tariff_info in tariff_list %}
+													<option {% if (order_info['tariff_id'] is not empty and order_info['tariff_id'] == tariff_id) %} {{ 'selected="selected"' }}{% endif %} data-mode="{{ tariff_info['mode_id'] }}" value="{{ tariff_id }}">{{ tariff_info['title'] }}</option>
+                                                {% endfor %}
+											</select>
+											<input type="hidden" class="setting-mode-id" name="cdek_orders[{{ order_info['order_id'] }}][mode_id]" value="{% if (order_info['mode_id'] is not empty) %}{{ order_info['mode_id'] }}{% endif %}"/>
+                                            {% if (error['cdek_orders'][order_info['order_id']]['tariff_id'] is defined) %}
+												<div class="text-danger">{{ error['cdek_orders'][order_info['order_id']]['tariff_id'] }}</div>
+                                            {% endif %}
+											<div class="shipping-price"></div>
+										</div>
+									</div>
+
+									<div class="form-group required">
+										<label class="col-sm-2 control-label" for="cdek-orders-{{ order_info['order_id'] }}-cod">{{ entry_cod }}</label>
+										<div class="col-sm-10">
+											<select id="cdek-orders-{{ order_info['order_id'] }}-cod" class="cdek-order-cod toggle form-control" name="cdek_orders[{{ order_info['order_id'] }}][cod]" data-toggletarget="#cdek-order-{{ order_info['order_id'] }}-currency-cod">
+                                                {% for key,value in boolean_variables %}
+													<option {% if (order_info['cod'] == key) %} {{ 'selected="selected"' }}{% endif %} value="{{ key }}">{{ value }}</option>
+                                                {% endfor %}
+											</select>
+										</div>
+									</div>
+
+									<div class="form-group" id="cdek-order-{{ order_info['order_id'] }}-currency-cod" style="display:{{ order_info['cod'] ? 'block' : 'none' }}">
+										<label class="col-sm-2 control-label" for="cdek-orders-{{ order_info['order_id'] }}-currency-cod">{{ entry_currency_cod }}</label>
+										<div class="col-sm-10">
+											<select class="form-control" id="cdek-orders-{{ order_info['order_id'] }}-currency-cod" name="cdek_orders[{{ order_info['order_id'] }}][currency_cod]">
+                                                {% for key,value in currency_list %}
+													<option {% if (order_info['currency_cod'] is defined and order_info['currency_cod'] == key) %} {{ 'selected="selected"' }}{% endif %} value="{{ key }}">{{ value }}</option>
+                                                {% endfor %}
+											</select>
+                                            {% if (error['cdek_orders'][order_info['order_id']]['currency_cod'] is defined) %}
+												<div class="text-danger">{{ error['cdek_orders'][order_info['order_id']]['currency_cod'] }}</div>
+                                            {% endif %}
+										</div>
+									</div>
+
+									<div class="form-group">
+										<label class="col-sm-2 control-label" for="cdek-orders-{{ order_info['order_id'] }}-delivery-recipient-cost">{{ entry_delivery_recipient_cost }}</label>
+										<div class="col-sm-10">
+											<input class="form-control" id="cdek-orders-{{ order_info['order_id'] }}-delivery-recipient-cost" type="text" name="cdek_orders[{{ order_info['order_id'] }}][delivery_recipient_cost]" value="{% if (order_info['delivery_recipient_cost'] is not empty) %}{{order_info['delivery_recipient_cost'] }}{% endif %}" size="2" />
+                                            {% if (error['cdek_orders'][order_info['order_id']]['delivery_recipient_cost'] is defined) %}
+												<div class="text-danger">{{ error['cdek_orders'][order_info['order_id']]['delivery_recipient_cost'] }}</div>
+                                            {% endif %}
+										</div>
+									</div>
+
+									<div class="form-group">
+										<label class="col-sm-2 control-label" for="cdek-orders-{{ order_info['order_id'] }}-delivery-recipient-vat-rate">{{ entry_delivery_recipient_vat_rate }}</label>
+										<div class="col-sm-10">
+											<select class="form-control" id="cdek-orders-{{ order_info['order_id'] }}-delivery-recipient-vat-rate" name="cdek_orders[{{ order_info['order_id'] }}][delivery_recipient_vat_rate]">
+                                                {% for vat_rate,vat_rate_name in vat_rate_list %}
+
+                                                    {% set selected = '' %}
+                                                    {% if (order_info['delivery_recipient_vat_rate'] is not empty and order_info['delivery_recipient_vat_rate'] == vat_rate) %}
+                                                        {% set selected = 'selected' %}
+                                                    {% endif %}
+
+													<option value="{{ vat_rate }}" {{ selected }}>{{ vat_rate_name }}</option>
+                                                {% endfor %}
+											</select>
+                                            {% if (error['cdek_orders'][order_info['order_id']]['delivery_recipient_vat_rate'] is defined) %}
+												<div class="text-danger">{{ error['cdek_orders'][order_info['order_id']]['delivery_recipient_vat_rate'] }}</div>
+                                            {% endif %}
+										</div>
+									</div>
+
+									<div class="form-group">
+										<label class="col-sm-2 control-label" for="cdek-orders-{{ order_info['order_id'] }}-delivery-recipient-vat-sum">{{ entry_delivery_recipient_vat_sum }}</label>
+										<div class="col-sm-10">
+											<input class="form-control" id="cdek-orders-{{ order_info['order_id'] }}-delivery-recipient-vat-sum" type="text" name="cdek_orders[{{ order_info['order_id'] }}][delivery_recipient_vat_sum]" value="{% if (order_info['delivery_recipient_vat_sum'] is not empty) %}{{order_info['delivery_recipient_vat_sum'] }}{% endif %}" size="2" />
+                                            {% if (error['cdek_orders'][order_info['order_id']]['delivery_recipient_vat_sum'] is defined) %}
+												<div class="text-danger">{{ error['cdek_orders'][order_info['order_id']]['delivery_recipient_vat_sum'] }}</div>
+                                            {% endif %}
+										</div>
+									</div>
+
+									<div class="form-group">
+										<label class="col-sm-2 control-label" for="cdek-orders-{{ order_info['order_id'] }}-seller-name">{{ entry_seller_name }}</label>
+										<div class="col-sm-10">
+											<input class="form-control" id="cdek-orders-{{ order_info['order_id'] }}-seller-name" type="text" name="cdek_orders[{{ order_info['order_id'] }}][seller_name]" value="{% if (order_info['seller_name'] is not empty) %}{{ order_info['seller_name'] }}{% endif %}" maxlength="255" />
+										</div>
+									</div>
+
+									<div class="form-group">
+										<label class="col-sm-2 control-label" for="cdek-orders-{{ order_info['order_id'] }}-cdek-comment">{{ entry_comment }}</label>
+										<div class="col-sm-10">
+                                            {% if (order_info['comment'] is not empty) %}
+												<div class="help user-comment">
+													<p class="user-comment-title">{{ text_user_comment }}</p>
+                                                    {{ order_info['comment'] }}
+												</div>
+                                            {% endif %}
+											<textarea class="form-control" id="cdek-orders-{{ order_info['order_id'] }}-cdek-comment" rows="5" cols="50" name="cdek_orders[{{ order_info['order_id'] }}][cdek_comment]" >{% if (order_info['cdek_comment'] is not empty) %}{{order_info['cdek_comment'] }}{% endif %}</textarea>
+                                            {% if (error['cdek_orders'][order_info['order_id']]['cdek_comment'] is defined) %}
+												<div class="text-danger">{{ error['cdek_orders'][order_info['order_id']]['cdek_comment'] }}</div>
+                                            {% endif %}
+										</div>
+									</div>
+
+								</div>
+
+								<div id="order-{{ order_info['order_id'] }}-recipient" class="form-horizontal recipient tab-pane">
+
+									<div class="form-group required">
+										<label class="col-sm-2 control-label" for="cdek-orders-{{ order_info['order_id'] }}-recipient-name">{{ entry_recipient_name }}</label>
+										<div class="col-sm-10">
+											<input class="form-control" id="cdek-orders-{{ order_info['order_id'] }}-recipient-name" type="text" name="cdek_orders[{{ order_info['order_id'] }}][recipient_name]" value="{{ order_info['recipient_name'] }}" maxlength="128" />
+                                            {% if (error['cdek_orders'][order_info['order_id']]['recipient_name'] is defined) %}
+												<div class="text-danger">{{ error['cdek_orders'][order_info['order_id']]['recipient_name'] }}</div>
+                                            {% endif %}
+										</div>
+									</div>
+
+									<div class="form-group required">
+										<label class="col-sm-2 control-label" for="cdek-orders-{{ order_info['order_id'] }}-recipient-telephone">{{ entry_recipient_telephone }}</label>
+										<div class="col-sm-10">
+											<input class="form-control" id="cdek-orders-{{ order_info['order_id'] }}-recipient-telephone" type="text" name="cdek_orders[{{ order_info['order_id'] }}][recipient_telephone]" value="{{ order_info['recipient_telephone'] }}" maxlength="50" />
+                                            {% if (error['cdek_orders'][order_info['order_id']]['recipient_telephone'] is defined) %}
+												<div class="text-danger">{{ error['cdek_orders'][order_info['order_id']]['recipient_telephone'] }}</div>
+                                            {% endif %}
+										</div>
+									</div>
+
+									<div class="form-group">
+										<label class="col-sm-2 control-label" for="cdek-orders-{{ order_info['order_id'] }}-recipient-email">{{ entry_recipient_email }}</label>
+										<div class="col-sm-10">
+											<input class="form-control" id="cdek-orders-{{ order_info['order_id'] }}-recipient-email" type="text" name="cdek_orders[{{ order_info['order_id'] }}][recipient_email]" value="{{ order_info['recipient_email'] }}" maxlength="255" />
+                                            {% if (error['cdek_orders'][order_info['order_id']]['recipient_email'] is defined) %}
+												<div class="text-danger">{{ error['cdek_orders'][order_info['order_id']]['recipient_email'] }}</div>
+                                            {% endif %}
+										</div>
+									</div>
+
+									<div class="form-group">
+										<div class="col-sm-10">
+											<h3>{{ text_shipping_address }}</h3>
+                                            {% if (order_info['shipping_address']) %}
+												<p class="help">{{ text_customer_shipping_address }}: {{ order_info['shipping_address'] }}</p>
+                                            {% endif %}
+										</div>
+									</div>
+
+									<div class="form-group required">
+										<label class="col-sm-2 control-label" for="cdek-orders-{{ order_info['order_id'] }}-recipient-city-name">{{ entry_recipient_city }}</label>
+										<div class="col-sm-10">
+											<input type="hidden" class="setting-city-id" name="cdek_orders[{{ order_info['order_id'] }}][recipient_city_id]" value="{% if (order_info['recipient_city_id'] is not empty) %}{{ order_info['recipient_city_id'] }}{% endif %}"/>
+
+											<a class="js city-from" style="{% if (order_info['recipient_city_id'] is empty) %} {{ ' display: none;' }}{% endif %}">{% if (order_info['recipient_city_name'] is not empty) %}{{ order_info['recipient_city_name'] }}{% endif %}</a>
+
+											<input type="text" id="cdek-orders-{{ order_info['order_id'] }}-recipient-city-name" class="setting-city-name form-control" name="cdek_orders[{{ order_info['order_id'] }}][recipient_city_name]" value="{% if (order_info['recipient_city_name'] is not empty) %}{{ order_info['recipient_city_name'] }}{% endif %}" style="{% if (order_info['recipient_city_id'] is not empty) %} {{ ' display: none;' }}{% endif %}" />
+
+                                            {% if (error['cdek_orders'][order_info['order_id']]['recipient_city_id'] is defined) %}
+												<div class="text-danger">{{ error['cdek_orders'][order_info['order_id']]['recipient_city_id'] }}</div>
+                                            {% endif %}
+										</div>
+									</div>
+
+									<div class="form-group required address-mode pvz" style="
+									{% if (order_info['tariff_id'] is empty or
+									tariff_list[order_info['tariff_id']]['mode_id'] is empty or
+									tariff_list[order_info['tariff_id']]['mode_id'] in [1, 3]) %}
+									{{ ' display: none;' }}
+									{% endif  %} ">
+
+										<label class="col-sm-2 control-label" for="">{{ entry_pvz }}</label>
+                                            <div class="col-sm-10">
+                                            <select name="cdek_orders[{{ order_info['order_id'] }}][address][pvz_code]" class="address-pvz-code form-control">
+                                            <option value="">{{ text_select }}</option>
+                                            {% if (order_info['pvz_list'] is not empty) %}
+                                            {% for pvz_info in order_info['pvz_list'] %}
+											<option {% if (order_info['address']['pvz_code'] is not empty and order_info['address']['pvz_code'] == pvz_info['Code']) %} {{ 'selected="selected"' }} {% endif %} value="{{ pvz_info['Code'] }}" data-name="{{ pvz_info['Name'] }}" data-y="{{ pvz_info['y'] }}" data-x="{{ pvz_info['x'] }}" data-address="{{ pvz_info['Address'] }}" data-worktime="{{ pvz_info['WorkTime'] }}" data-phone="{{ pvz_info['Phone'] }}"> {{ pvz_info['Name'] }} ({{ pvz_info['Address'] }})</option>
+                                            {% endfor %}
+                                            {% endif %}
+											</select>
+
+												<div class="pvz-wrapper">
+                                                    {% if (order_info['pvz_info'] is not empty) %}
+														<p>{{ order_info['pvz_info']['Name'] }}{% if (order_info['pvz_info']['x']) %} (<a href="http://maps.google.ru/maps?q={{ order_info['pvz_info']['y'] }},{{ order_info['pvz_info']['x'] }}" target="_blank">на карте</a>){% endif %}</p>
+														<span class="help">
+												<strong>Адрес</strong>: {{ order_info['pvz_info']['Address'] }}<br />
+                                                            {% if (order_info['pvz_info']['Phone'] is not empty and order_info['pvz_info']['Phone']|trim != '-') %}
+																<strong>Телефон</strong>: {{ order_info['pvz_info']['Phone'] }}<br />
+                                                            {% endif %}
+                                                            {% if ( order_info['pvz_info']['WorkTime'] is not empty and order_info['pvz_info']['WorkTime']|trim != '-') %}
+																<strong>Режим работы</strong>: {{ order_info['pvz_info']['WorkTime'] }}
+                                                            {% endif %}
+
+												</span>
+                                                    {% endif %}
+												</div>
+                                                {% if (error['cdek_orders'][order_info['order_id']]['address']['pvz_code'] is defined) %}
+													<div class="text-danger">{{ error['cdek_orders'][order_info['order_id']]['address']['pvz_code'] }}</div>
+                                                {% endif %}
+											</div>
+								</div>
+
+								<div class="address-mode address">
+
+									<div class="form-group {% if (order_info['tariff_id'] is not empty
+									and tariff_list[order_info['tariff_id']]['mode_id'] is not empty
+									and tariff_list[order_info['tariff_id']]['mode_id'] in  [1, 3] ) %}
+									{{ 'required' }}
+									{% endif %} ">
+										<label class="col-sm-2 control-label" for="cdek-orders-{{ order_info['order_id'] }}-address-street">{{ entry_street }}</label>
+											<div class="col-sm-10">
+												<input class="form-control" id="cdek-orders-{{ order_info['order_id'] }}-address-street" type="text" name="cdek_orders[{{ order_info['order_id'] }}][address][street]" value="{% if (order_info['address']['street'] is not empty) %}{{order_info['address']['street']}} {% endif %}" maxlength="50" />
+                                        {% if (error['cdek_orders'][order_info['order_id']]['address']['street'] is defined) %}
+										<div class="text-danger">{{ error['cdek_orders'][order_info['order_id']]['address']['street'] }}</div>
+                                        {% endif %}
+									</div>
+								</div>
+
+								<div class="form-group {% if (order_info['tariff_id'] is not empty and tariff_list[order_info['tariff_id']]['mode_id'] is not empty and tariff_list[order_info['tariff_id']]['mode_id'] in [1,3]) %}  {{ 'required' }}{% endif %} ">
+									<label class="col-sm-2 control-label" for="cdek-orders-{{ order_info['order_id'] }}-address-house">{{ entry_house }}</label>
+											<div class="col-sm-10">
+												<input class="form-control" id="cdek-orders-{{ order_info['order_id'] }}-address-house" type="text" name="cdek_orders[{{ order_info['order_id'] }}][address][house]" value="{% if (order_info['address']['house'] is not empty) %}{{order_info['address']['house'] }}{% endif %}" size="2" maxlength="30" />
+
+												{% if (error['cdek_orders'][order_info['order_id']]['address']['house'] is defined) %}
+												<div class="text-danger">{{ error['cdek_orders'][order_info['order_id']]['address']['house'] }}</div>
+												{% endif %}
+											</div>
+										</div>
+
+									<div class="form-group {% if (order_info['tariff_id'] is not empty and tariff_list[order_info['tariff_id']]['mode_id'] is not empty and  tariff_list[order_info['tariff_id']]['mode_id'] in [1, 3] )%}{{ 'required' }}{% endif %}">
+										<label class="col-sm-2 control-label" for="cdek-orders-{{ order_info['order_id'] }}-address-flat">{{ entry_flat }}</label>
+											<div class="col-sm-10">
+												<input class="form-control" id="cdek-orders-{{ order_info['order_id'] }}-address-flat" type="text" name="cdek_orders[{{ order_info['order_id'] }}][address][flat]" value="{% if (order_info['address']['flat'] is not empty) %}{{order_info['address']['flat'] }}{% endif %}" size="2" maxlength="10" />
+                                        {% if (error['cdek_orders'][order_info['order_id']]['address']['flat'] is defined) %}
+										<div class="text-danger">{{ error['cdek_orders'][order_info['order_id']]['address']['flat'] }}</div>
+                                        {% endif %}
+									</div>
+								</div>
+
+							</div>
+
+						</div>
+								<div id="order-{{ order_info['order_id'] }}-package" class="form-horizontal tab-pane">
+                                    {% if (order_info['packages']|length > 1) %}
+										<div id="vtabs-order-{{ order_info['order_id'] }}-package" class="htabs">
+                                            {% for package_id,package_info in order_info['packages'] %}
+												<a href="#order-{{ order_info['order_id'] }}-package-{{ package_id }}">{{ text_package_n }}{{ package_id }}</a>
+                                            {% endfor %}
+										</div>
+                                    {% endif %}
+
+									{% for package_id,package_info in order_info['packages'] %}
+									<div id="order-{{ order_info['order_id'] }}-package-{{ package_id }}">
+                                        {% if (error['cdek_orders'][order_info['order_id']]['package'][package_id]['warning'] is defined) %}
+											<div class="text-danger">{{ error['cdek_orders'][order_info['order_id']]['package'][package_id]['warning'] }}</div>
+                                        {% endif %}
+										<br />
+
+										<div class="form-horizontal">
+											<div class="form-group required">
+												<label class="col-sm-2 control-label" for="cdek-orders-{{ order_info['order_id'] }}-currency">{{ entry_currency }}</label>
+												<div class="col-sm-10">
+													<select class="form-control" id="cdek-orders-{{ order_info['order_id'] }}-currency" name="cdek_orders[{{ order_info['order_id'] }}][currency]">
+                                                        {% for key,value in currency_list %}
+															<option {% if (order_info['currency'] is defined and order_info['currency'] == key) %} {{ 'selected="selected"' }}{% endif %} value="{{ key }}">{{ value }}</option>
+                                                        {% endfor %}
+													</select>
+												</div>
+											</div>
+
+
+											<div class="form-group required">
+												<label class="col-sm-2 control-label" for="cdek-orders-{{ order_info['order_id'] }}-package-{{ package_id }}-brcode">{{ entry_brcode }}</label>
+												<div class="col-sm-10">
+													<input class="form-control" id="cdek-orders-{{ order_info['order_id'] }}-package-{{ package_id }}-brcode" type="text" name="cdek_orders[{{ order_info['order_id'] }}][package][{{ package_id }}][brcode]" value="{% if (package_info['brcode'] is not empty) %}{{ package_info['brcode'] }}{% endif %}" maxlength="20" />
+												</div>
+											</div>
+
+											<div class="form-group required">
+												<label class="col-sm-2 control-label" for="cdek-orders-{{ order_info['order_id'] }}-package-{{ package_id }}-pack">{{ entry_pack }}</label>
+												<div class="col-sm-10">
+													<select id="cdek-orders-{{ order_info['order_id'] }}-package-{{ package_id }}-pack" name="cdek_orders[{{ order_info['order_id'] }}][package][{{ package_id }}][pack]" class="toggle form-control" data-toggletarget="#cdek-orders-{{ order_info['order_id'] }}-package-{{ package_id }}-size-a-block">
+                                                        {% for key,value in boolean_variables %}
+															<option {% if (package_info['pack'] is defined and package_info['pack'] == key) %} {{ 'selected="selected"' }}{% endif %} value="{{ key }}">{{ value }}</option>
+                                                        {% endfor %}
+													</select>
+												</div>
+											</div>
+
+											<div class="form-group required" id="cdek-orders-{{ order_info['order_id'] }}-package-{{ package_id }}-size-a-block" style="{% if (package_info['pack'] is not defined or not package_info['pack']) %} {{ " display:none;" }}{% endif %}">
+												<label class="col-sm-2 control-label" for="cdek-orders-{{ order_info['order_id'] }}-package-{{ package_id }}-size-a">{{ entry_package }}</label>
+												<div class="col-sm-10">
+													<div class="form-inline">
+														<input class="form-control" id="cdek-orders-{{ order_info['order_id'] }}-package-{{ package_id }}-size-a" type="text" placeholder="{{ text_short_length }}" name="cdek_orders[{{ order_info['order_id'] }}][package][{{ package_id }}][size_a]" value="{% if (package_info['size_a'] is not empty) %} {{ package_info['size_a'] }}{% endif %}" size="2" /> x
+														<input class="form-control" type="text" placeholder="{{ text_short_width }}" name="cdek_orders[{{ order_info['order_id'] }}][package][{{ package_id }}][size_b]" value="{% if (package_info['size_b'] is not empty) %}{{ package_info['size_b'] }}{% endif %}" size="2" /> x
+														<input class="form-control" type="text" placeholder="{{ text_short_height }}" name="cdek_orders[{{ order_info['order_id'] }}][package][{{ package_id }}][size_c]" value="{% if (package_info['size_c'] is not empty) %}{{package_info['size_c'] }}{% endif %}" size="2" />
+													</div>
+                                                    {% if (error['cdek_orders'][order_info['order_id']]['package'][package_id]['size'] is defined) %}
+														<div class="text-danger">{{ error['cdek_orders'][order_info['order_id']]['package'][package_id]['size'] }}</div>
+                                                    {% endif %}
+												</div>
+											</div>
+
+											<div class="form-group required">
+												<label class="col-sm-2 control-label" for="cdek-orders-{{ order_info['order_id'] }}-package-{{ package_id }}-weight">{{ entry_order_weight }}</label>
+												<div class="col-sm-10">
+													<div class="form-inline">
+														<input class="package-weight form-control" id="cdek-orders-{{ order_info['order_id'] }}-package-{{ package_id }}-weight" type="text" name="cdek_orders[{{ order_info['order_id'] }}][package][{{ package_id }}][weight]" value="{{ package_info['weight'] }}" data-packing_prefix="{{ package_info['additional_weight']['prefix'] }}" data-packing_weight="{{ package_info['additional_weight']['weight'] }}" />
+                                                        {% if (package_info['additional_weight']['weight']) %}
+															<span class="help inline">{{ package_info['additional_weight']['prefix'] ~ ' ' ~ package_info['additional_weight']['weight'] }} грамм</span>
+                                                        {% endif %}
+													</div>
+                                                    {% if (error['cdek_orders'][order_info['order_id']]['package'][package_id]['weight'] is defined) %}
+														<div class="text-danger">{{ error['cdek_orders'][order_info['order_id']]['package'][package_id]['weight'] }}</div>
+                                                    {% endif %}
+												</div>
+											</div>
+										</div>
+
+										<table class="list package-items table">
+											<thead>
+											<tr>
+												<td class="left">{{ column_title }}</td>
+												<td class="right">{{ column_weight }}</td>
+												<td class="right">{{ column_price }}</td>
+												<td class="right">{{ column_payment }}</td>
+												<td class="right">{{ column_amount }}</td>
+												<td class="right">{{ column_cost }}</td>
+											</tr>
+											</thead>
+											<tbody>
+												{% for row, item in package_info['item'] %}
+												<tr>
+													<td class="left">
+                                                        {{ item['name'] }}
+                                                        {% for option in item['option'] %}
+															<br />
+                                                            {% if (option['type'] != 'file') %}
+																&nbsp;<small> - {{ option['name'] }}: {{ option['value'] }}</small>
+                                                            {% else %}
+																&nbsp;<small> - {{ option['name'] }}: <a href="{{ option['href'] }}">{{ option['value'] }}</a></small>
+                                                            {% endif %}
+                                                        {% endfor %}
+														<input type="hidden" name="cdek_orders[{{ order_info['order_id'] }}][package][{{ package_id }}][item][{{ row }}][comment]" value="{{ item['name'] }}" size="3" />
+														<input type="hidden" name="cdek_orders[{{ order_info['order_id'] }}][package][{{ package_id }}][item][{{ row }}][ware_key]" value="{{ item['order_product_id'] }}" size="3" />
+													</td>
+													<td class="right">
+														<input type="text" class="form-control" name="cdek_orders[{{ order_info['order_id'] }}][package][{{ package_id }}][item][{{ row }}][weight]" value="{{ item['weight'] }}" size="5" />
+                                                        {% if (error['cdek_orders'][order_info['order_id']]['package'][package_id]['item'][row]['weight'] is defined) %}
+															<div class="text-danger">{{ error['cdek_orders'][order_info['order_id']]['package'][package_id]['item'][row]['weight'] }}</div>
+                                                        {% endif %}
+													</td>
+													<td class="right">
+														<input type="text" class="form-control" name="cdek_orders[{{ order_info['order_id'] }}][package][{{ package_id }}][item][{{ row }}][cost]" value="{{ item['price'] }}" size="3" />
+                                                        {% if (error['cdek_orders'][order_info['order_id']]['package'][package_id]['item'][row]['cost'] is defined) %}
+															<div class="text-danger">{{ error['cdek_orders'][order_info['order_id']]['package'][package_id]['item'][row]['cost'] }}</div>
+                                                        {% endif %}
+													</td>
+													<td class="right package-item-payment">
+														<div class="input-group">
+														  	<span class="input-group-addon">Оплата</span>
+
+															<input type="text" {% if (not order_info['cod']) %} {{ ' readonly="readonly" ' }}{% endif %} class="form-control" name="cdek_orders[{{ order_info['order_id'] }}][package][{{ package_id }}][item][{{ row }}][payment]" data-value="{{ item['payment'] }}" value="{{ order_info['cod'] ? item['payment'] : 0 }}" size="3" />
+														</div>
+                                                        {% if (error['cdek_orders'][order_info['order_id']]['package'][package_id]['item'][row]['payment'] is defined) %}
+															<div class="text-danger">{{ error['cdek_orders'][order_info['order_id']]['package'][package_id]['item'][row]['payment'] }}</div>
+                                                        {% endif %}
+
+														<div class="input-group">
+															<span class="input-group-addon">НДС</span>
+
+															<select class="form-control" {% if (not order_info['cod']) %} {{ ' readonly="readonly" ' }}{% endif %} name="cdek_orders[{{ order_info['order_id'] }}][package][{{ package_id }}][item][{{ row }}][payment_vat_rate]">
+                                                                {% for vat_rate,vat_rate_name in vat_rate_list %}
+                                                                    {% set selected = '' %}
+                                                                    {% if (item['payment_vat_rate'] and item['payment_vat_rate'] == vat_rate) %}
+                                                                        {% set selected = 'selected' %}
+                                                                    {% endif %}
+<div>{{ item['payment_vat_rate'] }} {{ vat_rate }} {{ selected }}</div>
+																	<option value="{{ vat_rate }}" {{ selected }}>{{ vat_rate_name }}</option>
+                                                                {% endfor %}
+															</select>
+														</div>
+                                                        {% if (error['cdek_orders'][order_info['order_id']]['package'][package_id]['item'][row]['payment_vat_rate'] is defined) %}
+															<div class="text-danger">{{ error['cdek_orders'][order_info['order_id']]['package'][package_id]['item'][row]['payment_vat_rate'] }}</div>
+                                                        {% endif %}
+
+														<div class="input-group">
+															<span class="input-group-addon">НДС Сумма</span>
+															<input type="text" class="form-control" {% if (not order_info['cod']) %} {{ ' readonly="readonly" ' }}{% endif %} name="cdek_orders[{{ order_info['order_id'] }}][package][{{ package_id }}][item][{{ row }}][payment_vat_sum]" data-value="{{ item['payment_vat_sum'] }}" value="{{ order_info['cod'] ? item['payment_vat_sum'] : 0 }}" size="3" />
+														</div>
+
+                                                        {% if (error['cdek_orders'][order_info['order_id']]['package'][package_id]['item'][row]['payment_vat_sum'] is defined) %}
+															<div class="text-danger">{{ error['cdek_orders'][order_info['order_id']]['package'][package_id]['item'][row]['payment_vat_sum'] }}</div>
+                                                        {% endif %}
+													</td>
+													<td class="right">
+														<input type="text" class="form-control" name="cdek_orders[{{ order_info['order_id'] }}][package][{{ package_id }}][item][{{ row }}][amount]" value="{{ item['quantity'] }}" size="3" />
+                                                        {% if (error['cdek_orders'][order_info['order_id']]['package'][package_id]['item'][row]['amount'] is defined) %}
+															<div class="text-danger">{{ error['cdek_orders'][order_info['order_id']]['package'][package_id]['item'][row]['amount'] }}</div>
+                                                        {% endif %}
+													</td>
+													<td class="right">{{ item['total'] }}</td>
+												</tr>
+												{% endfor %}
+											</tbody>
+											<tfoot>
+                                            {% for row,order_total in order_info['totals'] %}
+												<tr>
+													<td class="right {{ order_total['code'] }}" colspan="5">{{ order_total['title'] }}</td>
+													<td class="right {{ order_total['code'] }}">{{ order_total['text'] }}</td>
+												</tr>
+                                            {% endfor %}
+											</tfoot>
+										</table>
+									</div>
+									{% endfor %}
+								</div>
+								<div id="order-{{ order_info['order_id'] }}-schedule" class="tab-pane">
+									<table class="form table">
+										<tbody>
+										<tr>
+											<td colspan="2">
+												<span class="help">{{ text_help_shedule }}</span>
+												<br />
+												<span class="help"><em class="red">{{ text_attention }}</em></span>
+                                                {{ text_help_shedule_detail }}
+											</td>
+										</tr>
+										<tr>
+											<td colspan="2"><h4>{{ text_title_schedule }}</h4></td>
+										</tr>
+										</tbody>
+									</table>
+									<table class="list table">
+										<thead>
+										<tr>
+											<td class="left"><span class="required">*</span> {{ column_date }}</td>
+											<td class="left"><span class="required">*</span> {{ column_time }}</td>
+											<td class="left">{{ entry_comment }}</td>
+											<td class="left" style="min-width: 300px;">{{ column_additional }}</td>
+											<td class="left"></td>
+										</tr>
+										</thead>
+										<tbody>
+											{% if  order_info['schedule'] is not empty %}
+												{% for attempt_row,attempt_info in order_info['schedule'] %}
+
+													<tr id="{{ order_info['order_id'] }}-schedule-{{ attempt_row }}" rel="{{ attempt_row }}">
+														<td class="left">
+															<input id="cdek-orders-{{ order_info['order_id'] }}-schedule-{{ attempt_row }}-date" class="date" type="text" name="cdek_orders[{{ order_info['order_id'] }}][schedule][{{ attempt_row }}][date]" value="{% if (attempt_info['date'] is not empty) %}{{ attempt_info['date'] }}{% endif %}" size="8" />
+                                                            {% if (error['cdek_orders'][order_info['order_id']]['schedule'][attempt_row]['date'] is defined) %}
+																<div class="text-danger">{{ error['cdek_orders'][order_info['order_id']]['schedule'][attempt_row]['date'] }}</div>
+                                                            {% endif %}
+														</td>
+
+														<td class="left">
+															<nobr>{{ text_from }} <input id="cdek-orders-{{ order_info['order_id'] }}-schedule-{{ attempt_row }}-time-beg" class="time" type="text" name="cdek_orders[{{ order_info['order_id'] }}][schedule][{{ attempt_row }}][time_beg]" value="{% if (attempt_info['time_beg'] is not empty) %}{{attempt_info['time_beg'] }}{% endif %}" size="8" /> {{ text_to }} <input class="time" type="text" name="cdek_orders[{{ order_info['order_id'] }}][schedule][{{ attempt_row }}][time_end]" value="{% if (attempt_info['time_end'] is not empty) %}{{attempt_info['time_end'] }}{% endif %}" size="8" /></nobr>
+                                                            {% if (error['cdek_orders'][order_info['order_id']]['schedule'][attempt_row]['time'] is defined) %}
+																<div class="text-danger">{{ error['cdek_orders'][order_info['order_id']]['schedule'][attempt_row]['time'] }}</div>
+                                                            {% endif %}
+														</td>
+
+														<td class="left">
+															<textarea id="cdek-orders-{{ order_info['order_id'] }}-schedule-{{ attempt_row }}-comment" name="cdek_orders[{{ order_info['order_id'] }}][schedule][{{ attempt_row }}][comment]" rows="5" cols="50" >{% if (attempt_info['comment'] is not empty) %}{{attempt_info['comment'] }}{% endif %}</textarea>
+                                                            {% if (error['cdek_orders'][order_info['order_id']]['schedule'][attempt_row]['comment'] is defined) %}
+																<div class="text-danger">{{ error['cdek_orders'][order_info['order_id']]['schedule'][attempt_row]['comment'] }}</div>
+                                                            {% endif %}
+														</td>
+
+														<td class="no-padding">
+															<table class="form table">
+																<tbody>
+																<tr>
+																	<td><label for="cdek-orders-{{ order_info['order_id'] }}-schedule-{{ attempt_row }}-recipient-name">{{ entry_attempt_recipient_name }}</label></td>
+																	<td>
+																		<input id="cdek-orders-{{ order_info['order_id'] }}-schedule-{{ attempt_row }}-recipient-name" type="text" name="cdek_orders[{{ order_info['order_id'] }}][schedule][{{ attempt_row }}][recipient_name]" value="{% if (attempt_info['recipient_name'] is not empty) %}{{attempt_info['recipient_name'] }}{% endif %}" maxlength="128" />
+
+																	</td>
+																</tr>
+																<tr>
+																	<td><label for="cdek-orders-{{ order_info['order_id'] }}-schedule-{{ attempt_row }}-phone">{{ entry_attempt_phone }}</label></td>
+																	<td>
+																		<input id="cdek-orders-{{ order_info['order_id'] }}-schedule-{{ attempt_row }}-phone" type="text" name="cdek_orders[{{ order_info['order_id'] }}][schedule][{{ attempt_row }}][phone]" value="{% if (attempt_info['phone'] is not empty) %}{{attempt_info['phone'] }}{% endif %}" maxlength="50" />
+																	</td>
+																</tr>
+																<tr class="parent">
+																	<td><label for="cdek-orders-{{ order_info['order_id'] }}-schedule-{{ attempt_row }}-new-address">{{ entry_attempt_new_address }}</label></td>
+																	<td>
+																		<select id="cdek-orders-{{ order_info['order_id'] }}-schedule-{{ attempt_row }}-new-address" name="cdek_orders[{{ order_info['order_id'] }}][schedule][{{ attempt_row }}][new_address]" class="toggle form-control" data-toggletarget="#cdek-orders-{{ order_info['order_id'] }}-schedule-{{ attempt_row }}-new-address-block">
+                                                                            {% for key,value in boolean_variables %}
+																				<option {% if (attempt_info['new_address'] is defined and attempt_info['new_address'] == key) %} {{ 'selected="selected"' }}{% endif %} value="{{key}}">{{ value }}</option>
+                                                                            {% endfor %}
+																		</select>
+
+																		<span class="status">{{ attempt_info['new_address'] is not defined or not attempt_info['new_address'] ? "&#9660;" : "&#9650;" }}</span>
+																	</td>
+																</tr>
+																<tr>
+																	<td colspan="2" class="include">
+																		<div id="cdek-orders-{{ order_info['order_id'] }}-schedule-{{ attempt_row }}-new-address-block" style="{% if (attempt_info['new_address'] is not defined or not attempt_info['new_address']) %} {{ ' display: none' }}{% endif %}">
+																			<div class="address-mode pvz" style="{% if (order_info['tariff_id'] is empty or tariff_list[order_info['tariff_id']]['mode_id'] is empty or tariff_list[order_info['tariff_id']]['mode_id'] in  [1, 3] )%} {{ ' display: none' }}{% endif %} %}">
+																				<table class="form table">
+																					<tbody>
+																					<tr>
+																						<td><label for="cdek-orders-{{ order_info['order_id'] }}-schedule-{{ attempt_row }}-pvz-code"><span class="required">*</span> {{ entry_pvz }}</label></td>
+																						<td>
+																							<select id="cdek-orders-{{ order_info['order_id'] }}-schedule-{{ attempt_row }}-pvz-code" name="cdek_orders[{{ order_info['order_id'] }}][schedule][{{ attempt_row }}][pvz_code]">
+
+
+																								<option value="">{{ text_select }}</option>
+																								{% if (order_info['pvz_list'] is not empty) %}
+																								{% for pvz_info in order_info['pvz_list'] %}
+																								<option {% if (attempt_info['pvz_code'] is not empty and attempt_info['pvz_code'] == pvz_info['Code']) %} {{ 'selected="selected"' }}{% endif %} value="{{ pvz_info['Code'] }}">{{ pvz_info['Name'] }} ({{ pvz_info['Address'] }})</option>
+																								{% endfor %}
+																								{% endif %}
+																							</select>
+																							{% if (error['cdek_orders'][order_info['order_id']]['schedule'][attempt_row]['pvz_code'] is defined) %}
+																							<div class="text-danger">{{ error['cdek_orders'][order_info['order_id']]['schedule'][attempt_row]['pvz_code'] }}</div>
+																							{% endif %}
+																						</td>
+																					</tr>
+																				</tbody>
+																			</table>
+																		</div>
+
+																		<div class="address-mode address">
+																			<table class="form table">
+																				<tbody>
+																					<tr>
+																						<td><label for="cdek-orders-{{ order_info['order_id'] }}-schedule-{{ attempt_row }}-street"><span class="required{% if (order_info['tariff_id'] is empty or tariff_list[order_info['tariff_id']]['mode_id'] is empty or tariff_list[order_info['tariff_id']]['mode_id'] in [2,4]) %} {{ ' hidden' }}{% endif %} ">*</span> {{ entry_street }}</label></td>
+                                                                                                <td>
+                                                                                                <input id="cdek-orders-{{ order_info['order_id'] }}-schedule-{{ attempt_row }}-street" type="text" name="cdek_orders[{{ order_info['order_id'] }}][schedule][{{ attempt_row }}][street]" value="{% if (attempt_info['street'] is not empty) %}{{attempt_info['street'] }}{% endif %}" maxlength="50" />
+                                                                                                {% if (error['cdek_orders'][order_info['order_id']]['schedule'][attempt_row]['street'] is defined) %}
+																								<div class="text-danger">{{ error['cdek_orders'][order_info['order_id']]['schedule'][attempt_row]['street'] }}</div>
+                                                                                                {% endif %}
+																						</td>
+																					</tr>
+																					<tr>
+																						<td><label for="cdek-orders-{{ order_info['order_id'] }}-schedule-{{ attempt_row }}-house"><span class="required{% if (order_info['tariff_id'] is empty or tariff_list[order_info['tariff_id']]['mode_id'] is empty or tariff_list[order_info['tariff_id']]['mode_id'] in [2, 4] ) %} {{ ' hidden' }}{% endif %} ">*</span> {{ entry_house }}</label></td>
+                                                                                                <td>
+                                                                                                <input id="cdek-orders-{{ order_info['order_id'] }}-schedule-{{ attempt_row }}-house" type="text" name="cdek_orders[{{ order_info['order_id'] }}][schedule][{{ attempt_row }}][house]" value="{% if (attempt_info['house'] is not empty) %}{{attempt_info['house'] }}{% endif %}" size="2" maxlength="30" />
+                                                                                                {% if (error['cdek_orders'][order_info['order_id']]['schedule'][attempt_row]['house'] is defined) %}
+																								<div class="text-danger">{{ error['cdek_orders'][order_info['order_id']]['schedule'][attempt_row]['house'] }}</div>
+                                                                                                {% endif %}
+																						</td>
+																					</tr>
+																					<tr>
+																						<td><label for="cdek-orders-{{ order_info['order_id'] }}-schedule-{{ attempt_row }}-flat"><span class="required{% if (order_info['tariff_id'] is empty or tariff_list[order_info['tariff_id']]['mode_id'] is empty or tariff_list[order_info['tariff_id']]['mode_id'] in [2, 4]) %} {{ ' hidden' }}{% endif %}">*</span> {{ entry_flat }}</label></td>
+                                                                                                <td>
+                                                                                                <input id="cdek-orders-{{ order_info['order_id'] }}-schedule-{{ attempt_row }}-flat" type="text" name="cdek_orders[{{ order_info['order_id'] }}][schedule][{{ attempt_row }}][flat]" value="{% if (attempt_info['flat'] is not empty) %}{{attempt_info['flat'] }}{% endif %}" size="2" maxlength="10" />
+                                                                                                {% if (error['cdek_orders'][order_info['order_id']]['schedule'][attempt_row]['flat'] is defined) %}
+																								<div class="text-danger">{{ error['cdek_orders'][order_info['order_id']]['schedule'][attempt_row]['flat'] }}</div>
+                                                                                                {% endif %}
+																						</td>
+																					</tr>
+																					</tbody>
+																				</table>
+																			</div>
+																		</div>
+																	</td>
+																</tr>
+																</tbody>
+															</table>
+														</td>
+														<td class="right" width="1">
+															<a onclick="$('#{{ order_info['order_id'] }}-schedule-{{ attempt_row }}').remove();" class="button">{{ button_delete }}</a>
+														</td>
+													</tr>
+											{% endfor %}
+											{% endif %}
+										</tbody>
+									</table>
+									<a class="button" onclick="addAttempt({{ order_info['order_id'] }});">{{ button_add_attempt }}</a>
+								</div>
+								<div id="order-{{ order_info['order_id'] }}-courier" class="tab-pane">
+									<table class="form table">
+										<tbody>
+										<tr>
+											<td colspan="2">
+												<span class="help"><em class="red">{{ text_attention }}</em></span>
+												<ul class="help">
+													<li>Вызов курьера возможно сделать только на будущую дату;</li>
+													<li>На один день возможно не более одного вызова курьера на один адрес;</li>
+													<li>{{ text_courier_hour_range }}.</li>
+												</ul>
+											</td>
+										</tr>
+										<tr class="parent">
+											<td><label for="cdek-orders-{{ order_info['order_id'] }}-courier-call">{{ entry_courier_call }}</label></td>
+												<td>
+													<select id="cdek-orders-{{ order_info['order_id'] }}-courier-call" name="cdek_orders[{{ order_info['order_id'] }}][courier][call]" class="toggle" data-toggletarget="#cdek-orders-{{ order_info['order_id'] }}-courier-call-block">
+                                                        {% for key,value in boolean_variables %}
+															<option {% if (order_info['courier']['call'] is defined and order_info['courier']['call'] == key) %} {{ 'selected="selected"' }}{% endif %} value="{{ key }}">{{ value }}</option>
+                                                        {% endfor %}
+													</select>
+												</td>
+										</tr>
+											<tr>
+												<td colspan="2" class="include">
+													<div id="cdek-orders-{{ order_info['order_id'] }}-courier-call-block" style="{% if (order_info['courier']['call'] is not defined or not order_info['courier']['call']) %} {{ " display:none" }}{% endif %}">
+														<table class="form table">
+															<tbody>
+															<tr>
+																<td colspan="2"><h4>{{ text_courier }}</h4></td>
+															</tr>
+															<tr>
+																<td><label for="cdek-orders-{{ order_info['order_id'] }}-courier-date"><span class="required">*</span> {{ entry_courier_date }}</label></td>
+																<td>
+																	<input id="cdek-orders-{{ order_info['order_id'] }}-courier-date" class="date" type="text" name="cdek_orders[{{ order_info['order_id'] }}][courier][date]" value="{% if (order_info['courier']['date'] is not empty) %}{{ order_info['courier']['date'] }}{% endif %}" size="8" />
+                                                                    {% if (error['cdek_orders'][order_info['order_id']]['courier']['date'] is defined) %}
+																		<div class="text-danger">{{ error['cdek_orders'][order_info['order_id']]['courier']['date'] }}</div>
+                                                                    {% endif %}
+																</td>
+															</tr>
+															<tr>
+																<td><label for="cdek-orders-{{ order_info['order_id'] }}-courier-time-beg"><span class="required">*</span> {{ entry_courier_time }}</label></td>
+																<td>
+																	<span class="text-from">{{ text_from }}</span> <input id="cdek-orders-{{ order_info['order_id'] }}-courier-time-beg" class="time" type="text" name="cdek_orders[{{ order_info['order_id'] }}][courier][time_beg]" value="{% if (order_info['courier']['time_beg'] is not empty) %}{{order_info['courier']['time_beg'] }}{% endif %}" size="8" /> {{ text_to }} <input class="time" type="text" name="cdek_orders[{{ order_info['order_id'] }}][courier][time_end]" value="{% if (order_info['courier']['time_end'] is not empty) %}{{order_info['courier']['time_end'] }}{% endif %}" size="8" />
+                                                                    {% if (error['cdek_orders'][order_info['order_id']]['courier']['time'] is defined) %}
+																		<div class="text-danger">{{ error['cdek_orders'][order_info['order_id']]['courier']['time'] }}</div>
+                                                                    {% endif %}
+																</td>
+															</tr>
+
+															<tr>
+																<td><label for="cdek-orders-{{ order_info['order_id'] }}-courier-lunch-beg">{{ entry_courier_lunch }}</label></td>
+																<td>
+																	<span class="text-from">{{ text_from }}</span> <input id="cdek-orders-{{ order_info['order_id'] }}-courier-lunch-beg" class="time" type="text" name="cdek_orders[{{ order_info['order_id'] }}][courier][lunch_beg]" value="{% if (order_info['courier']['lunch_beg'] is not empty) %}{{order_info['courier']['lunch_beg'] }}{% endif %}" size="8" /> {{ text_to }} <input class="time" type="text" name="cdek_orders[{{ order_info['order_id'] }}][courier][lunch_end]" value="{% if (order_info['courier']['lunch_end'] is not empty) %}{{ order_info['courier']['lunch_end'] }}{% endif %}" size="8" />
+                                                                    {% if (error['cdek_orders'][order_info['order_id']]['courier']['lunch'] is defined) %}
+																		<div class="text-danger">{{ error['cdek_orders'][order_info['order_id']]['courier']['lunch'] }}</div>
+                                                                    {% endif %}
+																</td>
+															</tr>
+															<tr>
+																<td colspan="2"><h4>{{ text_courier_address }}</h4></td>
+															</tr>
+															<tr>
+																<td>{% if (not city_default) %}<span class="required">*</span> {% endif %}{{ text_city }}</td>
+																<td>
+                                                                    {% if (city_default) %}
+                                                                        {{ city_name }}
+																		<input type="hidden" name="cdek_orders[{{ order_info['order_id'] }}][courier][city_name]" value="{{ city_name }}" />
+																		<input type="hidden" name="cdek_orders[{{ order_info['order_id'] }}][courier][city_id]" value="{{ city_id }}" />
+                                                                    {% else %}
+																		<input type="hidden" class="setting-city-id" name="cdek_orders[{{ order_info['order_id'] }}][courier][city_id]" value="{% if (order_info['courier']['city_id'] is not empty) %} {{ order_info['courier']['city_id'] }}{% endif %}" />
+																		<a class="js city-from" {% if (order_info['courier']['city_id'] is empty) %} {{ ' hidden' }}{% endif %}>{% if (order_info['courier']['city_name'] is not empty) %} {{ order_info['courier']['city_name'] }}{% endif %}</a>
+																		<input type="text" class="setting-city-name{% if (order_info['courier']['city_id'] is not empty) %}{{ ' hidden' }}{% endif %}" name="cdek_orders[{{ order_info['order_id'] }}][courier][city_name]" value="{% if (order_info['courier']['city_name'] is not empty) %}{{ order_info['courier']['city_name'] }}{% endif %}" />
+                                                                    {% endif %}
+                                                                    {% if (error['cdek_orders'][order_info['order_id']]['courier']['city_id'] is defined) %}
+																		<div class="text-danger">{{ error['cdek_orders'][order_info['order_id']]['courier']['city_id'] }}</div>
+                                                                    {% endif %}
+																</td>
+															</tr>
+															<tr>
+																<td><label for="cdek-orders-{{ order_info['order_id'] }}-courier-street"><span class="required">*</span> {{ entry_street }}</label></td>
+																<td>
+																	<input id="cdek-orders-{{ order_info['order_id'] }}-courier-street" type="text" name="cdek_orders[{{ order_info['order_id'] }}][courier][street]" value="{% if (order_info['courier']['street'] is not empty) %}{{order_info['courier']['street'] }}{% endif %}" maxlength="50" />
+                                                                    {% if (error['cdek_orders'][order_info['order_id']]['courier']['street'] is defined) %}
+																		<div class="text-danger">{{ error['cdek_orders'][order_info['order_id']]['courier']['street'] }}</div>
+                                                                    {% endif %}
+																</td>
+															</tr>
+															<tr>
+																<td><label for="cdek-orders-{{ order_info['order_id'] }}-courier-house"><span class="required">*</span> {{ entry_house }}</label></td>
+																<td>
+																	<input id="cdek-orders-{{ order_info['order_id'] }}-courier-house" type="text" name="cdek_orders[{{ order_info['order_id'] }}][courier][house]" value="{% if (order_info['courier']['house'] is not empty) %}{{order_info['courier']['house'] }}{% endif %}" size="2" maxlength="30" />
+                                                                    {% if (error['cdek_orders'][order_info['order_id']]['courier']['house'] is defined) %}
+																		<div class="text-danger">{{ error['cdek_orders'][order_info['order_id']]['courier']['house'] }}</div>
+                                                                    {% endif %}
+																</td>
+															</tr>
+															<tr>
+																<td><label for="cdek-orders-{{ order_info['order_id'] }}-courier-flat"><span class="required">*</span> {{ entry_flat }}</label></td>
+																<td>
+																	<input id="cdek-orders-{{ order_info['order_id'] }}-courier-flat" type="text" name="cdek_orders[{{ order_info['order_id'] }}][courier][flat]" value="{% if (order_info['courier']['flat'] is not empty) %}{{order_info['courier']['flat'] }}{% endif %}" size="2" maxlength="10" />
+                                                                    {% if (error['cdek_orders'][order_info['order_id']]['courier']['flat'] is defined) %}
+																		<div class="text-danger">{{ error['cdek_orders'][order_info['order_id']]['courier']['flat'] }}</div>
+                                                                    {% endif %}
+																</td>
+															</tr>
+																<tr>
+															<tr>
+																<td><label for="cdek-orders-{{ order_info['order_id'] }}-courier-send-phone"><span class="required">*</span> {{ entry_courier_send_phone }}</label></td>
+																<td>
+																	<input id="cdek-orders-{{ order_info['order_id'] }}-courier-send-phone" type="text" name="cdek_orders[{{ order_info['order_id'] }}][courier][send_phone]" value="{% if (order_info['courier']['send_phone'] is not empty) %}{{order_info['courier']['send_phone'] }}{% endif %}" maxlength="255" />
+                                                                    {% if (error['cdek_orders'][order_info['order_id']]['courier']['send_phone'] is defined) %}
+																		<div class="text-danger">{{ error['cdek_orders'][order_info['order_id']]['courier']['send_phone'] }}</div>
+                                                                    {% endif %}
+																</td>
+															</tr>
+															<tr>
+																<td><label for="cdek-orders-{{ order_info['order_id'] }}-courier-send-name"><span class="required">*</span> {{ entry_courier_sender_name }}</label></td>
+																<td>
+																	<input id="cdek-orders-{{ order_info['order_id'] }}-courier-send-name" type="text" name="cdek_orders[{{ order_info['order_id'] }}][courier][sender_name]" value="{% if (order_info['courier']['sender_name'] is not empty) %}{{order_info['courier']['sender_name'] }}{% endif %}" maxlength="255" />
+                                                                    {% if (error['cdek_orders'][order_info['order_id']]['courier']['sender_name'] is defined) %}
+																		<div class="text-danger">{{ error['cdek_orders'][order_info['order_id']]['courier']['sender_name'] }}</div>
+                                                                    {% endif %}
+																</td>
+															</tr>
+															<tr>
+																<td><label for="cdek-orders-{{ order_info['order_id'] }}-courier-comment">{{ entry_comment }}</label></td>
+																<td>
+																	<textarea id="cdek-orders-{{ order_info['order_id'] }}-courier-comment" name="cdek_orders[{{ order_info['order_id'] }}][courier][comment]" rows="5" cols="50" >{% if (order_info['courier']['comment'] is not empty) %} {{ order_info['courier']['comment'] }}{% endif %}</textarea>
+                                                                    {% if (error['cdek_orders'][order_info['order_id']]['courier']['comment'] is defined) %}
+																		<div class="text-danger">{{ error['cdek_orders'][order_info['order_id']]['courier']['comment'] }}</div>
+                                                                    {% endif %}
+																</td>
+															</tr>
+															</tbody>
+														</table>
+													</div>
+												</td>
+											</tr>
+										</tbody>
+									</table>
+								</div>
+								<div id="order-{{ order_info['order_id'] }}-additional" class="tab-pane">
+									<table class="form table">
+										<tbody>
+										<tr>
+											<td>{{ entry_add_service }}</td>
+											<td>
+												<div class="scrollbox cervices">
+                                                    {% set class = 'even' %}
+                                                    {% set checked = [] %}
+                                                    {% if (order_info['add_service'] is not empty) %}
+														{% set checked = []%}
+                                                        {% for service_id,cervice_info in order_info['add_service'] %} {% set checked = checked|merge([service_id]) %}{% endfor %}
+                                                    {% endif %}
+                                                    {% for cervice_code,cervice_info in add_cervices %}
+                                                        {% if (cervice_info['hide'] is defined) %}
+                                                            {% set class = class == 'even' ? 'odd' : 'even' %}{% endif %}
+														<div class="{{ class }}">
+															<input type="checkbox" name="cdek_orders[{{ order_info['order_id'] }}][add_service][{{ cervice_code }}][service_id]" value="{{ cervice_code }}" {% if cervice_code in checked %} {{ 'checked="checked"' }}{% endif %} />
+															<div class="item-description">
+                                                                {{ cervice_info['title'] }}<span class="help">{{ cervice_info['description'] }}</span>
+															</div>
+														</div>
+                                                    {% endfor %}
+												</div>
+                                                {% if (error['cdek_orders'][order_info['order_id']]['add_service'] is defined) %}
+													<div class="text-danger">{{ error['cdek_orders'][order_info['order_id']]['add_service'] }}</div>
+                                                {% endif %}
+											</td>
+										</tr>
+										</tbody>
+									</table>
+								</div>
+							</div>
+						</div>
+						{% endfor %}
+					</div>
+				</form>
+			</div>
+		</div>
+	</div>
+</div>
+
+<script type="text/javascript"><!--
+
+$('.vtabs-link').click(function(){
+	$('#vtabs').find("a").removeClass('active');
+	$(this).addClass('active');
+});
+
+$('.cdek-order-cod').change(function(){
+	
+	var cod_enable = $(this).val();
+	var context = $(this).closest('.vtabs-content');
+	var input = $('table.package-items td.package-item-payment input:text', context);
+    if (cod_enable == 1){
+		$('.package-item-payment select').attr('readonly', '').removeAttr('readonly');
+	}else{
+        $('.package-item-payment select').attr('readonly', 'readonly');
+	}
+	$(input).each(function(i,elem){
+	   if (cod_enable == 1){
+	       $(this).val($(this).data('value'));
+           $(this).attr('readonly', '').removeAttr('readonly');
+	   } else {
+           $(this).data('value', $(this).val());
+           $(this).val(0);
+           $(this).attr('readonly', 'readonly');
+	   }
+	});
+});
+
+    $('input.package-weight').change(function(){
+
+        var self = this;
+        var context = $(self).closest('div');
+        var weight = $(self).val();
+
+        if (!isNaN(weight) && weight > 0) {
+
+            $.ajax({
+                url: "index.php?route=extension/module/cdek_integrator/getAjaxPackingWeight&user_token={{ token }}&weight=" + weight,
+                dataType: "json",
+                beforeSend: function(jqXHR, settings){
+                    $('.help', context).text('');
+                    if (!$('.loader', context).length) $(self).after('<img class="loader" src="view/image/cdek_integrator/loader.gif" alt="Загрузка..." title="Загрузка..." />');
+                },
+                complete: function(jqXHR, textStatus) {
+                    $('.loader', context).remove();
+                },
+                success: function(json) {
+
+                    if (json.packing_weight) {
+
+                        $(self).data('packing_prefix', json.packing_weight.prefix);
+                        $(self).data('packing_weight', json.packing_weight.weight);
+
+                        $('.help', context).text(json.packing_weight.prefix + ' ' + json.packing_weight.weight + ' грамм');
+                    }
+
+                }
+            });
+
+        } else {
+            $('.help', context).text('');
+        }
+
+    });
+
+$('.tariff_switcher').change(function(event){
+	
+	var context = $(this).closest('.vtabs-content');
+	
+	$('.address-mode.pvz', context).hide();
+	
+	if ($(this).val() != 0) {
+		
+		var mode_id = $('option:selected', this).data('mode');
+		
+		if (mode_id == 1 || mode_id == 3) {
+			$('.address-mode.address', context).find('.form-group').addClass('required');
+		} else {
+			$('.address-mode.pvz', context).show();
+			$('.address-mode.address', context).show();
+			$('.address-mode.address', context).find('.form-group').removeClass('required');
+		}
+		
+		$('.setting-mode-id', context).val(mode_id);
+		
+		//$('.address-mode' + className, context).show();
+		$(this).closest('td').find('.error').remove();
+	}
+	
+	getShippingPrice($(context).data('order'));
+});
+
+    $(".setting-city-name").bind('cityselect', function(){
+
+        var context = $(this).closest('.tab-pane');
+
+        var city_code = $('input.setting-city-id', context).val();
+
+        if (city_code != '') {
+
+            var element = $('.address-mode.pvz select', context);
+
+            $('option:gt(0)', element).remove();
+
+            $.ajax({
+                url: "index.php?route=extension/module/cdek_integrator/getPVZByCity&user_token={{ token }}&city_code=" + city_code,
+                dataType: "json",
+                beforeSend: function(jqXHR, settings){
+                    if (!$('.address-mode.pvz .loader', context).length) $(element).after('<img class="loader" src="view/image/cdek_integrator/loader.gif" alt="Загрузка..." title="Загрузка..." />');
+                },
+                complete: function(jqXHR, textStatus) {
+                    $('.address-mode.pvz .loader', context).remove();
+                },
+                success: function(json) {
+					console.log(json);
+                    if (json.List) {
+
+                        var html = '';
+
+                        for (var row in json.List) {
+                            html += '<option value="' + json.List[row].Code + '" data-name="' + json.List[row].Name + '" data-y="' + json.List[row].y + '" data-x="' + json.List[row].x + '" data-address="' + json.List[row].Address + '" data-worktime="' + json.List[row].WorkTime + '" data-phone="' + json.List[row].Phone + '">' + json.List[row].Address + + '</option>';
+                        }
+
+                        if (html != '') {
+                            $(element).append(html);
+
+                        }
+                    }
+
+                    $(element).trigger('change');
+                },
+				error: function(json){
+                    console.log(json);
+				}
+            });
+        }
+
+    });
+
+    function addAttempt(order_id) {
+
+        var context = $('#order-' + order_id + '-schedule table.list tbody:first');
+
+        if (!$(context).length) {
+            return;
+        }
+
+        var attemp_row = getAttempRow(context);
+
+        var tariff_context = $('#cdek-orders-' + order_id + '-tariff-id');
+
+        var mode_id = 2;
+
+        if ($(tariff_context).length) {
+
+            var tariff_id = $(tariff_context).val();
+
+            if (tariff_id != '') {
+                mode_id = $('option[value=' + tariff_id + ']', tariff_context).attr('data-mode');
+            }
+
+        }
+
+        var html  = '<tr id="' + order_id + '-schedule-' + attemp_row + '" rel="' + attemp_row + '">';
+        html +=		'	<td class="left"><input id="cdek-orders-' + order_id + '-schedule-' + attemp_row + '-date" class="date" type="text" name="cdek_orders[' + order_id + '][schedule][' + attemp_row + '][date]" value="" size="8" /></td>';
+        html +=		'	<td class="left">';
+        html +=		'		<nobr>{{ text_from }} <input id="cdek-orders-' + order_id + '-schedule-' + attemp_row + '-time-beg" class="time" type="text" name="cdek_orders[' + order_id + '][schedule][' + attemp_row + '][time_beg]" value="" size="8" /> {{ text_to }} <input class="time" type="text" name="cdek_orders[' + order_id + '][schedule][' + attemp_row + '][time_end]" value="" size="8" /></nobr>';
+        html +=		'	</td>';
+        html +=		'	<td class="left"><textarea id="cdek-orders-' + order_id + '-schedule-' + attemp_row + '-comment" name="cdek_orders[' + order_id + '][schedule][' + attemp_row + '][comment]" rows="5" cols="50" ></textarea></td>';
+        html +=		'	<td class="no-padding">';
+        html +=		'		<table class="form">';
+        html +=		'			<tbody>';
+        html +=		'				<tr>';
+        html +=		'					<td><label for="cdek-orders-' + order_id + '-schedule-' + attemp_row + '-recipient-name">{{ entry_attempt_recipient_name }}</label></td>';
+        html +=		'					<td><input id="cdek-orders-' + order_id + '-schedule-' + attemp_row + '-recipient-name" type="text" name="cdek_orders[' + order_id + '][schedule][' + attemp_row + '][recipient_name]" value="" maxlength="128" /></td>';
+        html +=		'				</tr>';
+        html +=		'				<tr>';
+        html +=		'					<td><label for="cdek-orders-' + order_id + '-schedule-' + attemp_row + '-phone">{{ entry_attempt_phone }}</label></td>';
+        html +=		'					<td><input id="cdek-orders-' + order_id + '-schedule-' + attemp_row + '-phone" type="text" name="cdek_orders[' + order_id + '][schedule][' + attemp_row + '][phone]" value="" maxlength="50" /></td>';
+        html +=		'				</tr>';
+        html +=		'				<tr class="parent">';
+        html +=		'					<td><label for="cdek-orders-' + order_id + '-schedule-' + attemp_row + '-new-address">{{ entry_attempt_new_address }}</label></td>';
+        html +=		'					<td>';
+        html +=		'						<select id="cdek-orders-' + order_id + '-schedule-' + attemp_row + '-new-address" name="cdek_orders[' + order_id + '][schedule][' + attemp_row + '][new_address]" class="toggle form-control" data-toggletarget="#cdek-orders-' + order_id + '-schedule-' + attemp_row + '-new-address-block">';
+        {% for key,value in boolean_variables %}
+        html +=		'							<option value="{{ key }}">{{ value }}</option>';
+        {% endfor %}
+        html +=		'						</select>';
+        html +=		'					</td>';
+        html +=		'				</tr>';
+        html +=		'				<tr>';
+        html +=		'					<td colspan="2" class="include">';
+        html +=		'						<div id="cdek-orders-' + order_id + '-schedule-' + attemp_row + '-new-address-block" style="display:none">';
+        html +=		'							<div class="address-mode pvz" style="' + (mode_id == 1 || mode_id == 3 ? ' hidden' : '') + '">';
+        html +=		'								<table class="form">';
+        html +=		'									<tbody>';
+        html +=		'										<tr>';
+        html +=		'											<td><label for="cdek-orders-' + order_id + '-schedule-' + attemp_row + '-pvz-code"><span class="required">*</span> {{ entry_pvz }}</label></td>';
+        html +=		'											<td>';
+        html +=		'												<select id="cdek-orders-' + order_id + '-schedule-' + attemp_row + '-pvz-code" name="cdek_orders[' + order_id + '][schedule][' + attemp_row + '][pvz_code]">';
+
+        $('#order-' + order_id + '-recipient .address-mode.pvz select option').each(function(){
+            html +=	'													<option value="' + $(this).val() + '">' + $(this).text() + '</option>';
+        });
+
+        html +=		'												</select>';
+        html +=		'											</td>';
+        html +=		'										</tr>';
+        html +=		'									</tbody>';
+        html +=		'								</table>';
+        html +=		'							</div>';
+        html +=		'							<div class="address-mode address">';
+        html +=		'								<table class="form">';
+        html +=		'									<tbody>';
+        html +=		'										<tr>';
+        html +=		'											<td><label for="cdek-orders-' + order_id + '-schedule-' + attemp_row + '-street"><span class="required' + (mode_id == 2 || mode_id == 4 ? ' hidden' : '') + '">*</span> {{ entry_street }}</label></td>';
+        html +=		'											<td><input id="cdek-orders-' + order_id + '-schedule-' + attemp_row + '-street" type="text" name="cdek_orders[' + order_id + '][schedule][' + attemp_row + '][street]" value="" maxlength="50" /></td>';
+        html +=		'										</tr>';
+        html +=		'										<tr>';
+        html +=		'											<td><label for="cdek-orders-' + order_id + '-schedule-' + attemp_row + '-house"><span class="required' + (mode_id == 2 || mode_id == 4 ? ' hidden' : '') + '">*</span> {{ entry_house }}</label></td>';
+        html +=		'											<td><input id="cdek-orders-' + order_id + '-schedule-' + attemp_row + '-house" type="text" name="cdek_orders[' + order_id + '][schedule][' + attemp_row + '][house]" value="" size="2" maxlength="30" /></td>';
+        html +=		'										</tr>';
+        html +=		'										<tr>';
+        html +=		'											<td><label for="cdek-orders-' + order_id + '-schedule-' + attemp_row + '-flat"><span class="required' + (mode_id == 2 || mode_id == 4 ? ' hidden' : '') + '">*</span> {{ entry_flat }}</label></td>';
+        html +=		'											<td><input id="cdek-orders-' + order_id + '-schedule-' + attemp_row + '-flat" type="text" name="cdek_orders[' + order_id + '][schedule][' + attemp_row + '][flat]" value="" size="2" maxlength="10" /></td>';
+        html +=		'										</tr>';
+        html +=		'									</tbody>';
+        html +=		'								</table>';
+        html +=		'							</div>';
+        html +=		'						</div>';
+        html +=		'					</td>';
+        html +=		'				</tr>';
+        html +=		'			</tbody>';
+        html +=		'		</table>';
+        html +=		'	</td>';
+        html +=		'	<td class="right" width="1">';
+        html +=		'		<a onclick="$(\'#' + order_id + '-schedule-' + attemp_row + '\').remove();" class="button">{{ button_delete }}</a>';
+        html +=		'	</td>';
+        html +=		'</tr>';
+
+        $(context).append(html);
+
+        initTimepicker();
+    }
+
+function getAttempRow(context) {
+	
+	var row = exists = 0;
+	
+	$('tr[rel]', context).each(function(){
+		
+		var rel = $(this).attr('rel');
+		
+		if (rel > row) {
+			row = rel;
+		}
+		
+		exists = true;
+		
+	});
+	
+	return exists ? ++row : row;
+}
+
+function initTimepicker() {
+	
+	//$('.date').datepicker({dateFormat: 'yy-mm-dd'});
+	//$('.time').timepicker({timeFormat: 'hh:mm'});
+	$('.time').datetimepicker({
+		format: 'HH:mm',
+		pickDate: false,
+	})
+	$('.date').datetimepicker({
+		format: 'YYYY-MM-DD',
+		pickTime: false
+	})
+}
+
+initTimepicker();
+
+$('.cdek-orders .vtabs-content').each(function(i, el){
+	getShippingPrice($(el).data('order'));
+});
+
+$('input.package-weight').change(function(event){
+	getShippingPrice($(this).closest('.vtabs-content').data('order'));
+});
+
+$('input.setting-city-id').change(function(event){
+	getShippingPrice($(this).closest('.vtabs-content').data('order'));
+});
+
+$('select.address-pvz-code').change(function(event){
+	$(this).parent().find('.pvz-wrapper').html('');
+	$(this).parent().find('.error').remove();
+	
+	if ($(this).val() != '') {
+		
+		var option = $('option[value=' + $(this).val() + ']', this);
+		
+		//console.log(option);
+		
+		var html = '<p>' + $(option).data('name');
+		
+		if ($(option).data('x')) {
+			html += ' (<a href="http://maps.google.ru/maps?q=' + $(option).data('y') + ',' + $(option).data('x') + '" target="_blank">на карте</a>)';
+		}
+		
+		html += '</p>';
+		html += '<span class="help">';
+		html += '<strong>Адрес</strong>: ' + $(option).data('address') + '<br />';
+		
+		if ($(option).data('phone') && $(option).data('phone') != '-') {
+			html += '<strong>Телефон</strong>: ' + $(option).data('phone') + '<br />';
+		}
+		
+		if ($(option).data('worktime') && $(option).data('worktime') != '-') {
+			html += '<strong>Режим работы</strong>: ' + $(option).data('worktime');
+		}
+		
+		html += '</span>';
+		
+		$(this).parent().find('.pvz-wrapper').html(html);
+		
+	}
+	
+});
+
+    function getShippingPrice(order_id) {
+
+        var context = $('#order-' + order_id);
+        var tariff_id = $('#cdek-orders-' + order_id + '-tariff-id').val()
+        var error = [];
+
+        var container = $('#order-' + order_id + '-data .shipping-price');
+
+        if (tariff_id == '') {
+            return $(container).html('');
+        }
+
+        var senderCityId = $("input[name='cdek_orders[" + order_id + "][city_id]']").val();
+
+        if (senderCityId == '') {
+            error.push('Не указан город отправления!');
+        }
+
+        var receiverCityId = $("input[name='cdek_orders[" + order_id + "][recipient_city_id]']").val();
+
+        if (receiverCityId == '') {
+            error.push('Не указан город получателя!');
+        }
+
+        var weight_el = $(".package-weight", context);
+
+        var weight = $(weight_el).val();
+
+        if ($(weight_el).data('packing_weight')) {
+
+            var weight = parseInt(weight);
+            var packing_weight = parseInt($(weight_el).data('packing_weight'));
+
+            if ($(weight_el).data('packing_prefix') == '+') {
+                weight += packing_weight;
+            } else {
+                weight -= packing_weight;
+            }
+
+        }
+
+        if (weight == "") {
+            error.push('Не указан вес!');
+        } else if (isNaN(weight) || weight <= 0) {
+            error.push('Вес заполнен с ошибкой!');
+        }
+
+        if (!error.length) {
+
+            var d = new Date(new Date().getTime() + 10800);
+
+            var date = {
+                version: '1.0',
+                dateExecute: d.getFullYear() + '-' + ((d.getMonth() + 1) < 10 ? '0' : '') + (d.getMonth() + 1) + '-' + (d.getDate() < 10 ? '0' : '') + d.getDate(),
+                senderCityId: senderCityId,
+                receiverCityId: receiverCityId,
+                authLogin: '{{ login }}',
+                secure: '{{ pass }}',
+                tariffId: tariff_id,
+                goods: [{weight: (parseInt(weight)/1000) ,volume: 0.003}]
+            };
+            console.log(date);
+
+            $.ajax({
+                url : '{{ api_ajax_url }}calculator/calculate_price_by_jsonp.php',
+                jsonp : 'callback',
+                data : {
+                    json: JSON.stringify(date)
+                },
+                type : 'GET',
+                dataType : "jsonp",
+                success : function(data) {
+
+                    var html = '<ul class="no-mark help">';
+
+                    if(data.hasOwnProperty("result")) {
+
+                        html += '<li>Цена доставки: <strong>' + data.result.price + '</strong></li>';
+                        html += '<li>Срок доставки: ' + data.result.deliveryPeriodMin + ' - ' + data.result.deliveryPeriodMax + 'дн.</li>';
+                        html += '<li>Планируемая дата доставки: c ' + data.result.deliveryDateMin + ' по ' + data.result.deliveryDateMax + '</li>';
+
+                        if(data.result.hasOwnProperty("cashOnDelivery")) {
+                            html += '<li>Ограничение оплаты наличными, от (руб): ' + data.result.cashOnDelivery + '</li>';
+                        }
+
+                    } else {
+
+                        for(var key in data["error"]) {
+                            html += '<li>Текст ошибки: ' + data["error"][key].text + '</li>';
+                        }
+
+                    }
+
+                    html += '</ul>';
+
+                    $(container).html(html);
+
+                }
+            });
+
+        } else {
+
+            var html = '<ul class="no-mark help">';
+
+            for(var key in error) {
+                html += '<li>Текст ошибки: ' + error[key] + '</li>';
+            }
+
+            html += '</ul>';
+
+            $(container).html(html);
+        }
+    }
+//$('#vtabs a').tabs();
+
+//--></script>
+
+<script type="text/javascript">
+    $(document).ready(function() {
+        $(".setting-city-name:not(.ui-autocomplete-input)").each(function(){
+
+            var context = $(this).closest('div');
+
+            $(this).autocomplete({
+                source: function(request,response) {
+                    $.ajax({
+                        url: 'index.php?route=extension/module/cdek_integrator/getCityByName&user_token={{ token }}&q=' +  encodeURIComponent(request),
+                        dataType: "json",
+                        success: function(data) {
+                            console.log(data);
+                            if(data) {
+                                response($.map(data, function(item) {
+                                    return {
+                                        label: item.name,
+                                        value: item.name,
+                                        id: item.id
+                                    }
+                                }));
+                            }
+
+                        },
+						error:function(data){
+                            console.log(data);
+						}
+                    });
+
+                },
+                minLength: 1,
+                select: function(event) {
+                    $('.setting-city-id', context).parent().find('.error').remove();
+                    $('.setting-city-id', context).val(event.id);
+                    $('.setting-city-name', context).val(event.value);
+                    $('.js.city-from', context).text(event.label).show();
+                    $('.setting-city-name', context).hide();
+
+                    $('.setting-city-name', context).trigger('cityselect');
+
+                    $('.setting-city-id', context).trigger('change');
+
+                }
+            });
+
+        });
+    });
+</script>
+{{ footer }}

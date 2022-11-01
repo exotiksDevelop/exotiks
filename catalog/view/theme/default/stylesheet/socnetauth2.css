@@ -1,0 +1,251 @@
+/******************* Страница оформления заказа Simple ************* */
+
+/********* Simple - Формат блока: "Крупные значки таблицей" ************* */
+
+/* div всего блока */
+	.simple_loginza_table_content
+	{
+	
+	}
+
+/* div заголовка */
+	.simple_table_header
+	{
+	
+	}
+
+/* div значков */
+	.simple_table_links
+	{
+		
+	}
+
+/********* Simple - Формат блока: "Кнопка Логинзы" ************* */
+
+/* div всего блока */
+	.simple_loginza_button_content
+	{
+	
+	}
+
+/* div заголовка */	
+	.simple_button_left
+	{
+		float: left;
+		padding-top: 5px;
+		padding-right: 20px;
+	}
+	
+/* div значков */
+	.simple_button_right
+	{
+		float: right;
+	}
+	
+/********* Simple - Формат блока: "Маленькие иконки" ************* */
+
+/* div всего блока */
+	.simple_loginza_icons_content
+	{
+	
+	}
+
+	
+/* div заголовка */	
+	.simple_icons_header
+	{
+	
+	}
+	
+/* div значков */	
+	.simple_icons_links
+	{
+	
+	}
+	/******************* Страница оформления заказа simplereg ************* */
+
+/********* simplereg - Формат блока: "Крупные значки таблицей" ************* */
+
+/* div всего блока */
+	.simplereg_loginza_table_content
+	{
+	
+	}
+
+/* div заголовка */
+	.simplereg_table_header
+	{
+	
+	}
+
+/* div значков */
+	.simplereg_table_links
+	{
+		
+	}
+
+/********* simplereg - Формат блока: "Кнопка Логинзы" ************* */
+
+/* div всего блока */
+	.simplereg_loginza_button_content
+	{
+	
+	}
+
+/* div заголовка */	
+	.simplereg_button_left
+	{
+		float: left;
+		padding-top: 5px;
+		padding-right: 20px;
+	}
+	
+/* div значков */
+	.simplereg_button_right
+	{
+		float: right;
+	}
+	
+/********* simplereg - Формат блока: "Маленькие иконки" ************* */
+
+/* div всего блока */
+	.simplereg_loginza_icons_content
+	{
+	
+	}
+
+	
+/* div заголовка */	
+	.simplereg_icons_header
+	{
+	
+	}
+	
+/* div значков */	
+	.simplereg_icons_links
+	{
+	
+	}
+	
+/******************* Страница регистрации в Simple ************* */	
+/********* Simple - Формат блока: "Крупные значки таблицей" ************* */
+
+/* div всего блока */	
+	.checkout_loginza_table_content
+	{
+		
+	}
+	
+/* div заголовка */		
+
+	.checkout_table_header
+	{
+		font-weight: bold;
+	}
+
+/* div значков */	
+	.checkout_table_links
+	{
+		
+	}
+	
+/********* Стандартное оформлени - Формат блока: "Кнопка Логинзы" ************* */
+
+/* div всего блока */	
+	.checkout_loginza_button_content
+	{
+		min-height: 20px !important;
+	}
+
+/* div заголовка */		
+	.checkout_button_left
+	{
+		float: left;
+		padding-top: 5px;
+		padding-right: 20px;
+		font-weight: bold;
+	}
+
+/* div значков */	
+	.checkout_button_right
+	{
+		float: right;
+	}
+
+
+/********* Стандартное оформлени - Формат блока: "Маленькие иконки" ************* */
+/* div всего блока */	
+	.checkout_loginza_icons_content
+	{
+		
+	}
+	
+/* div заголовка */		
+	.checkout_icons_header
+	{
+		font-weight: bold;
+	}
+
+/* div значков */	
+	.checkout_icons_links
+	{
+	
+	}
+
+
+/******************* Страница авторизации в аккаунте ************* */	
+/********* Страница авторизации - Формат блока: "Крупные значки таблицей" ************* */
+
+/* div всего блока */
+	.account_loginza_table_content
+	{
+		
+	}
+/* div заголовка */		
+	.account_table_header
+	{
+		font-weight: bold;
+	}
+/* div значков */	
+	.account_table_links
+	{
+		
+	}
+	
+/********* Страница авторизации - Формат блока: "Кнопка Логинзы" ************* */	
+/* div всего блока */	
+	.account_loginza_button_content
+	{
+		min-height: 20px !important;
+	}
+/* div заголовка */		
+	.account_button_right
+	{
+		float: right;
+	}
+/* div значков */	
+	.account_button_left
+	{
+		float: left;
+		padding-top: 5px;
+		padding-right: 20px;
+		font-weight: bold;
+	}
+	
+/********* Страница авторизации - Формат блока: "Маленькие иконки" ************* */	
+/* div всего блока */	
+	.account_loginza_icons_content
+	{
+		
+	}
+/* div заголовка */	
+	.account_icons_header
+	{
+		font-weight: bold;
+	}
+/* div значков */	
+	.account_icons_links
+	{
+	
+	}
+	

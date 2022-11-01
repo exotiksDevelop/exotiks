@@ -1,0 +1,1 @@
+/usr/lib64/php5.6/bin/php-cgi

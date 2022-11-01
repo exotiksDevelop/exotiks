@@ -1,0 +1,80 @@
+.description {
+  padding-top: 77px;
+  padding-bottom: 115px;
+  background-color: #fafafa;
+  background-image: url(./images/bg-flowers.png);
+  background-position: center;
+  position: relative;
+  background-size: 100%;
+  text-align: left;
+
+  .container {
+    text-align: center;
+  }
+
+  &__title {
+    display: inline-flex;
+    text-align: center;
+    color: #000;
+    font-size: 36px;
+    font-weight: 700;
+    line-height: 1em;
+  }
+
+  &__text {
+    margin-top: 40px;
+    margin-bottom: 0;
+    display: inline-block;
+    width: 87%;
+    font-size: 18px;
+    font-weight: 500;
+    line-height: 30px;
+    color: $text;
+    text-align: center;
+  }
+}
+
+@media screen and (max-width: 991.98px) {
+  .description {
+
+    &__title,
+    &__text {
+      position: relative;
+      z-index: 3;
+      background-color: rgba(255, 255, 255, .5);
+      border-radius: 5px;
+    }
+
+  }
+}
+
+@media screen and (max-width: 767.98px) {
+  .description {
+    padding-top: 12vw;
+    padding-bottom: 12vw;
+  }
+}
+
+@media screen and (max-width: 575.98px) {
+  .description {
+    padding-top: 14vw;
+    padding-bottom: 14vw;
+
+    &__title {
+      width: 100%;
+      text-align: center;
+      font-size: calc(1.5em + 2vw);
+      line-height: 1.3em;
+      background-color: transparent;
+    }
+
+    &__text {
+      margin: 4vw 0;
+      padding: 0 5px;
+      width: 100%;
+      text-align: center;
+      line-height: 1.8em;
+      font-size: calc(0.7em + 1vw);
+    }
+  }
+}
