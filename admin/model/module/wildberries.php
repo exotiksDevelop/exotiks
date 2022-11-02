@@ -23,7 +23,6 @@ class ModelModuleWildberries extends Model {
 
 	public function __construct($registry) {
 		parent::__construct($registry);
-		$this->setRoutes();
 	}
 
 	public function setToken($wb_phone) {
@@ -89,7 +88,6 @@ class ModelModuleWildberries extends Model {
 		return $this->sendData('card/list');
 	}
 
-	
 
 	public function login($phone_code, $token) {
 		$data = [
